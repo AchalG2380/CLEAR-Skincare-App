@@ -46,13 +46,13 @@ class AuthRepository {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return data;
     } else {
-      throw Exception(data['message'] ?? 'Registration failed. Please try again.');
+      throw Exception(
+        data['message'] ?? 'Registration failed. Please try again.',
+      );
     }
   }
 
-  Future<Map<String, dynamic>> forgotPassword({
-    required String email,
-  }) async {
+  Future<Map<String, dynamic>> forgotPassword({required String email}) async {
     final response = await http.post(
       Uri.parse('$baseUrl/forgot-password'),
       headers: {'Content-Type': 'application/json'},
