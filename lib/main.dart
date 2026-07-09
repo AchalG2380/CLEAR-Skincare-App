@@ -9,12 +9,22 @@ import 'auth/screens/verify_otp_screen.dart';
 import 'home/screens/main_navigation_screen.dart';
 import 'onboarding/screens/onboarding_screen.dart';
 import 'onboarding/screens/splash_screen.dart';
+import 'product_listing/screens/product_listing_screen.dart';
+import 'wishlist/controllers/wishlist_controller.dart';
+import 'cart/controllers/cart_controller.dart';
+import 'product_details/screens/product_details_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Register AuthController globally so it maintains state across all screens
   Get.put(AuthController(), permanent: true);
+
+  // Register WishlistController globally so it coordinates wishlist state app-wide
+  Get.put(WishlistController(), permanent: true);
+
+  // Register CartController globally so it coordinates cart state app-wide
+  Get.put(CartController(), permanent: true);
 
   runApp(const MyApp());
 }
@@ -51,22 +61,13 @@ class MyApp extends StatelessWidget {
         // '/home' route now returns the navigation shell holding the bottom bar
         GetPage(name: '/home', page: () => MainNavigationScreen()),
         
-        // Mock targets for Task 4 & Task 5 transitions
         GetPage(
-          name: '/product-listing', 
-          page: () => Scaffold(
-            appBar: AppBar(backgroundColor: const Color(0xFF130538), leading: const BackButton(color: Colors.white)),
-            backgroundColor: const Color(0xFF0E0544),
-            body: const Center(child: Text("Product Listing Screen (Task 4)", style: TextStyle(color: Colors.white, fontSize: 16))),
-          )
+          name: '/product-listing',
+          page: () => ProductListingScreen(),
         ),
         GetPage(
-          name: '/product-details', 
-          page: () => Scaffold(
-            appBar: AppBar(backgroundColor: const Color(0xFF130538), leading: const BackButton(color: Colors.white)),
-            backgroundColor: const Color(0xFF0E0544),
-            body: const Center(child: Text("Product Details Screen (Task 5)", style: TextStyle(color: Colors.white, fontSize: 16))),
-          )
+          name: '/product-details',
+          page: () => ProductDetailsScreen(),
         ),
       ],
     );

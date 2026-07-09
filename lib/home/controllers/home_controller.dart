@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../wishlist/controllers/wishlist_controller.dart';
 import '../data/models/home_response_model.dart';
 import '../data/repositories/home_repository.dart';
 
@@ -28,6 +29,20 @@ class HomeController extends GetxController {
 
       final data = await _homeRepository.getHomeData();
       homeData.value = data;
+
+      // Sync with global WishlistController
+      final wishlistController = Get.find<WishlistController>();
+      for (var p in data.bestSellers) {
+        if (p.isWishlisted.value) {
+          wishlistController.wishlistedIds.add(p.id);
+        }
+      }
+      for (var p in data.newArrivals) {
+        if (p.isWishlisted.value) {
+          wishlistController.wishlistedIds.add(p.id);
+        }
+      }
+
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;

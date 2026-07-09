@@ -7,6 +7,8 @@ class ProductModel {
   final double price;
   final double rating;
   final RxBool isWishlisted;
+  final String category; // e.g. 'cat_cleanser'
+  final String concern;  // e.g. 'Acne & Blemishes'
 
   ProductModel({
     required this.id,
@@ -15,6 +17,8 @@ class ProductModel {
     required this.price,
     required this.rating,
     required bool isWishlisted,
+    this.category = '',
+    this.concern = '',
   }) : isWishlisted = isWishlisted.obs;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -25,17 +29,19 @@ class ProductModel {
       price: (json['price'] ?? 0.0).toDouble(),
       rating: (json['rating'] ?? 0.0).toDouble(),
       isWishlisted: json['isWishlisted'] ?? false,
+      category: json['category'] ?? '',
+      concern: json['concern'] ?? '',
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'imageUrl': imageUrl,
-      'price': price,
-      'rating': rating,
-      'isWishlisted': isWishlisted.value,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'imageUrl': imageUrl,
+        'price': price,
+        'rating': rating,
+        'isWishlisted': isWishlisted.value,
+        'category': category,
+        'concern': concern,
+      };
 }

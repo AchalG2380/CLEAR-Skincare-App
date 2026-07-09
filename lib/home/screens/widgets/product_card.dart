@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/models/product_model.dart';
+import '../../../../wishlist/controllers/wishlist_controller.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -12,13 +13,13 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WishlistController wishlistController = Get.find<WishlistController>();
     return GestureDetector(
       onTap: () {
         // Navigate to details screen, passing the ID
         Get.toNamed('/product-details', arguments: product.id);
       },
       child: Container(
-        width: 155,
         decoration: BoxDecoration(
           color: const Color.fromARGB(20, 255, 255, 255),
           borderRadius: BorderRadius.circular(16),
@@ -50,21 +51,10 @@ class ProductCard extends StatelessWidget {
                 Positioned(
                   top: 8,
                   right: 8,
-                  child: Obx(
-                    () => GestureDetector(
-                      onTap: () {
-                        product.isWishlisted.toggle();
-                        Get.snackbar(
-                          product.isWishlisted.value ? 'Wishlisted' : 'Removed',
-                          product.isWishlisted.value
-                              ? '${product.name} added to Wishlist'
-                              : '${product.name} removed from Wishlist',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: const Color.fromARGB(240, 19, 5, 56),
-                          colorText: Colors.white,
-                          duration: const Duration(seconds: 1),
-                        );
-                      },
+                  child: Obx(() {
+                    final isWish = wishlistController.isWishlisted(product.id);
+                    return GestureDetector(
+                      onTap: () => wishlistController.toggleWishlist(product),
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: const BoxDecoration(
@@ -72,17 +62,13 @@ class ProductCard extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          product.isWishlisted.value
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: product.isWishlisted.value
-                              ? Colors.redAccent
-                              : Colors.white,
+                          isWish ? Icons.favorite : Icons.favorite_border,
+                          color: isWish ? Colors.redAccent : Colors.white,
                           size: 18,
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
               ],
             ),

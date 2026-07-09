@@ -319,7 +319,10 @@ class ProductScrollList extends StatelessWidget {
               final product = products[index];
               return Padding(
                 padding: const EdgeInsets.only(right: 16),
-                child: ProductCard(product: product),
+                child: SizedBox(
+                  width: 155,
+                  child: ProductCard(product: product),
+                ),
               );
             },
           ),

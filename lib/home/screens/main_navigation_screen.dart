@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
 import 'home_screen.dart';
+import '../../wishlist/screens/wishlist_screen.dart';
+import '../../cart/screens/cart_screen.dart';
+import '../../cart/controllers/cart_controller.dart';
 
 class MainNavigationController extends GetxController {
   var selectedIndex = 0.obs;
@@ -14,12 +17,14 @@ class MainNavigationController extends GetxController {
 class MainNavigationScreen extends StatelessWidget {
   MainNavigationScreen({super.key});
 
-  final MainNavigationController controller = Get.put(MainNavigationController());
+  final MainNavigationController controller = Get.put(
+    MainNavigationController(),
+  );
 
   final List<Widget> _pages = [
     HomeScreen(),
-    const WishlistPlaceholder(),
-    const CartPlaceholder(),
+    WishlistScreen(),
+    CartScreen(),
     const ProfilePlaceholder(),
   ];
 
@@ -43,23 +48,41 @@ class MainNavigationScreen extends StatelessWidget {
           showUnselectedLabels: true,
           selectedFontSize: 11,
           unselectedFontSize: 11,
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
               activeIcon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border),
               activeIcon: Icon(Icons.favorite),
               label: 'Wishlist',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined),
-              activeIcon: Icon(Icons.shopping_cart),
+              icon: Obx(() {
+                final count = Get.find<CartController>().totalCartItems;
+                return count > 0
+                    ? Badge(
+                        label: Text('$count'),
+                        backgroundColor: const Color(0xFF8C6EFF),
+                        child: const Icon(Icons.shopping_cart_outlined),
+                      )
+                    : const Icon(Icons.shopping_cart_outlined);
+              }),
+              activeIcon: Obx(() {
+                final count = Get.find<CartController>().totalCartItems;
+                return count > 0
+                    ? Badge(
+                        label: Text('$count'),
+                        backgroundColor: const Color(0xFF8C6EFF),
+                        child: const Icon(Icons.shopping_cart),
+                      )
+                    : const Icon(Icons.shopping_cart);
+              }),
               label: 'Cart',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),
               activeIcon: Icon(Icons.person),
               label: 'Profile',
@@ -71,66 +94,7 @@ class MainNavigationScreen extends StatelessWidget {
   }
 }
 
-// --- High-Fidelity Placeholders for Other Tabs ---
-class WishlistPlaceholder extends StatelessWidget {
-  const WishlistPlaceholder({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: AppColor.backgroundColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.favorite_border, color: Colors.white30, size: 70),
-            SizedBox(height: 16),
-            Text(
-              'Your Wishlist is Empty',
-              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Explore skincare items and add them to your wishlist.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white30, fontSize: 13),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CartPlaceholder extends StatelessWidget {
-  const CartPlaceholder({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: AppColor.backgroundColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.shopping_bag_outlined, color: Colors.white30, size: 70),
-            SizedBox(height: 16),
-            Text(
-              'Your Cart is Empty',
-              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Check out our best sellers to add some clear skin magic!',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white30, fontSize: 13),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class ProfilePlaceholder extends StatelessWidget {
   const ProfilePlaceholder({super.key});
@@ -143,11 +107,19 @@ class ProfilePlaceholder extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.account_circle_outlined, color: Colors.white30, size: 70),
+            const Icon(
+              Icons.account_circle_outlined,
+              color: Colors.white30,
+              size: 70,
+            ),
             const SizedBox(height: 16),
             const Text(
               'User Profile',
-              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -157,7 +129,9 @@ class ProfilePlaceholder extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.redAccent,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               child: const Text('Log Out'),
             ),
