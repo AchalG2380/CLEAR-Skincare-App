@@ -4,25 +4,31 @@ import '../../core/app_colors.dart';
 import '../controllers/auth_controller.dart';
 import '../screens/widgets/auth_widgets.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class ForgotpasswordScreen extends StatelessWidget {
+  const ForgotpasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Find the global controller
     final AuthController authController = Get.find<AuthController>();
     final emailController = TextEditingController();
-    final passwordController = TextEditingController();
 
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 60),
+              const SizedBox(height: 20),
               const Text(
                 'Clear',
                 style: TextStyle(
@@ -34,7 +40,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Welcome. You’re just a few taps away from clearer skin.',
+                'Recover your account password',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
@@ -57,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const Text(
-                      'Login',
+                      'Forgot Password',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -65,6 +71,15 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
+                    const Text(
+                      'Enter your registered email address below. We will send you a 6-digit OTP code to verify your identity.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Color.fromARGB(140, 255, 255, 255),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
 
                     // Email field
                     AuthTextField(
@@ -77,45 +92,16 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.white70,
                       ),
                     ),
-
-                    // Password field
-                    AuthTextField(
-                      controller: passwordController,
-                      labelText: 'Password',
-                      hintText: 'Enter your Password',
-                      obscureText: true,
-                      prefixIcon: const Icon(
-                        Icons.lock_outline,
-                        color: Colors.white70,
-                      ),
-                    ),
-
-                    // Forgot password link
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Get.toNamed('/forgot-password');
-                        },
-                        child: const Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 255, 182, 182),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                     const SizedBox(height: 16),
 
+                    // Continue button
                     Obx(
                       () => AuthButton(
-                        text: 'Login',
+                        text: 'Send OTP',
                         isLoading: authController.isLoading.value,
                         onPressed: () {
-                          authController.login(
+                          authController.forgotPassword(
                             email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
                           );
                         },
                       ),
@@ -123,31 +109,6 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
-
-              // Register link
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Don't have an account? ",
-                    style: TextStyle(color: Color.fromARGB(180, 255, 255, 255)),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Get.toNamed('/register');
-                    },
-                    child: const Text(
-                      "Register",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 182, 182),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
             ],
           ),
         ),

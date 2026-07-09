@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'auth/controllers/auth_controller.dart';
-import 'auth/screens/forgotPassword_screen.dart';
+import 'auth/screens/forgot_password_screen.dart';
 import 'auth/screens/login_screen.dart';
 import 'auth/screens/register_screen.dart';
-import 'auth/screens/resetPassword.dart';
-import 'auth/screens/verifyOTP_screen.dart';
+import 'auth/screens/reset_password_screen.dart';
+import 'auth/screens/verify_otp_screen.dart';
 import 'home/screens/main_navigation_screen.dart';
 import 'onboarding/screens/onboarding_screen.dart';
 import 'onboarding/screens/splash_screen.dart';

@@ -84,10 +84,7 @@ class HomeScreen extends StatelessWidget {
 
                   // 1. Search Bar (tap-to-navigate)
                   GestureDetector(
-                    onTap: () {
-                      // Tapping search redirects to Task 4 Product Listing with no pre-filled text
-                      Get.toNamed('/product-listing');
-                    },
+                    onTap: () => Get.toNamed('/product-listing'),
                     child: Container(
                       height: 50,
                       padding: const EdgeInsets.symmetric(horizontal: 16),

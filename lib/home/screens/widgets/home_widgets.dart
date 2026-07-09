@@ -41,7 +41,7 @@ class _HomeShimmerState extends State<HomeShimmer> with SingleTickerProviderStat
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: const Color(0xFF8C6EFF).withOpacity(_animation.value),
+            color: const Color(0xFF8C6EFF).withValues(alpha: _animation.value),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
         );

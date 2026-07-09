@@ -19,8 +19,7 @@ class HomeRepository {
         throw Exception('Server returned status: ${response.statusCode}');
       }
     } catch (e) {
-      // Fallback to high-fidelity mock data if the API fails or is unreachable
-      print('HomeRepository: HTTP call failed ($e), falling back to mock data.');
+      // Server unreachable — fall back to mock data
       return HomeResponseModel.fromJson(_getMockHomeData());
     }
   }
