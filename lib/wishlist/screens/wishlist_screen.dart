@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/app_colors.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../home/data/models/product_model.dart';
@@ -15,7 +16,7 @@ class WishlistScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF130538),
+        backgroundColor: AppColor.backgroundColor,
         elevation: 0,
         title: const Text(
           'My Wishlist',
@@ -37,8 +38,8 @@ class WishlistScreen extends StatelessWidget {
 
         return RefreshIndicator(
           onRefresh: controller.fetchWishlist,
-          color: const Color(0xFF8C6EFF),
-          backgroundColor: const Color(0xFF130538),
+          color: AppColor.primary,
+          backgroundColor: AppColor.backgroundColor,
           child: ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: controller.wishlistItems.length,
@@ -62,7 +63,7 @@ class WishlistScreen extends StatelessWidget {
         padding: const EdgeInsets.only(right: 20),
         alignment: Alignment.centerRight,
         decoration: BoxDecoration(
-          color: Colors.redAccent.withValues(alpha: 0.8),
+          color: AppColor.error.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(16),
         ),
         child: const Icon(Icons.delete_sweep, color: Colors.white, size: 28),
@@ -74,10 +75,10 @@ class WishlistScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(15, 255, 255, 255),
+          color: AppColor.cardBackground,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: const Color.fromARGB(30, 140, 110, 255),
+            color: AppColor.primary.withValues(alpha: 0.12),
             width: 1,
           ),
         ),
@@ -92,11 +93,14 @@ class WishlistScreen extends StatelessWidget {
                 child: SizedBox(
                   width: 80,
                   height: 80,
-                  child: Image.network(
-                    product.imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: product.imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: const Color.fromARGB(40, 140, 110, 255),
+                    placeholder: (_, __) => Container(
+                      color: AppColor.primary.withValues(alpha: 0.12),
+                    ),
+                    errorWidget: (_, __, ___) => Container(
+                      color: AppColor.primary.withValues(alpha: 0.16),
                       child: const Icon(
                         Icons.broken_image_outlined,
                         color: Colors.white30,
@@ -130,7 +134,7 @@ class WishlistScreen extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 14),
+                      const Icon(Icons.star, color: AppColor.ratingStar, size: 14),
                       const SizedBox(width: 2),
                       Text(
                         product.rating.toString(),
@@ -145,7 +149,7 @@ class WishlistScreen extends StatelessWidget {
                   Text(
                     '\$${product.price.toStringAsFixed(2)}',
                     style: const TextStyle(
-                      color: Color(0xFFC7B6FF),
+                      color: AppColor.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -162,7 +166,7 @@ class WishlistScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(
                     Icons.delete_outline,
-                    color: Colors.redAccent,
+                    color: AppColor.error,
                     size: 22,
                   ),
                   onPressed: () => controller.toggleWishlist(product),
@@ -171,7 +175,7 @@ class WishlistScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () => controller.moveToCart(product),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF8C6EFF),
+                    backgroundColor: AppColor.buttonColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -201,7 +205,8 @@ class WishlistScreen extends StatelessWidget {
     return SkincareEmptyState(
       icon: Icons.favorite_border,
       title: 'Your Wishlist is Empty',
-      description: 'Explore skincare items and add them to your wishlist to build your daily routine.',
+      description:
+          'Explore skincare items and add them to your wishlist to build your daily routine.',
       buttonText: 'Explore Products',
       onButtonPressed: () => Get.toNamed('/product-listing'),
     );
@@ -255,7 +260,7 @@ class _WishlistItemSkeletonState extends State<_WishlistItemSkeleton>
         margin: const EdgeInsets.only(bottom: 16),
         height: 104,
         decoration: BoxDecoration(
-          color: const Color(0xFF8C6EFF).withValues(alpha: _anim.value),
+          color: AppColor.primary.withValues(alpha: _anim.value),
           borderRadius: BorderRadius.circular(16),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/checkout_controller.dart';
 import 'checkout_address_screen.dart';
 
@@ -15,14 +16,14 @@ class CheckoutPaymentScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF130538),
+        backgroundColor: AppColor.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Payment Method',
+          AppStrings.paymentMethodTitle,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -41,7 +42,7 @@ class CheckoutPaymentScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               children: [
                 const Text(
-                  'Select Payment Method',
+                  AppStrings.selectPaymentHeader,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -53,17 +54,17 @@ class CheckoutPaymentScreen extends StatelessWidget {
                 // Payment Methods Options
                 _buildPaymentMethodOption(
                   method: 'Card',
-                  title: 'Credit / Debit Card',
+                  title: AppStrings.cardText,
                   icon: Icons.credit_card_outlined,
                 ),
                 _buildPaymentMethodOption(
                   method: 'UPI',
-                  title: 'UPI (Paytm, GPay, PhonePe)',
+                  title: AppStrings.upiTextSubtitle,
                   icon: Icons.account_balance_wallet_outlined,
                 ),
                 _buildPaymentMethodOption(
                   method: 'COD',
-                  title: 'Cash on Delivery (COD)',
+                  title: AppStrings.codTextSubtitle,
                   icon: Icons.payments_outlined,
                 ),
               ],
@@ -95,13 +96,13 @@ class CheckoutPaymentScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? const Color.fromARGB(35, 140, 110, 255)
-                    : const Color.fromARGB(15, 255, 255, 255),
+                    ? AppColor.primary.withValues(alpha: 0.15)
+                    : AppColor.cardBackground,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: isSelected
-                      ? const Color(0xFF8C6EFF)
-                      : const Color.fromARGB(30, 140, 110, 255),
+                      ? AppColor.primary
+                      : AppColor.primary.withValues(alpha: 0.12),
                   width: 1.5,
                 ),
               ),
@@ -109,7 +110,7 @@ class CheckoutPaymentScreen extends StatelessWidget {
                 children: [
                   Icon(
                     isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-                    color: isSelected ? const Color(0xFF8C6EFF) : Colors.white54,
+                    color: isSelected ? AppColor.primary : Colors.white54,
                     size: 20,
                   ),
                   const SizedBox(width: 12),
@@ -146,10 +147,10 @@ class CheckoutPaymentScreen extends StatelessWidget {
       margin: const EdgeInsets.only(top: 8, left: 4, right: 4),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(25, 19, 5, 56),
+        color: AppColor.surface.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -161,10 +162,10 @@ class CheckoutPaymentScreen extends StatelessWidget {
             initialValue: controller.cardNumber.value,
             style: const TextStyle(color: Colors.white, fontSize: 13),
             keyboardType: TextInputType.number,
-            cursorColor: const Color(0xFF8C6EFF),
+            cursorColor: AppColor.primary,
             decoration: _buildInputDecoration(
-              labelText: 'Card Number',
-              hintText: 'XXXX XXXX XXXX XXXX',
+              labelText: AppStrings.cardNumber,
+              hintText: AppStrings.hintCardNumber,
             ),
           ),
           const SizedBox(height: 12),
@@ -178,10 +179,10 @@ class CheckoutPaymentScreen extends StatelessWidget {
                   initialValue: controller.cardExpiry.value,
                   style: const TextStyle(color: Colors.white, fontSize: 13),
                   keyboardType: TextInputType.datetime,
-                  cursorColor: const Color(0xFF8C6EFF),
+                  cursorColor: AppColor.primary,
                   decoration: _buildInputDecoration(
-                    labelText: 'Expiry Date',
-                    hintText: 'MM/YY',
+                    labelText: AppStrings.labelExpiryDate,
+                    hintText: AppStrings.cardExpiry,
                   ),
                 ),
               ),
@@ -193,10 +194,10 @@ class CheckoutPaymentScreen extends StatelessWidget {
                   style: const TextStyle(color: Colors.white, fontSize: 13),
                   keyboardType: TextInputType.number,
                   obscureText: true,
-                  cursorColor: const Color(0xFF8C6EFF),
+                  cursorColor: AppColor.primary,
                   decoration: _buildInputDecoration(
-                    labelText: 'CVV',
-                    hintText: '***',
+                    labelText: AppStrings.cardCvv,
+                    hintText: AppStrings.hintCvv,
                   ),
                 ),
               ),
@@ -217,15 +218,15 @@ class CheckoutPaymentScreen extends StatelessWidget {
       hintText: hintText,
       hintStyle: const TextStyle(color: Colors.white24, fontSize: 12),
       filled: true,
-      fillColor: const Color.fromARGB(15, 255, 255, 255),
+      fillColor: AppColor.inputFill,
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Color.fromARGB(20, 140, 110, 255)),
+        borderSide: BorderSide(color: AppColor.primary.withValues(alpha: 0.08)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Color(0xFF8C6EFF)),
+        borderSide: BorderSide(color: AppColor.primary),
       ),
     );
   }
@@ -233,7 +234,7 @@ class CheckoutPaymentScreen extends StatelessWidget {
   // ─── Sticky Bottom Action Bar ───────────────────────────────────────────────
   Widget _buildBottomActionPanel() {
     return Container(
-      color: const Color(0xFF130538),
+      color: AppColor.backgroundColor,
       padding: const EdgeInsets.all(20),
       child: SafeArea(
         top: false,
@@ -247,15 +248,15 @@ class CheckoutPaymentScreen extends StatelessWidget {
                   ? () => Get.toNamed('/checkout-review')
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF8C6EFF),
+                backgroundColor: AppColor.buttonColor,
                 foregroundColor: Colors.white,
-                disabledBackgroundColor: const Color(0xFF8C6EFF).withValues(alpha: 0.4),
+                disabledBackgroundColor: AppColor.buttonColor.withValues(alpha: 0.4),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
               child: const Text(
-                'Continue to Review',
+                AppStrings.continueToReview,
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,

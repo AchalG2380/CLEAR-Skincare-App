@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import '../controllers/product_details_controller.dart';
 import '../data/models/product_details_model.dart';
@@ -8,7 +10,9 @@ import '../data/models/product_details_model.dart';
 class ProductDetailsScreen extends StatelessWidget {
   ProductDetailsScreen({super.key});
 
-  final ProductDetailsController controller = Get.put(ProductDetailsController());
+  final ProductDetailsController controller = Get.put(
+    ProductDetailsController(),
+  );
   final WishlistController wishlistController = Get.find<WishlistController>();
 
   @override
@@ -34,13 +38,15 @@ class ProductDetailsScreen extends StatelessWidget {
             // Scrollable Content
             Positioned.fill(
               child: SingleChildScrollView(
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 88),
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom + 88,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // 1. Swipeable Image Carousel
                     _buildImageCarousel(context, details),
-                    
+
                     // 2. Information Header
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
@@ -51,9 +57,9 @@ class ProductDetailsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
-                                'CLEAR SKINCARE',
+                                AppStrings.clearSkincare,
                                 style: TextStyle(
-                                  color: Color(0xFFC7B6FF),
+                                  color: AppColor.primary,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 1.5,
@@ -61,7 +67,11 @@ class ProductDetailsScreen extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  const Icon(Icons.star, color: Colors.amber, size: 16),
+                                  const Icon(
+                                    Icons.star,
+                                    color: AppColor.ratingStar,
+                                    size: 16,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     '${details.rating}',
@@ -72,7 +82,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    ' (${details.reviews.length} reviews)',
+                                    ' (${details.reviews.length} ${AppStrings.ratingReviewsSuffix})',
                                     style: const TextStyle(
                                       color: Colors.white38,
                                       fontSize: 12,
@@ -95,7 +105,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           Text(
                             '\$${details.price.toStringAsFixed(2)}',
                             style: const TextStyle(
-                              color: Color(0xFFC7B6FF),
+                              color: AppColor.primary,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -124,41 +134,59 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           _ExpandableSection(
-                            title: 'Ingredients',
+                            title: AppStrings.ingredients,
                             content: Text(
                               details.ingredients,
-                              style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.5),
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 13,
+                                height: 1.5,
+                              ),
                             ),
                           ),
                           _ExpandableSection(
-                            title: 'Benefits',
+                            title: AppStrings.benefits,
                             content: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: details.benefits
-                                  .map((b) => Padding(
-                                        padding: const EdgeInsets.only(bottom: 8),
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Icon(Icons.check_circle_outline, color: Color(0xFF8C6EFF), size: 18),
-                                            const SizedBox(width: 8),
-                                            Expanded(
-                                              child: Text(
-                                                b,
-                                                style: const TextStyle(color: Colors.white70, fontSize: 13),
+                                  .map(
+                                    (b) => Padding(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.check_circle_outline,
+                                            color: AppColor.primary,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              b,
+                                              style: const TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 13,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ))
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
                                   .toList(),
                             ),
                           ),
                           _ExpandableSection(
-                            title: 'How to Use',
+                            title: AppStrings.howToUse,
                             content: Text(
                               details.usage,
-                              style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.5),
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 13,
+                                height: 1.5,
+                              ),
                             ),
                           ),
                         ],
@@ -201,14 +229,11 @@ class ProductDetailsScreen extends StatelessWidget {
   // ─── Pinned AppBar ────────────────────────────────────────────────────────
   Widget _buildPinnedAppBar(ProductDetailsModel details) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Color.fromARGB(200, 14, 5, 68),
-            Colors.transparent,
-          ],
+          colors: [AppColor.backgroundColor.withValues(alpha: 0.78), Colors.transparent],
         ),
       ),
       child: SafeArea(
@@ -227,7 +252,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 return IconButton(
                   icon: Icon(
                     isWish ? Icons.favorite : Icons.favorite_border,
-                    color: isWish ? Colors.redAccent : Colors.white,
+                    color: isWish ? AppColor.favoriteActive : Colors.white,
                   ),
                   onPressed: () => controller.toggleWishlist(),
                 );
@@ -240,7 +265,10 @@ class ProductDetailsScreen extends StatelessWidget {
   }
 
   // ─── Image Carousel ────────────────────────────────────────────────────────
-  Widget _buildImageCarousel(BuildContext context, ProductDetailsModel details) {
+  Widget _buildImageCarousel(
+    BuildContext context,
+    ProductDetailsModel details,
+  ) {
     final screenHeight = MediaQuery.of(context).size.height;
     return SizedBox(
       height: screenHeight * 0.45,
@@ -250,14 +278,20 @@ class ProductDetailsScreen extends StatelessWidget {
             itemCount: details.imageUrls.length,
             onPageChanged: controller.updateImageIndex,
             itemBuilder: (context, index) {
-              return Image.network(
-                details.imageUrls[index],
+              return CachedNetworkImage(
+                imageUrl: details.imageUrls[index],
                 fit: BoxFit.cover,
                 width: double.infinity,
-                errorBuilder: (_, __, ___) => Container(
-                  color: const Color.fromARGB(40, 140, 110, 255),
+                placeholder: (_, __) =>
+                    Container(color: AppColor.primary.withValues(alpha: 0.12)),
+                errorWidget: (_, __, ___) => Container(
+                  color: AppColor.primary.withValues(alpha: 0.16),
                   child: const Center(
-                    child: Icon(Icons.broken_image_outlined, color: Colors.white30, size: 50),
+                    child: Icon(
+                      Icons.broken_image_outlined,
+                      color: Colors.white30,
+                      size: 50,
+                    ),
                   ),
                 ),
               );
@@ -272,17 +306,21 @@ class ProductDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 details.imageUrls.length,
-                (index) => Obx(() => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: controller.selectedImageIndex.value == index ? 20 : 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: controller.selectedImageIndex.value == index
-                            ? const Color(0xFF8C6EFF)
-                            : Colors.white30,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    )),
+                (index) => Obx(
+                  () => Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: controller.selectedImageIndex.value == index
+                        ? 20
+                        : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: controller.selectedImageIndex.value == index
+                          ? AppColor.primary
+                          : Colors.white30,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -299,7 +337,7 @@ class ProductDetailsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Customer Reviews',
+            AppStrings.customerReviews,
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
@@ -307,59 +345,63 @@ class ProductDetailsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          ...details.reviews.map((rev) => Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(15, 255, 255, 255),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          rev.reviewerName,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          rev.date,
-                          style: const TextStyle(
-                            color: Colors.white30,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: List.generate(
-                        5,
-                        (starIdx) => Icon(
-                          Icons.star,
-                          size: 14,
-                          color: starIdx < rev.rating ? Colors.amber : Colors.white10,
+          ...details.reviews.map(
+            (rev) => Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppColor.cardBackground,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        rev.reviewerName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      rev.comment,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 13,
-                        height: 1.4,
+                      Text(
+                        rev.date,
+                        style: const TextStyle(
+                          color: Colors.white30,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: List.generate(
+                      5,
+                      (starIdx) => Icon(
+                        Icons.star,
+                        size: 14,
+                        color: starIdx < rev.rating
+                            ? AppColor.ratingStar
+                            : AppColor.dividerColor,
                       ),
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    rev.comment,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 13,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -369,7 +411,7 @@ class ProductDetailsScreen extends StatelessWidget {
   Widget _buildStickyActionBar(ProductDetailsModel details) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF130538),
+        color: AppColor.backgroundColor,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -378,9 +420,11 @@ class ProductDetailsScreen extends StatelessWidget {
           // Stepper Quantity Selector
           Container(
             decoration: BoxDecoration(
-              color: const Color.fromARGB(25, 255, 255, 255),
+              color: AppColor.inputFill,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color.fromARGB(35, 255, 255, 255)),
+              border: Border.all(
+                color: AppColor.dividerColor.withValues(alpha: 0.15),
+              ),
             ),
             child: Row(
               children: [
@@ -388,14 +432,16 @@ class ProductDetailsScreen extends StatelessWidget {
                   icon: const Icon(Icons.remove, color: Colors.white, size: 18),
                   onPressed: controller.decrementQuantity,
                 ),
-                Obx(() => Text(
-                      '${controller.quantity.value}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                Obx(
+                  () => Text(
+                    '${controller.quantity.value}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 IconButton(
                   icon: const Icon(Icons.add, color: Colors.white, size: 18),
                   onPressed: controller.incrementQuantity,
@@ -412,18 +458,15 @@ class ProductDetailsScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: controller.addToCart,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8C6EFF),
+                  backgroundColor: AppColor.buttonColor,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 child: const Text(
-                  'Add to Cart',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  AppStrings.addToCart,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -436,9 +479,7 @@ class ProductDetailsScreen extends StatelessWidget {
   // ─── Loading Skeleton / Shimmer ────────────────────────────────────────────
   Widget _buildShimmerLoading() {
     return const Center(
-      child: CircularProgressIndicator(
-        color: Color(0xFF8C6EFF),
-      ),
+      child: CircularProgressIndicator(color: AppColor.primary),
     );
   }
 
@@ -448,7 +489,7 @@ class ProductDetailsScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, color: Colors.redAccent, size: 50),
+          const Icon(Icons.error_outline, color: AppColor.error, size: 50),
           const SizedBox(height: 16),
           Text(
             message ?? controller.errorMessage.value,
@@ -484,20 +525,24 @@ class _ExpandableSectionState extends State<_ExpandableSection> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color.fromARGB(35, 140, 110, 255)),
+        border: Border.all(color: AppColor.primary.withValues(alpha: 0.15)),
       ),
       child: Column(
         children: [
           ListTile(
             title: Text(
               widget.title,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
             ),
             trailing: Icon(
               _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              color: const Color(0xFFC7B6FF),
+              color: AppColor.primary,
             ),
             onTap: () {
               setState(() {
@@ -511,7 +556,9 @@ class _ExpandableSectionState extends State<_ExpandableSection> {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: widget.content,
             ),
-            crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            crossFadeState: _isExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 250),
           ),
         ],

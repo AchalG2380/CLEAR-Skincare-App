@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../data/models/home_response_model.dart';
 import '../../data/models/product_model.dart';
+import '../../../../core/app_colors.dart';
+import '../../../../core/app_strings.dart';
 import '../../../../core/widgets/product_widgets.dart';
 
 // --- Pulseless / Animated Pulse Skeleton Shimmer Loader ---
@@ -46,7 +49,7 @@ class _HomeShimmerState extends State<HomeShimmer>
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: const Color(0xFF8C6EFF).withValues(alpha: _animation.value),
+            color: AppColor.primary.withValues(alpha: _animation.value),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
         );
@@ -178,7 +181,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      image: NetworkImage(banner.imageUrl),
+                      image: CachedNetworkImageProvider(banner.imageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -200,8 +203,8 @@ class _BannerCarouselState extends State<BannerCarousel> {
               width: isSelected ? 20 : 6,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? const Color(0xFF8C6EFF)
-                    : const Color.fromARGB(80, 255, 255, 255),
+                    ? AppColor.primary
+                    : AppColor.dividerColor.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(3),
               ),
             );
@@ -226,7 +229,7 @@ class CategoryScrollList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Categories",
+          AppStrings.categories,
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -257,13 +260,15 @@ class CategoryScrollList extends StatelessWidget {
                         height: 64,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: const Color.fromARGB(25, 255, 255, 255),
+                          color: AppColor.cardBackground,
                           border: Border.all(
-                            color: const Color.fromARGB(55, 140, 110, 255),
+                            color: AppColor.primary.withValues(alpha: 0.2),
                             width: 1.5,
                           ),
                           image: DecorationImage(
-                            image: NetworkImage(category.imageUrl),
+                            image: CachedNetworkImageProvider(
+                              category.imageUrl,
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -351,7 +356,7 @@ class SkinConcernGrid extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Shop by Concern",
+          AppStrings.shopConcerns,
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -384,13 +389,13 @@ class SkinConcernGrid extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color.fromARGB(25, 255, 255, 255),
+                        color: AppColor.cardBackground,
                         border: Border.all(
-                          color: const Color.fromARGB(55, 140, 110, 255),
+                          color: AppColor.primary.withValues(alpha: 0.2),
                           width: 1.5,
                         ),
                         image: DecorationImage(
-                          image: NetworkImage(concern.imageUrl),
+                          image: CachedNetworkImageProvider(concern.imageUrl),
                           fit: BoxFit.cover,
                         ),
                       ),

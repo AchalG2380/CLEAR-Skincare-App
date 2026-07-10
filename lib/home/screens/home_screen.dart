@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/home_controller.dart';
 import 'widgets/home_widgets.dart';
 
@@ -29,13 +30,13 @@ class HomeScreen extends StatelessWidget {
 
           final data = homeController.homeData.value;
           if (data == null) {
-            return _buildErrorState(message: "No content available");
+            return _buildErrorState(message: AppStrings.noContentAvailable);
           }
 
           return RefreshIndicator(
             onRefresh: homeController.fetchHomeData,
-            color: const Color(0xFF8C6EFF),
-            backgroundColor: const Color(0xFF130538),
+            color: AppColor.primary,
+            backgroundColor: AppColor.backgroundColor,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -49,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Clear Skin",
+                            AppStrings.homeTitle,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -59,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            "Start your daily skincare routine",
+                            AppStrings.homeSubtitle,
                             style: TextStyle(
                               color: Colors.white70,
                               fontSize: 12,
@@ -70,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: const BoxDecoration(
-                          color: Color.fromARGB(25, 255, 255, 255),
+                          color: AppColor.cardBackground,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -89,10 +90,10 @@ class HomeScreen extends StatelessWidget {
                       height: 50,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(20, 255, 255, 255),
+                        color: AppColor.cardBackground,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: const Color.fromARGB(40, 140, 110, 255),
+                          color: AppColor.primary.withValues(alpha: 0.15),
                           width: 1,
                         ),
                       ),
@@ -101,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                           Icon(Icons.search, color: Colors.white54),
                           SizedBox(width: 12),
                           Text(
-                            "Search products, concerns...",
+                            AppStrings.searchHint,
                             style: TextStyle(
                               color: Colors.white38,
                               fontSize: 14,
@@ -123,14 +124,14 @@ class HomeScreen extends StatelessWidget {
 
                   // 4. Best Sellers
                   ProductScrollList(
-                    title: "Best Sellers",
+                    title: AppStrings.bestSellers,
                     products: data.bestSellers,
                   ),
                   const SizedBox(height: 28),
 
                   // 5. New Arrivals
                   ProductScrollList(
-                    title: "New Arrivals",
+                    title: AppStrings.newArrivals,
                     products: data.newArrivals,
                   ),
                   const SizedBox(height: 28),
@@ -154,10 +155,10 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: Colors.redAccent, size: 64),
+            const Icon(Icons.error_outline, color: AppColor.error, size: 64),
             const SizedBox(height: 16),
             const Text(
-              "Failed to Load Home Content",
+              AppStrings.homeLoadError,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
@@ -178,14 +179,14 @@ class HomeScreen extends StatelessWidget {
                 onPressed: homeController.fetchHomeData,
                 icon: const Icon(Icons.refresh, color: Colors.white),
                 label: const Text(
-                  "Retry",
+                  AppStrings.retry,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8C6EFF),
+                  backgroundColor: AppColor.buttonColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

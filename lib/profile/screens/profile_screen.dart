@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../controllers/profile_controller.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
@@ -36,11 +37,11 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
-      appBar: const SkincareAppBar(title: 'My Profile', showBackButton: false),
+      appBar: const SkincareAppBar(title: AppStrings.myProfileTitle, showBackButton: false),
       body: Obx(() {
         if (controller.isLoading.value && controller.profile.value == null) {
           return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF8C6EFF)),
+            child: CircularProgressIndicator(color: AppColor.primary),
           );
         }
 
@@ -50,12 +51,12 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, color: Colors.redAccent, size: 48),
+                const Icon(Icons.error_outline, color: AppColor.error, size: 48),
                 const SizedBox(height: 12),
                 Text(
                   controller.errorMessage.value.isNotEmpty
                       ? controller.errorMessage.value
-                      : 'Failed to load profile data',
+                      : AppStrings.failedLoadProfile,
                   style: const TextStyle(color: Colors.white70),
                 ),
               ],
@@ -65,8 +66,8 @@ class ProfileScreen extends StatelessWidget {
 
         return RefreshIndicator(
           onRefresh: controller.fetchProfile,
-          color: const Color(0xFF8C6EFF),
-          backgroundColor: const Color(0xFF130538),
+          color: AppColor.primary,
+          backgroundColor: AppColor.backgroundColor,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
@@ -82,10 +83,10 @@ class ProfileScreen extends StatelessWidget {
                         height: 90,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: const Color(0xFF8C6EFF), width: 2.5),
+                          border: Border.all(color: AppColor.primary, width: 2.5),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF8C6EFF).withValues(alpha: 0.25),
+                              color: AppColor.primary.withValues(alpha: 0.25),
                               blurRadius: 15,
                         ),
                       ],
@@ -139,22 +140,22 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   _buildProfileOption(
                     icon: Icons.person_outline,
-                    title: 'Edit Profile',
+                    title: AppStrings.editProfileTitle,
                     onTap: () => Get.toNamed('/edit-profile'),
                   ),
                   _buildProfileOption(
                     icon: Icons.lock_outline,
-                    title: 'Change Password',
+                    title: AppStrings.changePasswordTitle,
                     onTap: () => Get.toNamed('/change-password'),
                   ),
                   _buildProfileOption(
                     icon: Icons.location_on_outlined,
-                    title: 'My Addresses',
+                    title: AppStrings.myAddressesTitle,
                     onTap: () => Get.toNamed('/my-addresses'),
                   ),
                   _buildProfileOption(
                     icon: Icons.shopping_bag_outlined,
-                    title: 'My Orders',
+                    title: AppStrings.myOrdersTitle,
                     onTap: () => Get.toNamed('/orders'),
                   ),
                   const SizedBox(height: 24),
@@ -167,11 +168,11 @@ class ProfileScreen extends StatelessWidget {
                       onPressed: _logout,
                       icon: const Icon(Icons.logout, color: Colors.white, size: 18),
                       label: const Text(
-                        'Log Out',
+                        AppStrings.logout,
                         style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFC62828).withValues(alpha: 0.8),
+                        backgroundColor: AppColor.errorBg.withValues(alpha: 0.8),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -198,16 +199,16 @@ class ProfileScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
       child: ListTile(
         onTap: onTap,
-        leading: Icon(icon, color: const Color(0xFFC7B6FF), size: 22),
+        leading: Icon(icon, color: AppColor.primary, size: 22),
         title: Text(
           title,
           style: const TextStyle(

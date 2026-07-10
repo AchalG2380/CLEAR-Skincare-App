@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/onboarding_controller.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -16,20 +18,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<Map<String, String>> _slides = [
     {
-      "title": "Analyze Your Skin",
-      "subtitle": "Discover your skin type, scan for concerns, and receive dermatologically balanced skin logs.",
-      "imageUrl": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&auto=format&fit=crop"
+      "title": AppStrings.onboardingSlide1Title,
+      "subtitle": AppStrings.onboardingSlide1Subtitle,
+      "imageUrl":
+          "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&auto=format&fit=crop",
     },
     {
-      "title": "Tailored Routines",
-      "subtitle": "Get custom morning and night routines designed to clear blemishes, hydrate, and nurture cells.",
-      "imageUrl": "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=400&auto=format&fit=crop"
+      "title": AppStrings.onboardingSlide2Title,
+      "subtitle": AppStrings.onboardingSlide2Subtitle,
+      "imageUrl":
+          "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=400&auto=format&fit=crop",
     },
     {
-      "title": "Track Progress",
-      "subtitle": "Follow your skincare journey daily with logs, visual galleries, and track clear skin improvements.",
-      "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop"
-    }
+      "title": AppStrings.onboardingSlide3Title,
+      "subtitle": AppStrings.onboardingSlide3Subtitle,
+      "imageUrl":
+          "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop",
+    },
   ];
 
   @override
@@ -52,7 +57,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Clear",
+                    AppStrings.appName,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -61,13 +66,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   Obx(
-                    () => controller.currentPage.value < controller.totalPages - 1
+                    () =>
+                        controller.currentPage.value < controller.totalPages - 1
                         ? TextButton(
                             onPressed: controller.completeOnboarding,
                             child: const Text(
-                              "Skip",
+                              AppStrings.skip,
                               style: TextStyle(
-                                color: Color.fromARGB(180, 255, 255, 255),
+                                color: AppColor.secondaryText,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -100,17 +106,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
-                              image: NetworkImage(slide["imageUrl"]!),
+                              image: CachedNetworkImageProvider(
+                                slide["imageUrl"]!,
+                              ),
                               fit: BoxFit.cover,
                             ),
                             border: Border.all(
-                              color: const Color.fromARGB(40, 140, 110, 255),
+                              color: AppColor.primary.withValues(alpha: 0.15),
                               width: 1.5,
                             ),
                           ),
                         ),
                         const SizedBox(height: 36),
-                        
+
                         // Slide Title
                         Text(
                           slide["title"]!,
@@ -122,13 +130,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        
+
                         // Slide Subtitle
                         Text(
                           slide["subtitle"]!,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: Color.fromARGB(150, 255, 255, 255),
+                            color: AppColor.secondaryText,
                             fontSize: 14,
                             height: 1.5,
                           ),
@@ -150,7 +158,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Obx(
                     () => Row(
                       children: List.generate(_slides.length, (index) {
-                        final isSelected = controller.currentPage.value == index;
+                        final isSelected =
+                            controller.currentPage.value == index;
                         return AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -158,8 +167,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: isSelected ? 24 : 8,
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? const Color(0xFF8C6EFF)
-                                : const Color.fromARGB(80, 255, 255, 255),
+                                ? AppColor.primary
+                                : AppColor.dividerColor.withValues(alpha: 0.3),
                             borderRadius: BorderRadius.circular(4),
                           ),
                         );
@@ -169,7 +178,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                   // Next / Complete Button
                   Obx(() {
-                    final isLastPage = controller.currentPage.value == controller.totalPages - 1;
+                    final isLastPage =
+                        controller.currentPage.value ==
+                        controller.totalPages - 1;
                     return ElevatedButton(
                       onPressed: () {
                         if (isLastPage) {
@@ -182,15 +193,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8C6EFF),
+                        backgroundColor: AppColor.buttonColor,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 14,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: Text(
-                        isLastPage ? "Get Started" : "Next",
+                        isLastPage ? AppStrings.getStarted : AppStrings.next,
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

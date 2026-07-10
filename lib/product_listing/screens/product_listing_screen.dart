@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../../core/widgets/product_widgets.dart';
 import '../controllers/product_listing_controller.dart';
 
@@ -39,7 +40,7 @@ class ProductListingScreen extends StatelessWidget {
   // ─── AppBar ─────────────────────────────────────────────────────────────
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFF130538),
+      backgroundColor: AppColor.backgroundColor,
       elevation: 0,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -62,10 +63,10 @@ class ProductListingScreen extends StatelessWidget {
             icon: Icon(
               Icons.sort,
               color: controller.selectedSort.value.isNotEmpty
-                  ? const Color(0xFF8C6EFF)
+                  ? AppColor.primary
                   : Colors.white70,
             ),
-            tooltip: 'Sort',
+            tooltip: AppStrings.tooltipSort,
             onPressed: () => _showSortSheet(context),
           ),
         ),
@@ -77,10 +78,10 @@ class ProductListingScreen extends StatelessWidget {
                 icon: Icon(
                   Icons.tune,
                   color: controller.hasActiveFilter
-                      ? const Color(0xFF8C6EFF)
+                      ? AppColor.primary
                       : Colors.white70,
                 ),
-                tooltip: 'Filter',
+                tooltip: AppStrings.tooltipFilter,
                 onPressed: () => _showFilterSheet(context),
               ),
               if (controller.hasActiveFilter)
@@ -91,7 +92,7 @@ class ProductListingScreen extends StatelessWidget {
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(
-                      color: Color(0xFF8C6EFF),
+                      color: AppColor.primary,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -107,15 +108,15 @@ class ProductListingScreen extends StatelessWidget {
   // ─── Search Bar ─────────────────────────────────────────────────────────
   Widget _buildSearchBar() {
     return Container(
-      color: const Color(0xFF130538),
+      color: AppColor.backgroundColor,
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       child: TextField(
         controller: controller.searchController,
         onChanged: controller.onSearchChanged,
         style: const TextStyle(color: Colors.white),
-        cursorColor: const Color(0xFF8C6EFF),
+        cursorColor: AppColor.primary,
         decoration: InputDecoration(
-          hintText: 'Search products, ingredients...',
+          hintText: AppStrings.searchIngredientsHint,
           hintStyle: const TextStyle(color: Colors.white38),
           prefixIcon: const Icon(Icons.search, color: Colors.white38),
           suffixIcon: ValueListenableBuilder<TextEditingValue>(
@@ -135,20 +136,20 @@ class ProductListingScreen extends StatelessWidget {
                 : const SizedBox.shrink(),
           ),
           filled: true,
-          fillColor: const Color.fromARGB(25, 255, 255, 255),
+          fillColor: AppColor.inputFill,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 12,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(40, 140, 110, 255),
+            borderSide: BorderSide(
+              color: AppColor.primary.withValues(alpha: 0.15),
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFF8C6EFF)),
+            borderSide: const BorderSide(color: AppColor.primary),
           ),
         ),
       ),
@@ -162,8 +163,8 @@ class ProductListingScreen extends StatelessWidget {
   }) {
     return RefreshIndicator(
       onRefresh: controller.refresh,
-      color: const Color(0xFF8C6EFF),
-      backgroundColor: const Color(0xFF130538),
+      color: AppColor.primary,
+      backgroundColor: AppColor.backgroundColor,
       child: CustomScrollView(
         controller: controller.scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
@@ -191,7 +192,7 @@ class ProductListingScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 24),
                     child: Center(
                       child: CircularProgressIndicator(
-                        color: Color(0xFF8C6EFF),
+                        color: AppColor.primary,
                         strokeWidth: 2,
                       ),
                     ),
@@ -240,10 +241,10 @@ class ProductListingScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: Colors.redAccent, size: 60),
+            const Icon(Icons.error_outline, color: AppColor.error, size: 60),
             const SizedBox(height: 16),
             const Text(
-              'Failed to load products',
+              AppStrings.productsLoadError,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 17,
@@ -261,14 +262,14 @@ class ProductListingScreen extends StatelessWidget {
               onPressed: controller.fetchProducts,
               icon: const Icon(Icons.refresh, color: Colors.white),
               label: const Text(
-                'Retry',
+                AppStrings.retry,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF8C6EFF),
+                backgroundColor: AppColor.buttonColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -292,7 +293,7 @@ class ProductListingScreen extends StatelessWidget {
           const Icon(Icons.search_off, color: Colors.white24, size: 70),
           const SizedBox(height: 16),
           const Text(
-            'No products found',
+            AppStrings.noProductsFound,
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -301,7 +302,7 @@ class ProductListingScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Try adjusting your search or filters.',
+            AppStrings.adjustSearchFilters,
             style: TextStyle(color: Colors.white38, fontSize: 13),
           ),
           const SizedBox(height: 24),
@@ -312,9 +313,9 @@ class ProductListingScreen extends StatelessWidget {
               controller.onSortSelected('');
             },
             child: const Text(
-              'Clear all filters',
+              AppStrings.clearAllFilters,
               style: TextStyle(
-                color: Color(0xFF8C6EFF),
+                color: AppColor.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -327,15 +328,15 @@ class ProductListingScreen extends StatelessWidget {
   // ─── Sort Bottom Sheet ──────────────────────────────────────────────────
   void _showSortSheet(BuildContext context) {
     final options = [
-      ('', 'Default'),
-      ('price_asc', 'Price: Low to High'),
-      ('price_desc', 'Price: High to Low'),
-      ('top_rated', 'Top Rated'),
+      ('', AppStrings.sortDefault),
+      ('price_asc', AppStrings.sortPriceLowToHigh),
+      ('price_desc', AppStrings.sortPriceHighToLow),
+      ('top_rated', AppStrings.sortTopRated),
     ];
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1A0845),
+      backgroundColor: AppColor.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -347,7 +348,7 @@ class ProductListingScreen extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 20, 8),
               child: Text(
-                'Sort By',
+                AppStrings.sortBy,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 17,
@@ -362,13 +363,13 @@ class ProductListingScreen extends StatelessWidget {
                   isActive
                       ? Icons.radio_button_checked
                       : Icons.radio_button_unchecked,
-                  color: isActive ? const Color(0xFF8C6EFF) : Colors.white38,
+                  color: isActive ? AppColor.primary : Colors.white38,
                   size: 20,
                 ),
                 title: Text(
                   opt.$2,
                   style: TextStyle(
-                    color: isActive ? const Color(0xFF8C6EFF) : Colors.white,
+                    color: isActive ? AppColor.primary : Colors.white,
                     fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
@@ -390,7 +391,7 @@ class ProductListingScreen extends StatelessWidget {
     String tempCategory = controller.selectedCategory.value;
     String tempConcern = controller.selectedConcern.value;
 
-    const categories = [
+    final categories = [
       ('', 'All Categories'),
       ('cat_cleanser', 'Cleanser'),
       ('cat_moisturizer', 'Moisturizer'),
@@ -398,7 +399,7 @@ class ProductListingScreen extends StatelessWidget {
       ('cat_sunscreen', 'Sunscreen'),
     ];
 
-    const concerns = [
+    final concerns = [
       ('', 'All Concerns'),
       ('Acne & Blemishes', 'Acne & Blemishes'),
       ('Dry & Flaky Skin', 'Dry & Flaky Skin'),
@@ -409,7 +410,7 @@ class ProductListingScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF1A0845),
+      backgroundColor: AppColor.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -438,7 +439,7 @@ class ProductListingScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      'Filter Products',
+                      AppStrings.filterProductsTitle,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 17,
@@ -454,7 +455,7 @@ class ProductListingScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   children: [
                     // Category
-                    _filterSectionHeader('Category'),
+                    _filterSectionHeader(AppStrings.filterCategory),
                     ...categories.map((cat) {
                       final isSelected = tempCategory == cat.$1;
                       return _filterOption(
@@ -467,7 +468,7 @@ class ProductListingScreen extends StatelessWidget {
                     const SizedBox(height: 8),
 
                     // Skin Concern
-                    _filterSectionHeader('Skin Concern'),
+                    _filterSectionHeader(AppStrings.filterConcern),
                     ...concerns.map((con) {
                       final isSelected = tempConcern == con.$1;
                       return _filterOption(
@@ -508,7 +509,7 @@ class ProductListingScreen extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
-                        child: const Text('Clear'),
+                        child: const Text(AppStrings.clear),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -523,7 +524,7 @@ class ProductListingScreen extends StatelessWidget {
                           Get.back();
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF8C6EFF),
+                          backgroundColor: AppColor.buttonColor,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -531,7 +532,7 @@ class ProductListingScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
                         child: const Text(
-                          'Apply Filters',
+                          AppStrings.applyFilters,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -570,20 +571,20 @@ class ProductListingScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         color: isSelected
-            ? const Color.fromARGB(50, 140, 110, 255)
-            : const Color.fromARGB(15, 255, 255, 255),
+            ? AppColor.primary.withValues(alpha: 0.20)
+            : AppColor.cardBackground,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: isSelected
-              ? const Color(0xFF8C6EFF)
-              : const Color.fromARGB(30, 255, 255, 255),
+              ? AppColor.primary
+              : AppColor.dividerColor.withValues(alpha: 0.15),
         ),
       ),
       child: Row(
         children: [
           Icon(
             isSelected ? Icons.check_circle : Icons.circle_outlined,
-            color: isSelected ? const Color(0xFF8C6EFF) : Colors.white30,
+            color: isSelected ? AppColor.primary : Colors.white30,
             size: 18,
           ),
           const SizedBox(width: 10),
@@ -630,7 +631,7 @@ class _ProductCardSkeletonState extends State<_ProductCardSkeleton>
       animation: _anim,
       builder: (_, __) => Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF8C6EFF).withValues(alpha: _anim.value),
+          color: AppColor.primary.withValues(alpha: _anim.value),
           borderRadius: BorderRadius.circular(16),
         ),
       ),

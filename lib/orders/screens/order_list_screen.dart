@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../controllers/orders_controller.dart';
 import '../data/models/order_model.dart';
@@ -14,7 +16,7 @@ class OrderListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
-      appBar: const SkincareAppBar(title: 'My Orders'),
+      appBar: const SkincareAppBar(title: AppStrings.myOrdersTitle),
       body: Obx(() {
         if (controller.isLoading.value && controller.orders.isEmpty) {
           return _buildShimmerLoading();
@@ -26,8 +28,8 @@ class OrderListScreen extends StatelessWidget {
 
         return RefreshIndicator(
           onRefresh: controller.fetchOrders,
-          color: const Color(0xFF8C6EFF),
-          backgroundColor: const Color(0xFF130538),
+          color: AppColor.primary,
+          backgroundColor: AppColor.backgroundColor,
           child: ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: controller.orders.length,
@@ -49,10 +51,10 @@ class OrderListScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(15, 255, 255, 255),
+          color: AppColor.cardBackground,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: const Color.fromARGB(30, 140, 110, 255),
+            color: AppColor.primary.withValues(alpha: 0.12),
             width: 1,
           ),
         ),
@@ -66,17 +68,14 @@ class OrderListScreen extends StatelessWidget {
                 Text(
                   order.id,
                   style: const TextStyle(
-                    color: Color(0xFFC7B6FF),
+                    color: AppColor.primary,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   order.date.split(',')[0], // Just date part
-                  style: const TextStyle(
-                    color: Colors.white38,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Colors.white38, fontSize: 12),
                 ),
               ],
             ),
@@ -100,7 +99,9 @@ class OrderListScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: Colors.white10),
                             image: DecorationImage(
-                              image: NetworkImage(item.product.imageUrl),
+                              image: CachedNetworkImageProvider(
+                                item.product.imageUrl,
+                              ),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -111,9 +112,13 @@ class OrderListScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  order.items.fold<int>(0, (sum, item) => sum + item.quantity) == 1
-                      ? '1 Item'
-                      : '${order.items.fold<int>(0, (sum, item) => sum + item.quantity)} Items',
+                  order.items.fold<int>(
+                            0,
+                            (sum, item) => sum + item.quantity,
+                          ) ==
+                          1
+                      ? AppStrings.oneItemText
+                      : '${order.items.fold<int>(0, (sum, item) => sum + item.quantity)} ${AppStrings.itemsText}',
                   style: const TextStyle(color: Colors.white70, fontSize: 12),
                 ),
               ],
@@ -148,24 +153,24 @@ class OrderListScreen extends StatelessWidget {
 
     switch (status.toLowerCase()) {
       case 'delivered':
-        bgColor = const Color(0xFF2E7D32).withValues(alpha: 0.2);
-        textColor = const Color(0xFF81C784);
+        bgColor = AppColor.successBg.withValues(alpha: 0.2);
+        textColor = AppColor.success;
         break;
       case 'shipped':
-        bgColor = const Color(0xFFEF6C00).withValues(alpha: 0.2);
-        textColor = const Color(0xFFFFB74D);
+        bgColor = AppColor.warningBg.withValues(alpha: 0.2);
+        textColor = AppColor.warning;
         break;
       case 'processing':
-        bgColor = const Color(0xFF616161).withValues(alpha: 0.2);
-        textColor = const Color(0xFFE0E0E0);
+        bgColor = AppColor.infoBg.withValues(alpha: 0.2);
+        textColor = AppColor.info;
         break;
       case 'cancelled':
-        bgColor = const Color(0xFFC62828).withValues(alpha: 0.2);
-        textColor = const Color(0xFFE57373);
+        bgColor = AppColor.errorBg.withValues(alpha: 0.2);
+        textColor = AppColor.error;
         break;
       default:
-        bgColor = const Color(0xFF616161).withValues(alpha: 0.2);
-        textColor = const Color(0xFFE0E0E0);
+        bgColor = AppColor.infoBg.withValues(alpha: 0.2);
+        textColor = AppColor.info;
     }
 
     return Container(
@@ -190,9 +195,9 @@ class OrderListScreen extends StatelessWidget {
   Widget _buildEmptyState() {
     return SkincareEmptyState(
       icon: Icons.receipt_long_outlined,
-      title: 'No Orders Yet',
-      description: 'You haven\'t placed any skincare orders yet. Start shopping to build your beautiful routine!',
-      buttonText: 'Shop Products',
+      title: AppStrings.emptyOrdersTitle,
+      description: AppStrings.emptyOrdersDesc,
+      buttonText: AppStrings.shopProducts,
       onButtonPressed: () => Get.offAllNamed('/home'),
     );
   }
@@ -245,7 +250,7 @@ class _OrderSkeletonItemState extends State<_OrderSkeletonItem>
         margin: const EdgeInsets.only(bottom: 16),
         height: 154,
         decoration: BoxDecoration(
-          color: const Color(0xFF8C6EFF).withValues(alpha: _anim.value),
+          color: AppColor.primary.withValues(alpha: _anim.value),
           borderRadius: BorderRadius.circular(18),
         ),
       ),

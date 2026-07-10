@@ -20,7 +20,7 @@ class EditProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF130538),
+        backgroundColor: AppColor.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -40,10 +40,10 @@ class EditProfileScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(20, 255, 255, 255),
+            color: AppColor.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: const Color.fromARGB(50, 140, 110, 255),
+              color: AppColor.primary.withValues(alpha: 0.2),
               width: 1,
             ),
           ),

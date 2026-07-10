@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../core/widgets/product_widgets.dart';
 import '../controllers/orders_controller.dart';
@@ -25,11 +26,11 @@ class OrderDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
-      appBar: const SkincareAppBar(title: 'Order Details'),
+      appBar: const SkincareAppBar(title: AppStrings.orderDetailsTitle),
       body: Obx(() {
         if (controller.isDetailLoading.value) {
           return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF8C6EFF)),
+            child: CircularProgressIndicator(color: AppColor.primary),
           );
         }
 
@@ -40,8 +41,8 @@ class OrderDetailsScreen extends StatelessWidget {
 
         return RefreshIndicator(
           onRefresh: () => controller.fetchOrderDetails(order.id),
-          color: const Color(0xFF8C6EFF),
-          backgroundColor: const Color(0xFF130538),
+          color: AppColor.primary,
+          backgroundColor: AppColor.backgroundColor,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16),
@@ -65,7 +66,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Ordered on ${order.date}',
+                          '${AppStrings.orderedOnPrefix}${order.date}',
                           style: const TextStyle(
                             color: Colors.white38,
                             fontSize: 12,
@@ -80,7 +81,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
                 // 1. Delivery Tracking Timeline Section
                 const Text(
-                  'Delivery Status',
+                  AppStrings.deliveryStatus,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -94,7 +95,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
                 // 2. Shipping Address Section
                 const Text(
-                  'Delivery Address',
+                  AppStrings.deliveryAddress,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -108,7 +109,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
                 // 3. Payment Method Section
                 const Text(
-                  'Payment Info',
+                  AppStrings.paymentInfo,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -122,7 +123,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
                 // 4. Ordered Items list
                 const Text(
-                  'Items Ordered',
+                  AppStrings.itemsOrdered,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -136,7 +137,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
                 // 5. Total cost break up
                 const Text(
-                  'Cost Summary',
+                  AppStrings.costSummary,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -168,10 +169,10 @@ class OrderDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -204,8 +205,8 @@ class OrderDetailsScreen extends StatelessWidget {
                           width: 2,
                           height: 10,
                           color: stage.isCompleted
-                              ? const Color(0xFF8C6EFF)
-                              : const Color.fromARGB(40, 255, 255, 255),
+                              ? AppColor.primary
+                              : AppColor.dividerColor.withValues(alpha: 0.15),
                         )
                       else
                         const SizedBox(height: 10),
@@ -220,12 +221,12 @@ class OrderDetailsScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: stage.isCompleted
-                                ? const Color(0xFF8C6EFF)
+                                ? AppColor.primary
                                 : Colors.transparent,
                             border: Border.all(
                               color: stage.isCompleted
-                                  ? const Color(0xFF8C6EFF)
-                                  : const Color.fromARGB(70, 255, 255, 255),
+                                  ? AppColor.primary
+                                  : AppColor.dividerColor.withValues(alpha: 0.27),
                               width: 2,
                             ),
                           ),
@@ -237,8 +238,8 @@ class OrderDetailsScreen extends StatelessWidget {
                           child: Container(
                             width: 2,
                             color: isLineColored
-                                ? const Color(0xFF8C6EFF)
-                                : const Color.fromARGB(40, 255, 255, 255),
+                                ? AppColor.primary
+                                : AppColor.dividerColor.withValues(alpha: 0.15),
                           ),
                         )
                       else
@@ -269,7 +270,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          stage.timestamp ?? 'Pending',
+                          stage.timestamp ?? AppStrings.statusPending,
                           style: TextStyle(
                             color: stage.isCompleted
                                 ? Colors.white54
@@ -295,10 +296,10 @@ class OrderDetailsScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -328,7 +329,7 @@ class OrderDetailsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Phone: ${address.phone}',
+            '${AppStrings.labelPhone}: ${address.phone}',
             style: const TextStyle(color: Colors.white54, fontSize: 12),
           ),
         ],
@@ -338,24 +339,24 @@ class OrderDetailsScreen extends StatelessWidget {
 
   // ─── Payment Details Card ───────────────────────────────────────────────────
   Widget _buildPaymentCard(String method) {
-    String name = 'Cash on Delivery';
+    String name = AppStrings.codText;
     IconData icon = Icons.payments_outlined;
 
     if (method == 'Card') {
-      name = 'Credit / Debit Card';
+      name = AppStrings.cardText;
       icon = Icons.credit_card_outlined;
     } else if (method == 'UPI') {
-      name = 'UPI Wallet';
+      name = AppStrings.upiWallet;
       icon = Icons.account_balance_wallet_outlined;
     }
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -381,10 +382,10 @@ class OrderDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -408,35 +409,35 @@ class OrderDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          _buildPriceRow('Subtotal', '\$${order.subtotal.toStringAsFixed(2)}'),
+          _buildPriceRow(AppStrings.subtotal, '\$${order.subtotal.toStringAsFixed(2)}'),
           if (order.discount > 0) ...[
             const SizedBox(height: 8),
             _buildPriceRow(
-              'Discount',
+              AppStrings.discount,
               '-\$${order.discount.toStringAsFixed(2)}',
-              valueColor: Colors.redAccent,
+              valueColor: AppColor.discountColor,
             ),
           ],
           const SizedBox(height: 8),
           _buildPriceRow(
-            'Delivery Fee',
+            AppStrings.deliveryFee,
             order.deliveryFee == 0.0
-                ? 'FREE'
+                ? AppStrings.freeShipping
                 : '\$${order.deliveryFee.toStringAsFixed(2)}',
-            valueColor: order.deliveryFee == 0.0 ? Colors.green : Colors.white,
+            valueColor: order.deliveryFee == 0.0 ? AppColor.freeShipping : Colors.white,
           ),
           const Divider(color: Colors.white10, height: 24),
           _buildPriceRow(
-            'Total Amount',
+            AppStrings.totalAmount,
             '\$${order.total.toStringAsFixed(2)}',
             isTotal: true,
           ),
@@ -465,7 +466,7 @@ class OrderDetailsScreen extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            color: isTotal ? const Color(0xFFC7B6FF) : valueColor,
+            color: isTotal ? AppColor.primary : valueColor,
             fontSize: isTotal ? 16 : 12,
             fontWeight: FontWeight.bold,
           ),
@@ -476,19 +477,19 @@ class OrderDetailsScreen extends StatelessWidget {
 
   // ─── Status Text Style Color badge ───
   Widget _buildStatusLabel(String status) {
-    Color textColor = Colors.white;
+    Color textColor = AppColor.primaryText;
     switch (status.toLowerCase()) {
       case 'delivered':
-        textColor = const Color(0xFF81C784);
+        textColor = AppColor.success;
         break;
       case 'shipped':
-        textColor = const Color(0xFFFFB74D);
+        textColor = AppColor.warning;
         break;
       case 'processing':
-        textColor = const Color(0xFFE0E0E0);
+        textColor = AppColor.info;
         break;
       case 'cancelled':
-        textColor = const Color(0xFFE57373);
+        textColor = AppColor.error;
         break;
     }
     return Container(
@@ -510,12 +511,12 @@ class OrderDetailsScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, color: Colors.redAccent, size: 48),
+          const Icon(Icons.error_outline, color: AppColor.error, size: 48),
           const SizedBox(height: 12),
           Text(
             controller.errorMessage.value.isNotEmpty
                 ? controller.errorMessage.value
-                : 'Failed to load order details.',
+                : AppStrings.failedLoadOrderDetails,
             style: const TextStyle(color: Colors.white70, fontSize: 14),
           ),
         ],
@@ -573,7 +574,7 @@ class _PulsingTimelineDotState extends State<_PulsingTimelineDot>
                 height: _pulse.value,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF8C6EFF).withValues(alpha: 0.3),
+                  color: AppColor.primary.withValues(alpha: 0.3),
                 ),
               ),
               // Inner solid dot
@@ -582,9 +583,9 @@ class _PulsingTimelineDotState extends State<_PulsingTimelineDot>
                 height: 12,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFF8C6EFF),
+                  color: AppColor.primary,
                   boxShadow: [
-                    BoxShadow(color: Color(0xFF8C6EFF), blurRadius: 4),
+                    BoxShadow(color: AppColor.primary, blurRadius: 4),
                   ],
                 ),
               ),

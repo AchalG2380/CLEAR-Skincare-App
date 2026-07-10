@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../../core/app_colors.dart';
 import 'package:get/get.dart';
 import '../../home/data/models/product_model.dart';
 import '../data/models/cart_item_model.dart';
@@ -199,7 +200,7 @@ class CartController extends GetxController {
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: const Color.fromARGB(240, 19, 5, 56),
+      backgroundColor: AppColor.backgroundColor.withValues(alpha: 0.94),
       colorText: Colors.white,
       duration: const Duration(seconds: 1),
     );

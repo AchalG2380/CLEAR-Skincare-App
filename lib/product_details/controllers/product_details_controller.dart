@@ -38,12 +38,6 @@ class ProductDetailsController extends GetxController {
 
       final details = await _repo.getProductDetails(productId);
       productDetails.value = details;
-
-      // Sync loaded product initial state with WishlistController
-      final wishlistController = Get.find<WishlistController>();
-      if (details.rating >= 4.7) { // simulate pre-wishlisting for popular details
-        wishlistController.wishlistedIds.add(details.id);
-      }
     } catch (e) {
       hasError.value = true;
       errorMessage.value = e.toString().replaceAll('Exception: ', '');
@@ -70,7 +64,7 @@ class ProductDetailsController extends GetxController {
   void addToCart() {
     final details = productDetails.value;
     if (details == null) return;
-    
+
     final baseProduct = details.toProductModel();
     Get.find<CartController>().addToCart(baseProduct, quantity.value);
   }

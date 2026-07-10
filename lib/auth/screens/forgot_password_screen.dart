@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/auth_controller.dart';
 import '../screens/widgets/auth_widgets.dart';
 
@@ -30,7 +31,7 @@ class ForgotpasswordScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
               const Text(
-                'Clear',
+                AppStrings.appName,
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -40,11 +41,11 @@ class ForgotpasswordScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Recover your account password',
+                AppStrings.recoverAccount,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Color.fromARGB(180, 255, 255, 255),
+                  color: AppColor.secondaryText,
                 ),
               ),
               const SizedBox(height: 48),
@@ -53,17 +54,17 @@ class ForgotpasswordScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(20, 255, 255, 255),
+                  color: AppColor.cardBackground,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: const Color.fromARGB(50, 140, 110, 255),
+                    color: AppColor.primary.withValues(alpha: 0.2),
                     width: 1,
                   ),
                 ),
                 child: Column(
                   children: [
                     const Text(
-                      'Forgot Password',
+                      AppStrings.forgotPassword,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -72,11 +73,11 @@ class ForgotpasswordScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      'Enter your registered email address below. We will send you a 6-digit OTP code to verify your identity.',
+                      AppStrings.forgotPasswordDesc,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13,
-                        color: Color.fromARGB(140, 255, 255, 255),
+                        color: AppColor.textMuted,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -84,8 +85,8 @@ class ForgotpasswordScreen extends StatelessWidget {
                     // Email field
                     AuthTextField(
                       controller: emailController,
-                      labelText: 'Email',
-                      hintText: 'Enter your Email',
+                      labelText: AppStrings.labelEmail,
+                      hintText: AppStrings.hintEmail,
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: const Icon(
                         Icons.email_outlined,
@@ -97,7 +98,7 @@ class ForgotpasswordScreen extends StatelessWidget {
                     // Continue button
                     Obx(
                       () => AuthButton(
-                        text: 'Send OTP',
+                        text: AppStrings.sendOtp,
                         isLoading: authController.isLoading.value,
                         onPressed: () {
                           authController.forgotPassword(

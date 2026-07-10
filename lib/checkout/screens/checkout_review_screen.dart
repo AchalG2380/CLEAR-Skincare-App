@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../../core/widgets/product_widgets.dart';
 import '../controllers/checkout_controller.dart';
 import 'checkout_address_screen.dart';
@@ -16,14 +17,14 @@ class CheckoutReviewScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF130538),
+        backgroundColor: AppColor.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Order Review',
+          AppStrings.orderReviewTitle,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -43,7 +44,7 @@ class CheckoutReviewScreen extends StatelessWidget {
               children: [
                 // 1. Shipping Address Section
                 _buildSectionHeader(
-                  'Shipping Address',
+                  AppStrings.deliveryAddress,
                   onEdit: () =>
                       Get.until((route) => route.settings.name == '/checkout'),
                 ),
@@ -52,14 +53,14 @@ class CheckoutReviewScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // 2. Payment Method Section
-                _buildSectionHeader('Payment Method', onEdit: () => Get.back()),
+                _buildSectionHeader(AppStrings.paymentMethod, onEdit: () => Get.back()),
                 _buildPaymentSummaryCard(),
 
                 const SizedBox(height: 20),
 
                 // 3. Items list recap
                 const Text(
-                  'Items Summary',
+                  AppStrings.itemsSummary,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -73,7 +74,7 @@ class CheckoutReviewScreen extends StatelessWidget {
 
                 // 4. Order Price Summary Card
                 const Text(
-                  'Price Details',
+                  AppStrings.billingDetails,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -111,9 +112,9 @@ class CheckoutReviewScreen extends StatelessWidget {
         TextButton(
           onPressed: onEdit,
           child: const Text(
-            'Change',
+            AppStrings.change,
             style: TextStyle(
-              color: Color(0xFF8C6EFF),
+              color: AppColor.primary,
               fontSize: 13,
               fontWeight: FontWeight.bold,
             ),
@@ -131,10 +132,10 @@ class CheckoutReviewScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -164,7 +165,7 @@ class CheckoutReviewScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Phone: ${address.phone}',
+            '${AppStrings.labelPhone}: ${address.phone}',
             style: const TextStyle(color: Colors.white54, fontSize: 12),
           ),
         ],
@@ -179,7 +180,7 @@ class CheckoutReviewScreen extends StatelessWidget {
     IconData displayIcon = Icons.payment;
 
     if (method == 'Card') {
-      displayTitle = 'Credit / Debit Card';
+      displayTitle = AppStrings.cardText;
       final cardNo = controller.cardNumber.value;
       if (cardNo.isNotEmpty) {
         final masked = cardNo.length > 4
@@ -189,20 +190,20 @@ class CheckoutReviewScreen extends StatelessWidget {
       }
       displayIcon = Icons.credit_card_outlined;
     } else if (method == 'UPI') {
-      displayTitle = 'UPI Wallet';
+      displayTitle = AppStrings.upiWallet;
       displayIcon = Icons.account_balance_wallet_outlined;
     } else if (method == 'COD') {
-      displayTitle = 'Cash on Delivery';
+      displayTitle = AppStrings.codText;
       displayIcon = Icons.payments_outlined;
     }
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -250,40 +251,40 @@ class CheckoutReviewScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
       child: Column(
         children: [
           _buildPriceRow(
-            'Subtotal',
+            AppStrings.subtotal,
             '\$${controller.subtotal.value.toStringAsFixed(2)}',
           ),
           const SizedBox(height: 8),
           if (controller.discount.value > 0) ...[
             _buildPriceRow(
-              'Discount',
+              AppStrings.discount,
               '-\$${controller.discount.value.toStringAsFixed(2)}',
-              valueColor: Colors.redAccent,
+              valueColor: AppColor.discountColor,
             ),
             const SizedBox(height: 8),
           ],
           _buildPriceRow(
-            'Delivery Fee',
+            AppStrings.deliveryFee,
             controller.deliveryFee.value == 0.0
-                ? 'FREE'
+                ? AppStrings.freeShipping
                 : '\$${controller.deliveryFee.value.toStringAsFixed(2)}',
             valueColor: controller.deliveryFee.value == 0.0
-                ? Colors.green
+                ? AppColor.freeShipping
                 : Colors.white,
           ),
           const Divider(color: Colors.white10, height: 24),
           _buildPriceRow(
-            'Total Amount',
+            AppStrings.totalAmount,
             '\$${controller.total.value.toStringAsFixed(2)}',
             isTotal: true,
           ),
@@ -312,7 +313,7 @@ class CheckoutReviewScreen extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            color: isTotal ? const Color(0xFFC7B6FF) : valueColor,
+            color: isTotal ? AppColor.primary : valueColor,
             fontSize: isTotal ? 18 : 13,
             fontWeight: FontWeight.bold,
           ),
@@ -324,7 +325,7 @@ class CheckoutReviewScreen extends StatelessWidget {
   // ─── Sticky Place Order Bottom Panel ────────────────────────────────────────
   Widget _buildBottomActionPanel() {
     return Container(
-      color: const Color(0xFF130538),
+      color: AppColor.backgroundColor,
       padding: const EdgeInsets.all(20),
       child: SafeArea(
         top: false,
@@ -336,7 +337,7 @@ class CheckoutReviewScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: isPlacing ? null : () => controller.placeOrder(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF8C6EFF),
+                backgroundColor: AppColor.buttonColor,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -352,7 +353,7 @@ class CheckoutReviewScreen extends StatelessWidget {
                       ),
                     )
                   : const Text(
-                      'Place Order',
+                      AppStrings.placeOrder,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,

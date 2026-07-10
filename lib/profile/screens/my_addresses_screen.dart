@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../checkout/controllers/checkout_controller.dart';
 import '../../checkout/data/models/address_model.dart';
@@ -8,7 +9,12 @@ import '../../checkout/data/models/address_model.dart';
 class MyAddressesScreen extends StatelessWidget {
   MyAddressesScreen({super.key});
 
-  final CheckoutController controller = Get.put(CheckoutController());
+  // Reuse an already-active CheckoutController (e.g. if the user is mid-checkout)
+  // instead of overwriting it — Get.put() would otherwise silently wipe any
+  // in-progress selected address / payment method / cart summary.
+  final CheckoutController controller = Get.isRegistered<CheckoutController>()
+      ? Get.find<CheckoutController>()
+      : Get.put(CheckoutController());
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -19,14 +25,14 @@ class MyAddressesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF130538),
+        backgroundColor: AppColor.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Saved Addresses',
+          AppStrings.savedAddressesTitle,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -40,7 +46,7 @@ class MyAddressesScreen extends StatelessWidget {
             child: Obx(() {
               if (controller.isLoadingAddresses.value) {
                 return const Center(
-                  child: CircularProgressIndicator(color: Color(0xFF8C6EFF)),
+                  child: CircularProgressIndicator(color: AppColor.primary),
                 );
               }
 
@@ -69,11 +75,11 @@ class MyAddressesScreen extends StatelessWidget {
                 onPressed: () => _showAddressFormSheet(context),
                 icon: const Icon(Icons.add, color: Colors.white),
                 label: const Text(
-                  'Add New Address',
+                  AppStrings.addAddress,
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8C6EFF),
+                  backgroundColor: AppColor.buttonColor,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -93,10 +99,10 @@ class MyAddressesScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -105,7 +111,7 @@ class MyAddressesScreen extends StatelessWidget {
         children: [
           const Icon(
             Icons.location_on_outlined,
-            color: Color(0xFFC7B6FF),
+            color: AppColor.primary,
             size: 22,
           ),
           const SizedBox(width: 12),
@@ -132,18 +138,12 @@ class MyAddressesScreen extends StatelessWidget {
                 ),
                 Text(
                   '${address.city}, ${address.state} - ${address.pincode}',
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 13,
-                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Phone: ${address.phone}',
-                  style: const TextStyle(
-                    color: Colors.white38,
-                    fontSize: 12,
-                  ),
+                  '${AppStrings.labelPhone}: ${address.phone}',
+                  style: const TextStyle(color: Colors.white38, fontSize: 12),
                 ),
               ],
             ),
@@ -154,11 +154,20 @@ class MyAddressesScreen extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                icon: const Icon(Icons.edit_outlined, color: Colors.white70, size: 20),
-                onPressed: () => _showAddressFormSheet(context, address: address),
+                icon: const Icon(
+                  Icons.edit_outlined,
+                  color: Colors.white70,
+                  size: 20,
+                ),
+                onPressed: () =>
+                    _showAddressFormSheet(context, address: address),
               ),
               IconButton(
-                icon: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 20),
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: AppColor.error,
+                  size: 20,
+                ),
                 onPressed: () => _showDeleteConfirmation(context, address.id),
               ),
             ],
@@ -171,18 +180,20 @@ class MyAddressesScreen extends StatelessWidget {
   // ─── Bottom Sheet Input Form for Add/Edit ──────────────────────────────────
   void _showAddressFormSheet(BuildContext context, {AddressModel? address}) {
     final isEdit = address != null;
-    
+
     final nameController = TextEditingController(text: address?.name ?? '');
     final phoneController = TextEditingController(text: address?.phone ?? '');
     final streetController = TextEditingController(text: address?.street ?? '');
     final cityController = TextEditingController(text: address?.city ?? '');
     final stateController = TextEditingController(text: address?.state ?? '');
-    final pincodeController = TextEditingController(text: address?.pincode ?? '');
+    final pincodeController = TextEditingController(
+      text: address?.pincode ?? '',
+    );
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF130538),
+      backgroundColor: AppColor.backgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -205,7 +216,7 @@ class MyAddressesScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        isEdit ? 'Edit Address' : 'Add New Address',
+                        isEdit ? AppStrings.editAddress : AppStrings.addAddress,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -222,22 +233,25 @@ class MyAddressesScreen extends StatelessWidget {
 
                   _buildFormTextField(
                     controller: nameController,
-                    label: 'Full Name',
-                    hint: 'Enter receiver name',
-                    validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                    label: AppStrings.labelFullName,
+                    hint: AppStrings.hintFullName,
+                    validator: (val) =>
+                        val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
                   ),
                   _buildFormTextField(
                     controller: phoneController,
-                    label: 'Phone Number',
-                    hint: 'Enter mobile number',
+                    label: AppStrings.labelPhone,
+                    hint: AppStrings.hintPhone,
                     keyboardType: TextInputType.phone,
-                    validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                    validator: (val) =>
+                        val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
                   ),
                   _buildFormTextField(
                     controller: streetController,
-                    label: 'Street Address',
-                    hint: 'House/Flat No, Building, Street Name',
-                    validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                    label: AppStrings.labelStreetAddress,
+                    hint: AppStrings.hintStreet,
+                    validator: (val) =>
+                        val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
                   ),
 
                   Row(
@@ -245,18 +259,20 @@ class MyAddressesScreen extends StatelessWidget {
                       Expanded(
                         child: _buildFormTextField(
                           controller: cityController,
-                          label: 'City',
-                          hint: 'Enter City',
-                          validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                          label: AppStrings.labelCity,
+                          hint: AppStrings.hintCity,
+                          validator: (val) =>
+                              val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildFormTextField(
                           controller: stateController,
-                          label: 'State',
-                          hint: 'Enter State',
-                          validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                          label: AppStrings.labelState,
+                          hint: AppStrings.hintState,
+                          validator: (val) =>
+                              val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
                         ),
                       ),
                     ],
@@ -264,10 +280,11 @@ class MyAddressesScreen extends StatelessWidget {
 
                   _buildFormTextField(
                     controller: pincodeController,
-                    label: 'Pincode',
-                    hint: 'Enter Pincode',
+                    label: AppStrings.labelPincode,
+                    hint: AppStrings.hintPincode,
                     keyboardType: TextInputType.number,
-                    validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                    validator: (val) =>
+                        val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
                   ),
 
                   const SizedBox(height: 24),
@@ -281,7 +298,9 @@ class MyAddressesScreen extends StatelessWidget {
                             ? null
                             : () async {
                                 if (_formKey.currentState!.validate()) {
-                                  Navigator.of(context).pop(); // Close bottom sheet immediately
+                                  Navigator.of(
+                                    context,
+                                  ).pop(); // Close bottom sheet immediately
                                   if (isEdit) {
                                     final newAddress = AddressModel(
                                       id: address.id,
@@ -306,16 +325,18 @@ class MyAddressesScreen extends StatelessWidget {
                                 }
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF8C6EFF),
+                          backgroundColor: AppColor.buttonColor,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                         child: controller.isSavingAddress.value
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
                             : Text(
-                                isEdit ? 'Save Changes' : 'Add Address',
+                                isEdit ? AppStrings.saveChanges : AppStrings.addAddress,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
@@ -364,23 +385,31 @@ class MyAddressesScreen extends StatelessWidget {
               hintText: hint,
               hintStyle: const TextStyle(color: Colors.white24, fontSize: 13),
               filled: true,
-              fillColor: const Color.fromARGB(15, 255, 255, 255),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              fillColor: AppColor.inputFill,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Color.fromARGB(35, 140, 110, 255)),
+                borderSide: BorderSide(
+                  color: AppColor.primary.withValues(alpha: 0.12),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Color(0xFF8C6EFF)),
+                borderSide: BorderSide(color: AppColor.primary),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Colors.redAccent),
+                borderSide: BorderSide(color: AppColor.error),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
+                borderSide: BorderSide(
+                  color: AppColor.error,
+                  width: 1.5,
+                ),
               ),
             ),
           ),
@@ -395,24 +424,35 @@ class MyAddressesScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF130538),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Text('Delete Address', style: TextStyle(color: Colors.white)),
+          backgroundColor: AppColor.backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            AppStrings.deleteAddressTitle,
+            style: TextStyle(color: Colors.white),
+          ),
           content: const Text(
-            'Are you sure you want to delete this address?',
+            AppStrings.deleteAddressConfirm,
             style: TextStyle(color: Colors.white70),
           ),
           actions: [
             TextButton(
               onPressed: () => Get.back(),
-              child: const Text('Cancel', style: TextStyle(color: Colors.white30)),
+              child: const Text(
+                AppStrings.cancel,
+                style: TextStyle(color: Colors.white30),
+              ),
             ),
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop(); // Close dialog immediately
                 await controller.deleteAddress(addressId);
               },
-              child: const Text('Delete', style: TextStyle(color: Colors.redAccent)),
+              child: const Text(
+                AppStrings.delete,
+                style: TextStyle(color: AppColor.error),
+              ),
             ),
           ],
         );
@@ -424,8 +464,8 @@ class MyAddressesScreen extends StatelessWidget {
   Widget _buildEmptyState(BuildContext context) {
     return const SkincareEmptyState(
       icon: Icons.location_off_outlined,
-      title: 'No Saved Addresses',
-      description: 'You haven\'t added any delivery addresses yet. Add one below to speed up checkouts!',
+      title: AppStrings.emptyAddressesTitle,
+      description: AppStrings.emptyAddressesDesc,
     );
   }
 }

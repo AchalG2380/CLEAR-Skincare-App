@@ -22,6 +22,7 @@ import 'orders/screens/order_details_screen.dart';
 import 'profile/screens/edit_profile_screen.dart';
 import 'profile/screens/change_password_screen.dart';
 import 'profile/screens/my_addresses_screen.dart';
+import 'core/app_colors.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,10 +48,18 @@ class MyApp extends StatelessWidget {
       title: "Clear",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromRGBO(14, 5, 68, 1),
+        scaffoldBackgroundColor: AppColor.backgroundColor,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColor.backgroundColor,
+          elevation: 0,
         ),
-        fontFamily: 'MontserratAlternates',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColor.primary,
+          primary: AppColor.primary,
+          secondary: AppColor.secondary,
+          surface: AppColor.surface,
+          brightness: Brightness.dark,
+        ),
       ),
       initialRoute: '/splash',
       getPages: [
@@ -69,51 +78,21 @@ class MyApp extends StatelessWidget {
         ),
         // '/home' route now returns the navigation shell holding the bottom bar
         GetPage(name: '/home', page: () => MainNavigationScreen()),
-        
-        GetPage(
-          name: '/product-listing',
-          page: () => ProductListingScreen(),
-        ),
-        GetPage(
-          name: '/product-details',
-          page: () => ProductDetailsScreen(),
-        ),
-        GetPage(
-          name: '/checkout',
-          page: () => CheckoutAddressScreen(),
-        ),
-        GetPage(
-          name: '/checkout-payment',
-          page: () => CheckoutPaymentScreen(),
-        ),
-        GetPage(
-          name: '/checkout-review',
-          page: () => CheckoutReviewScreen(),
-        ),
+
+        GetPage(name: '/product-listing', page: () => ProductListingScreen()),
+        GetPage(name: '/product-details', page: () => ProductDetailsScreen()),
+        GetPage(name: '/checkout', page: () => CheckoutAddressScreen()),
+        GetPage(name: '/checkout-payment', page: () => CheckoutPaymentScreen()),
+        GetPage(name: '/checkout-review', page: () => CheckoutReviewScreen()),
         GetPage(
           name: '/checkout-success',
           page: () => const CheckoutSuccessScreen(),
         ),
-        GetPage(
-          name: '/orders',
-          page: () => OrderListScreen(),
-        ),
-        GetPage(
-          name: '/order-details',
-          page: () => OrderDetailsScreen(),
-        ),
-        GetPage(
-          name: '/edit-profile',
-          page: () => EditProfileScreen(),
-        ),
-        GetPage(
-          name: '/change-password',
-          page: () => ChangePasswordScreen(),
-        ),
-        GetPage(
-          name: '/my-addresses',
-          page: () => MyAddressesScreen(),
-        ),
+        GetPage(name: '/orders', page: () => OrderListScreen()),
+        GetPage(name: '/order-details', page: () => OrderDetailsScreen()),
+        GetPage(name: '/edit-profile', page: () => EditProfileScreen()),
+        GetPage(name: '/change-password', page: () => ChangePasswordScreen()),
+        GetPage(name: '/my-addresses', page: () => MyAddressesScreen()),
       ],
     );
   }

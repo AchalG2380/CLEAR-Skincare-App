@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../home/data/models/product_model.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import 'package:get/get.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../app_colors.dart';
+import '../app_strings.dart';
 
 // ─── Reusable Product Card Widget ───────────────────────────────────────────
 class ProductCard extends StatelessWidget {
@@ -22,10 +25,10 @@ class ProductCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(20, 255, 255, 255),
+          color: AppColor.cardBackground,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: const Color.fromARGB(40, 140, 110, 255),
+            color: AppColor.primary.withValues(alpha: 0.15),
             width: 1,
           ),
         ),
@@ -40,11 +43,14 @@ class ProductCard extends StatelessWidget {
                   ),
                   child: AspectRatio(
                     aspectRatio: 1.1,
-                    child: Image.network(
-                      product.imageUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: product.imageUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: const Color.fromARGB(50, 140, 110, 255),
+                      placeholder: (context, url) => Container(
+                        color: AppColor.primary.withValues(alpha: 0.12),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: AppColor.primary.withValues(alpha: 0.20),
                         child: const Icon(
                           Icons.broken_image_outlined,
                           color: Colors.white30,
@@ -62,13 +68,13 @@ class ProductCard extends StatelessWidget {
                       onTap: () => wishlistController.toggleWishlist(product),
                       child: Container(
                         padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(150, 19, 5, 56),
+                        decoration: BoxDecoration(
+                          color: AppColor.backgroundColor.withValues(alpha: 0.60),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           isWish ? Icons.favorite : Icons.favorite_border,
-                          color: isWish ? Colors.redAccent : Colors.white,
+                          color: isWish ? AppColor.favoriteActive : Colors.white,
                           size: 18,
                         ),
                       ),
@@ -95,7 +101,7 @@ class ProductCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 14),
+                      const Icon(Icons.star, color: AppColor.ratingStar, size: 14),
                       const SizedBox(width: 2),
                       Text(
                         product.rating.toString(),
@@ -110,7 +116,7 @@ class ProductCard extends StatelessWidget {
                   Text(
                     '\$${product.price.toStringAsFixed(2)}',
                     style: const TextStyle(
-                      color: Color(0xFFC7B6FF),
+                      color: AppColor.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -163,7 +169,7 @@ class ProductCard extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () => cartController.addToCart(product),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF8C6EFF),
+                            backgroundColor: AppColor.buttonColor,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -176,7 +182,7 @@ class ProductCard extends StatelessWidget {
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           child: const Text(
-                            'Add to Cart',
+                            AppStrings.addToCart,
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -225,10 +231,10 @@ class SkincareCartItemRow extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(15, 255, 255, 255),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(30, 140, 110, 255),
+          color: AppColor.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -239,11 +245,13 @@ class SkincareCartItemRow extends StatelessWidget {
             child: SizedBox(
               width: 65,
               height: 65,
-              child: Image.network(
-                imageUrl,
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  color: const Color.fromARGB(40, 140, 110, 255),
+                placeholder: (_, __) =>
+                    Container(color: AppColor.primary.withValues(alpha: 0.12)),
+                errorWidget: (_, __, ___) => Container(
+                  color: AppColor.primary.withValues(alpha: 0.15),
                   child: const Icon(
                     Icons.broken_image_outlined,
                     color: Colors.white30,
@@ -272,7 +280,7 @@ class SkincareCartItemRow extends StatelessWidget {
                 Text(
                   '\$${price.toStringAsFixed(2)}',
                   style: const TextStyle(
-                    color: Color(0xFFC7B6FF),
+                    color: AppColor.primary,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
@@ -280,7 +288,7 @@ class SkincareCartItemRow extends StatelessWidget {
                 if (!isEditable) ...[
                   const SizedBox(height: 4),
                   Text(
-                    'Quantity: $quantity',
+                    '${AppStrings.quantityLabel}: $quantity',
                     style: const TextStyle(color: Colors.white38, fontSize: 11),
                   ),
                 ],
@@ -298,15 +306,14 @@ class SkincareCartItemRow extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     icon: const Icon(
                       Icons.delete_outline,
-                      color: Colors.redAccent,
+                      color: AppColor.error,
                       size: 20,
                     ),
                     onPressed: onRemove,
                   ),
-                const SizedBox(height: 8),
                 Container(
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(30, 255, 255, 255),
+                    color: AppColor.dividerColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(

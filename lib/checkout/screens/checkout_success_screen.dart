@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 
 class CheckoutSuccessScreen extends StatelessWidget {
   const CheckoutSuccessScreen({super.key});
@@ -27,14 +28,14 @@ class CheckoutSuccessScreen extends StatelessWidget {
                   height: 90,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF8C6EFF), Color(0xFFC7B6FF)],
+                    gradient: LinearGradient(
+                      colors: [AppColor.primary, AppColor.primary.withValues(alpha: 0.7)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF8C6EFF).withValues(alpha: 0.4),
+                        color: AppColor.primary.withValues(alpha: 0.4),
                         blurRadius: 20,
                         spreadRadius: 2,
                       ),
@@ -51,7 +52,7 @@ class CheckoutSuccessScreen extends StatelessWidget {
 
               // Title
               const Text(
-                'Order Placed!',
+                AppStrings.orderPlacedTitle,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 26,
@@ -63,7 +64,7 @@ class CheckoutSuccessScreen extends StatelessWidget {
 
               // Subtitle/Message
               const Text(
-                'Your skincare order has been received and is being processed by our laboratory.',
+                AppStrings.orderPlacedSuccessMsg,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white70,
@@ -77,17 +78,17 @@ class CheckoutSuccessScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(15, 255, 255, 255),
+                  color: AppColor.cardBackground,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: const Color.fromARGB(30, 140, 110, 255),
+                    color: AppColor.primary.withValues(alpha: 0.12),
                     width: 1,
                   ),
                 ),
                 child: Column(
                   children: [
                     const Text(
-                      'ORDER ID',
+                      AppStrings.orderIdHeader,
                       style: TextStyle(
                         color: Colors.white38,
                         fontSize: 11,
@@ -99,7 +100,7 @@ class CheckoutSuccessScreen extends StatelessWidget {
                     Text(
                       orderId,
                       style: const TextStyle(
-                        color: Color(0xFFC7B6FF),
+                        color: AppColor.primary,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
@@ -118,14 +119,14 @@ class CheckoutSuccessScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => Get.offAllNamed('/home'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF8C6EFF),
+                    backgroundColor: AppColor.buttonColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
                   child: const Text(
-                    'Continue Shopping',
+                    AppStrings.continueShopping,
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,

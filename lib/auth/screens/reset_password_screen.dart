@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/auth_controller.dart';
 import '../screens/widgets/auth_widgets.dart';
 
@@ -32,7 +33,7 @@ class ResetPasswordScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 const Text(
-                  'Clear',
+                  AppStrings.appName,
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
@@ -42,11 +43,11 @@ class ResetPasswordScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 const Text(
-                  'Set your new account password',
+                  AppStrings.resetAccountPassword,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Color.fromARGB(180, 255, 255, 255),
+                    color: AppColor.secondaryText,
                   ),
                 ),
                 const SizedBox(height: 48),
@@ -55,17 +56,17 @@ class ResetPasswordScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(20, 255, 255, 255),
+                    color: AppColor.cardBackground,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: const Color.fromARGB(50, 140, 110, 255),
+                      color: AppColor.primary.withValues(alpha: 0.2),
                       width: 1,
                     ),
                   ),
                   child: Column(
                     children: [
                       const Text(
-                        'Reset Password',
+                        AppStrings.setPassword,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -77,8 +78,8 @@ class ResetPasswordScreen extends StatelessWidget {
                       // Password field
                       AuthTextField(
                         controller: passwordController,
-                        labelText: 'New Password',
-                        hintText: 'Enter your New Password',
+                        labelText: AppStrings.newPassword,
+                        hintText: AppStrings.hintPassword,
                         obscureText: true,
                         prefixIcon: const Icon(Icons.lock_outline, color: Colors.white70),
                       ),
@@ -86,8 +87,8 @@ class ResetPasswordScreen extends StatelessWidget {
                       // Confirm Password field
                       AuthTextField(
                         controller: confirmPasswordController,
-                        labelText: 'Confirm Password',
-                        hintText: 'Re-enter your New Password',
+                        labelText: AppStrings.confirmPassword,
+                        hintText: AppStrings.confirmPassword,
                         obscureText: true,
                         prefixIcon: const Icon(Icons.lock_outline, color: Colors.white70),
                       ),
@@ -96,7 +97,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       // Reset Password button
                       Obx(
                         () => AuthButton(
-                          text: 'Reset Password',
+                          text: AppStrings.setPassword,
                           isLoading: authController.isLoading.value,
                           onPressed: () {
                             authController.resetPassword(

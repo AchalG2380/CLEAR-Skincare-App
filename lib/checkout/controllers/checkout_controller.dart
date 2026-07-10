@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/app_colors.dart';
 import '../data/models/address_model.dart';
 import '../data/repositories/checkout_repository.dart';
 import '../../cart/controllers/cart_controller.dart';
@@ -84,7 +85,7 @@ class CheckoutController extends GetxController {
         'Success',
         'Address added successfully!',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color.fromARGB(240, 19, 5, 56),
+        backgroundColor: AppColor.backgroundColor.withValues(alpha: 0.94),
         colorText: Colors.white,
       );
     } catch (e) {
@@ -138,7 +139,7 @@ class CheckoutController extends GetxController {
         'Order Failed',
         e.toString().replaceAll('Exception: ', ''),
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color.fromARGB(240, 19, 5, 56),
+        backgroundColor: AppColor.backgroundColor.withValues(alpha: 0.94),
         colorText: Colors.white,
       );
     } finally {
@@ -161,7 +162,7 @@ class CheckoutController extends GetxController {
         'Success',
         'Address updated successfully!',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color.fromARGB(240, 19, 5, 56),
+        backgroundColor: AppColor.backgroundColor.withValues(alpha: 0.94),
         colorText: Colors.white,
       );
     } catch (e) {
@@ -186,7 +187,7 @@ class CheckoutController extends GetxController {
         'Success',
         'Address deleted successfully!',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color.fromARGB(240, 19, 5, 56),
+        backgroundColor: AppColor.backgroundColor.withValues(alpha: 0.94),
         colorText: Colors.white,
       );
     } catch (e) {

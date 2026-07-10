@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/app_colors.dart';
 import 'package:get/get.dart';
 import '../../core/controllers/base_controller.dart';
 import '../data/models/profile_model.dart';
@@ -58,7 +59,7 @@ class ProfileController extends BaseSkincareController {
         'Success',
         'Profile updated successfully!',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color.fromARGB(240, 19, 5, 56),
+        backgroundColor: AppColor.backgroundColor.withValues(alpha: 0.94),
         colorText: Colors.white,
       );
       return true;
@@ -107,7 +108,7 @@ class ProfileController extends BaseSkincareController {
         'Success',
         'Password changed successfully!',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color.fromARGB(240, 19, 5, 56),
+        backgroundColor: AppColor.backgroundColor.withValues(alpha: 0.94),
         colorText: Colors.white,
       );
       return true;

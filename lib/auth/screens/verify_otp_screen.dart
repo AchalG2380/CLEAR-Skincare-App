@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/auth_controller.dart';
 import '../screens/widgets/auth_widgets.dart';
 
@@ -82,7 +83,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
               children: [
                 const SizedBox(height: 20),
                 const Text(
-                  'Clear',
+                  AppStrings.appName,
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
@@ -92,11 +93,11 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 ),
                 const SizedBox(height: 12),
                 const Text(
-                  'Verification Required',
+                  AppStrings.verificationRequired,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Color.fromARGB(180, 255, 255, 255),
+                    color: AppColor.secondaryText,
                   ),
                 ),
                 const SizedBox(height: 48),
@@ -105,17 +106,17 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(20, 255, 255, 255),
+                    color: AppColor.cardBackground,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: const Color.fromARGB(50, 140, 110, 255),
+                      color: AppColor.primary.withValues(alpha: 0.2),
                       width: 1,
                     ),
                   ),
                   child: Column(
                     children: [
                       const Text(
-                        'Verify OTP',
+                        AppStrings.verifyOtpHeader,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -125,11 +126,11 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                       const SizedBox(height: 12),
                       Obx(
                         () => Text(
-                          'Enter the 6-digit OTP sent to\n${authController.emailForFlow.value}',
+                          AppStrings.enterOtpSentTo + authController.emailForFlow.value,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 13,
-                            color: Color.fromARGB(140, 255, 255, 255),
+                            color: AppColor.textMuted,
                           ),
                         ),
                       ),
@@ -150,17 +151,19 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            "Didn't receive the code? ",
-                            style: TextStyle(color: Color.fromARGB(140, 255, 255, 255), fontSize: 13),
+                            AppStrings.resendOtpPrompt,
+                            style: TextStyle(color: AppColor.textMuted, fontSize: 13),
                           ),
                           TextButton(
                             onPressed: _canResend ? _resendOtp : null,
                             child: Text(
-                              _canResend ? 'Resend OTP' : 'Resend in ${_secondsRemaining}s',
+                              _canResend
+                                  ? AppStrings.resendOtp
+                                  : AppStrings.resendIn(_secondsRemaining),
                               style: TextStyle(
                                 color: _canResend
-                                    ? const Color.fromARGB(255, 255, 182, 182)
-                                    : const Color.fromARGB(80, 255, 182, 182),
+                                    ? AppColor.primary
+                                    : AppColor.primary.withValues(alpha: 0.3),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
@@ -173,7 +176,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                       // Verify button
                       Obx(
                         () => AuthButton(
-                          text: 'Verify OTP',
+                          text: AppStrings.verify,
                           isLoading: authController.isLoading.value,
                           onPressed: () {
                             authController.verifyOtp(

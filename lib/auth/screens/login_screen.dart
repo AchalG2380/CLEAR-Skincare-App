@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/auth_controller.dart';
 import '../screens/widgets/auth_widgets.dart';
 
@@ -24,7 +25,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 60),
               const Text(
-                'Clear',
+                AppStrings.appName,
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -34,11 +35,11 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Welcome. You’re just a few taps away from clearer skin.',
+                AppStrings.welcomeTagline,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Color.fromARGB(180, 255, 255, 255),
+                  color: AppColor.secondaryText,
                 ),
               ),
               const SizedBox(height: 48),
@@ -47,17 +48,17 @@ class LoginScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(20, 255, 255, 255),
+                  color: AppColor.cardBackground,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: const Color.fromARGB(50, 140, 110, 255),
+                    color: AppColor.primary.withValues(alpha: 0.2),
                     width: 1,
                   ),
                 ),
                 child: Column(
                   children: [
                     const Text(
-                      'Login',
+                      AppStrings.login,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -69,8 +70,8 @@ class LoginScreen extends StatelessWidget {
                     // Email field
                     AuthTextField(
                       controller: emailController,
-                      labelText: 'Email',
-                      hintText: 'Enter your Email',
+                      labelText: AppStrings.labelEmail,
+                      hintText: AppStrings.hintEmail,
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: const Icon(
                         Icons.email_outlined,
@@ -81,8 +82,8 @@ class LoginScreen extends StatelessWidget {
                     // Password field
                     AuthTextField(
                       controller: passwordController,
-                      labelText: 'Password',
-                      hintText: 'Enter your Password',
+                      labelText: AppStrings.labelPassword,
+                      hintText: AppStrings.hintPassword,
                       obscureText: true,
                       prefixIcon: const Icon(
                         Icons.lock_outline,
@@ -98,9 +99,9 @@ class LoginScreen extends StatelessWidget {
                           Get.toNamed('/forgot-password');
                         },
                         child: const Text(
-                          'Forgot Password?',
+                          AppStrings.forgotPasswordLink,
                           style: TextStyle(
-                            color: Color.fromARGB(255, 255, 182, 182),
+                            color: AppColor.primary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -110,7 +111,7 @@ class LoginScreen extends StatelessWidget {
 
                     Obx(
                       () => AuthButton(
-                        text: 'Login',
+                        text: AppStrings.login,
                         isLoading: authController.isLoading.value,
                         onPressed: () {
                           authController.login(
@@ -130,17 +131,17 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Don't have an account? ",
-                    style: TextStyle(color: Color.fromARGB(180, 255, 255, 255)),
+                    AppStrings.noAccount,
+                    style: TextStyle(color: AppColor.secondaryText),
                   ),
                   TextButton(
                     onPressed: () {
                       Get.toNamed('/register');
                     },
                     child: const Text(
-                      "Register",
+                      AppStrings.register,
                       style: TextStyle(
-                        color: Color.fromARGB(255, 255, 182, 182),
+                        color: AppColor.primary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

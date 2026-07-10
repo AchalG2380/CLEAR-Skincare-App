@@ -92,14 +92,16 @@ class ProductListingController extends BaseSkincareController {
         limit: _pageSize,
         search: _searchQuery.isEmpty ? null : _searchQuery,
         sort: selectedSort.value.isEmpty ? null : selectedSort.value,
-        category: selectedCategory.value.isEmpty ? null : selectedCategory.value,
+        category: selectedCategory.value.isEmpty
+            ? null
+            : selectedCategory.value,
         concern: selectedConcern.value.isEmpty ? null : selectedConcern.value,
       );
     });
 
     if (result != null) {
       products.assignAll(result.products);
-      
+
       // Sync with global WishlistController
       final wishlistController = Get.find<WishlistController>();
       for (var p in result.products) {
@@ -123,7 +125,9 @@ class ProductListingController extends BaseSkincareController {
         limit: _pageSize,
         search: _searchQuery.isEmpty ? null : _searchQuery,
         sort: selectedSort.value.isEmpty ? null : selectedSort.value,
-        category: selectedCategory.value.isEmpty ? null : selectedCategory.value,
+        category: selectedCategory.value.isEmpty
+            ? null
+            : selectedCategory.value,
         concern: selectedConcern.value.isEmpty ? null : selectedConcern.value,
       );
       products.addAll(result.products);

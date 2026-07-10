@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/app_colors.dart';
 
 class AuthTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -27,7 +28,7 @@ class AuthTextField extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(20, 255, 255, 255),
+        color: AppColor.inputFill,
         borderRadius: BorderRadius.circular(12),
       ),
       child: TextFormField(
@@ -39,12 +40,12 @@ class AuthTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: const TextStyle(
-            color: Color.fromARGB(180, 255, 255, 255),
+            color: AppColor.secondaryText,
             fontSize: 14,
           ),
           hintText: hintText,
           hintStyle: const TextStyle(
-            color: Color.fromARGB(90, 255, 255, 255),
+            color: AppColor.textDark,
             fontSize: 14,
           ),
           prefixIcon: prefixIcon,
@@ -55,23 +56,23 @@ class AuthTextField extends StatelessWidget {
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(80, 140, 110, 255),
+            borderSide: BorderSide(
+              color: AppColor.primary.withValues(alpha: 0.3),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(80, 140, 110, 255),
+            borderSide: BorderSide(
+              color: AppColor.primary.withValues(alpha: 0.3),
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFF8C6EFF), width: 2),
+            borderSide: BorderSide(color: AppColor.primary, width: 2),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.redAccent),
+            borderSide: BorderSide(color: AppColor.error),
           ),
         ),
       ),
@@ -99,9 +100,9 @@ class AuthButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF8C6EFF),
+          backgroundColor: AppColor.buttonColor,
           foregroundColor: Colors.white,
-          disabledBackgroundColor: const Color(0xFF8C6EFF).withValues(alpha: 0.5),
+          disabledBackgroundColor: AppColor.buttonColor.withValues(alpha: 0.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -202,12 +203,12 @@ class _OtpInputWidgetState extends State<OtpInputWidget> {
                 height: 56,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(20, 255, 255, 255),
+                  color: AppColor.inputFill,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: isFocused
-                        ? const Color(0xFF8C6EFF)
-                        : const Color.fromARGB(80, 140, 110, 255),
+                        ? AppColor.primary
+                        : AppColor.primary.withValues(alpha: 0.3),
                     width: isFocused ? 2 : 1,
                   ),
                 ),

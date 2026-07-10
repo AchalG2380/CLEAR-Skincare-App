@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/auth_controller.dart';
 import '../screens/widgets/auth_widgets.dart';
 
@@ -27,7 +28,7 @@ class RegisterScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 36),
               const Text(
-                'Clear',
+                AppStrings.appName,
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -37,11 +38,11 @@ class RegisterScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Welcome. You’re just a few taps away from clearer skin.',
+                AppStrings.welcomeTagline,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Color.fromARGB(180, 255, 255, 255),
+                  color: AppColor.secondaryText,
                 ),
               ),
               const SizedBox(height: 24),
@@ -50,17 +51,17 @@ class RegisterScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(20, 255, 255, 255),
+                  color: AppColor.cardBackground,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: const Color.fromARGB(50, 140, 110, 255),
+                    color: AppColor.primary.withValues(alpha: 0.2),
                     width: 1,
                   ),
                 ),
                 child: Column(
                   children: [
                     const Text(
-                      'Register',
+                      AppStrings.register,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -71,8 +72,8 @@ class RegisterScreen extends StatelessWidget {
 
                     AuthTextField(
                       controller: nameController,
-                      labelText: 'Name',
-                      hintText: 'Enter your Name',
+                      labelText: AppStrings.labelName,
+                      hintText: AppStrings.hintName,
                       prefixIcon: const Icon(
                         Icons.person_outline,
                         color: Colors.white70,
@@ -81,8 +82,8 @@ class RegisterScreen extends StatelessWidget {
 
                     AuthTextField(
                       controller: phoneController,
-                      labelText: 'Phone Number',
-                      hintText: 'Enter your Phone Number',
+                      labelText: AppStrings.labelPhone,
+                      hintText: AppStrings.hintPhone,
                       keyboardType: TextInputType.phone,
                       prefixIcon: const Icon(
                         Icons.phone_outlined,
@@ -92,8 +93,8 @@ class RegisterScreen extends StatelessWidget {
 
                     AuthTextField(
                       controller: emailController,
-                      labelText: 'Email',
-                      hintText: 'Enter your Email',
+                      labelText: AppStrings.labelEmail,
+                      hintText: AppStrings.hintEmail,
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: const Icon(
                         Icons.email_outlined,
@@ -103,8 +104,8 @@ class RegisterScreen extends StatelessWidget {
 
                     AuthTextField(
                       controller: passwordController,
-                      labelText: 'Password',
-                      hintText: 'Enter your Password',
+                      labelText: AppStrings.labelPassword,
+                      hintText: AppStrings.hintPassword,
                       obscureText: true,
                       prefixIcon: const Icon(
                         Icons.lock_outline,
@@ -114,8 +115,8 @@ class RegisterScreen extends StatelessWidget {
 
                     AuthTextField(
                       controller: confirmPasswordController,
-                      labelText: 'Confirm Password',
-                      hintText: 'Re-enter your Password',
+                      labelText: AppStrings.labelConfirmPassword,
+                      hintText: AppStrings.confirmPassword,
                       obscureText: true,
                       prefixIcon: const Icon(
                         Icons.lock_outline,
@@ -128,7 +129,7 @@ class RegisterScreen extends StatelessWidget {
                     // Register button — reacts to isLoading
                     Obx(
                       () => AuthButton(
-                        text: 'Register',
+                        text: AppStrings.register,
                         isLoading: authController.isLoading.value,
                         onPressed: () {
                           authController.register(
@@ -152,17 +153,17 @@ class RegisterScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Already have an account? ",
-                    style: TextStyle(color: Color.fromARGB(180, 255, 255, 255)),
+                    AppStrings.haveAccount,
+                    style: TextStyle(color: AppColor.secondaryText),
                   ),
                   TextButton(
                     onPressed: () {
                       Get.offAllNamed('/login');
                     },
                     child: const Text(
-                      "Login",
+                      AppStrings.login,
                       style: TextStyle(
-                        color: Color.fromARGB(255, 255, 182, 182),
+                        color: AppColor.primary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
