@@ -13,6 +13,15 @@ import 'product_listing/screens/product_listing_screen.dart';
 import 'wishlist/controllers/wishlist_controller.dart';
 import 'cart/controllers/cart_controller.dart';
 import 'product_details/screens/product_details_screen.dart';
+import 'checkout/screens/checkout_address_screen.dart';
+import 'checkout/screens/checkout_payment_screen.dart';
+import 'checkout/screens/checkout_review_screen.dart';
+import 'checkout/screens/checkout_success_screen.dart';
+import 'orders/screens/order_list_screen.dart';
+import 'orders/screens/order_details_screen.dart';
+import 'profile/screens/edit_profile_screen.dart';
+import 'profile/screens/change_password_screen.dart';
+import 'profile/screens/my_addresses_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +77,42 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/product-details',
           page: () => ProductDetailsScreen(),
+        ),
+        GetPage(
+          name: '/checkout',
+          page: () => CheckoutAddressScreen(),
+        ),
+        GetPage(
+          name: '/checkout-payment',
+          page: () => CheckoutPaymentScreen(),
+        ),
+        GetPage(
+          name: '/checkout-review',
+          page: () => CheckoutReviewScreen(),
+        ),
+        GetPage(
+          name: '/checkout-success',
+          page: () => const CheckoutSuccessScreen(),
+        ),
+        GetPage(
+          name: '/orders',
+          page: () => OrderListScreen(),
+        ),
+        GetPage(
+          name: '/order-details',
+          page: () => OrderDetailsScreen(),
+        ),
+        GetPage(
+          name: '/edit-profile',
+          page: () => EditProfileScreen(),
+        ),
+        GetPage(
+          name: '/change-password',
+          page: () => ChangePasswordScreen(),
+        ),
+        GetPage(
+          name: '/my-addresses',
+          page: () => MyAddressesScreen(),
         ),
       ],
     );

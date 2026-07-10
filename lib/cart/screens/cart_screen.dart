@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/widgets/app_widgets.dart';
+import '../../core/widgets/product_widgets.dart';
 import '../controllers/cart_controller.dart';
 
 class CartScreen extends StatelessWidget {
@@ -79,119 +81,15 @@ class CartScreen extends StatelessWidget {
       onDismissed: (_) {
         controller.removeFromCart(item.product.id);
       },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(15, 255, 255, 255),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: const Color.fromARGB(30, 140, 110, 255),
-            width: 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            // 1. Product Thumbnail
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: SizedBox(
-                width: 70,
-                height: 70,
-                child: Image.network(
-                  item.product.imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    color: const Color.fromARGB(40, 140, 110, 255),
-                    child: const Icon(
-                      Icons.broken_image_outlined,
-                      color: Colors.white30,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-  
-            // 2. Product Name & Price
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.product.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '\$${item.product.price.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      color: Color(0xFFC7B6FF),
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-  
-            // 3. Stepper controls & Remove
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                IconButton(
-                  constraints: const BoxConstraints(),
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    color: Colors.redAccent,
-                    size: 20,
-                  ),
-                  onPressed: () => controller.removeFromCart(item.product.id),
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(30, 255, 255, 255),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => controller.updateQuantity(item.product.id, -1),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          child: Icon(Icons.remove, color: Colors.white, size: 16),
-                        ),
-                      ),
-                      Text(
-                        '${item.quantity}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => controller.updateQuantity(item.product.id, 1),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          child: Icon(Icons.add, color: Colors.white, size: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+      child: SkincareCartItemRow(
+        name: item.product.name,
+        imageUrl: item.product.imageUrl,
+        price: item.product.price,
+        quantity: item.quantity,
+        isEditable: true,
+        onIncrement: () => controller.updateQuantity(item.product.id, 1),
+        onDecrement: () => controller.updateQuantity(item.product.id, -1),
+        onRemove: () => controller.removeFromCart(item.product.id),
       ),
     );
   }
@@ -225,13 +123,20 @@ class CartScreen extends StatelessWidget {
                     cursorColor: const Color(0xFF8C6EFF),
                     decoration: InputDecoration(
                       hintText: 'Enter Coupon Code (CLEAR10)',
-                      hintStyle: const TextStyle(color: Colors.white30, fontSize: 12),
+                      hintStyle: const TextStyle(
+                        color: Colors.white30,
+                        fontSize: 12,
+                      ),
                       filled: true,
                       fillColor: const Color.fromARGB(15, 255, 255, 255),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 14),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                      ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Color.fromARGB(45, 140, 110, 255)),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(45, 140, 110, 255),
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -270,16 +175,24 @@ class CartScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(Icons.confirmation_num_outlined, color: Color(0xFFC7B6FF), size: 16),
+                const Icon(
+                  Icons.confirmation_num_outlined,
+                  color: Color(0xFFC7B6FF),
+                  size: 16,
+                ),
                 const SizedBox(width: 6),
                 Text(
                   'Coupon ${controller.couponCode.value} Applied (-\$${controller.discount.value.toStringAsFixed(2)})',
-                  style: const TextStyle(color: Color(0xFFC7B6FF), fontSize: 12, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Color(0xFFC7B6FF),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
           ],
-          
+
           const SizedBox(height: 16),
           const Divider(color: Colors.white10),
           const SizedBox(height: 12),
@@ -288,15 +201,24 @@ class CartScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Subtotal', style: TextStyle(color: Colors.white54, fontSize: 13)),
-              Text('\$${controller.subtotal.toStringAsFixed(2)}', style: const TextStyle(color: Colors.white, fontSize: 14)),
+              const Text(
+                'Subtotal',
+                style: TextStyle(color: Colors.white54, fontSize: 13),
+              ),
+              Text(
+                '\$${controller.subtotal.toStringAsFixed(2)}',
+                style: const TextStyle(color: Colors.white, fontSize: 14),
+              ),
             ],
           ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Discount', style: TextStyle(color: Colors.white54, fontSize: 13)),
+              const Text(
+                'Discount',
+                style: TextStyle(color: Colors.white54, fontSize: 13),
+              ),
               Text(
                 '-\$${controller.discount.value.toStringAsFixed(2)}',
                 style: const TextStyle(color: Color(0xFFFF8C8C), fontSize: 14),
@@ -307,13 +229,22 @@ class CartScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Delivery Fee', style: TextStyle(color: Colors.white54, fontSize: 13)),
+              const Text(
+                'Delivery Fee',
+                style: TextStyle(color: Colors.white54, fontSize: 13),
+              ),
               Text(
-                controller.deliveryFee == 0.0 ? 'FREE' : '\$${controller.deliveryFee.toStringAsFixed(2)}',
+                controller.deliveryFee == 0.0
+                    ? 'FREE'
+                    : '\$${controller.deliveryFee.toStringAsFixed(2)}',
                 style: TextStyle(
-                  color: controller.deliveryFee == 0.0 ? const Color(0xFF8C6EFF) : Colors.white,
+                  color: controller.deliveryFee == 0.0
+                      ? const Color(0xFF8C6EFF)
+                      : Colors.white,
                   fontSize: 14,
-                  fontWeight: controller.deliveryFee == 0.0 ? FontWeight.bold : FontWeight.normal,
+                  fontWeight: controller.deliveryFee == 0.0
+                      ? FontWeight.bold
+                      : FontWeight.normal,
                 ),
               ),
             ],
@@ -327,7 +258,11 @@ class CartScreen extends StatelessWidget {
             children: [
               const Text(
                 'Total Amount',
-                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 '\$${controller.total.toStringAsFixed(2)}',
@@ -349,13 +284,18 @@ class CartScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 // Pass order arguments forward to checkout screen (Task 8)
-                Get.toNamed('/checkout', arguments: {
-                  'items': controller.cartItems.map((e) => e.toJson()).toList(),
-                  'subtotal': controller.subtotal,
-                  'discount': controller.discount.value,
-                  'deliveryFee': controller.deliveryFee,
-                  'total': controller.total,
-                });
+                Get.toNamed(
+                  '/checkout',
+                  arguments: {
+                    'items': controller.cartItems
+                        .map((e) => e.toJson())
+                        .toList(),
+                    'subtotal': controller.subtotal,
+                    'discount': controller.discount.value,
+                    'deliveryFee': controller.deliveryFee,
+                    'total': controller.total,
+                  },
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF8C6EFF),
@@ -381,62 +321,13 @@ class CartScreen extends StatelessWidget {
 
   // ─── Empty state screen ───────────────────────────────────────────────────
   Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.shopping_bag_outlined,
-              color: Colors.white24,
-              size: 80,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Your Cart is Empty',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Add some clear skin products to start your customized skincare journey.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white38,
-                fontSize: 13,
-              ),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {
-                // Go to Listing screen
-                Get.toNamed('/product-listing');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF8C6EFF),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 14,
-                ),
-              ),
-              child: const Text(
-                'Shop Best Sellers',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return SkincareEmptyState(
+      icon: Icons.shopping_bag_outlined,
+      title: 'Your Cart is Empty',
+      description:
+          'Add some clear skin products to start your customized skincare journey.',
+      buttonText: 'Shop Best Sellers',
+      onButtonPressed: () => Get.toNamed('/product-listing'),
     );
   }
 

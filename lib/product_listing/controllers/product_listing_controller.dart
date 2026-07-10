@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/controllers/base_controller.dart';
 import '../../home/data/models/product_model.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import '../data/repositories/product_listing_repository.dart';
 
-class ProductListingController extends GetxController {
+class ProductListingController extends BaseSkincareController {
   final ProductListingRepository _repo = ProductListingRepository();
 
   // --- UI Controllers ---
@@ -14,11 +15,8 @@ class ProductListingController extends GetxController {
 
   // --- Observable state ---
   final products = <ProductModel>[].obs;
-  var isLoading = true.obs;
   var isLoadingMore = false.obs;
-  var hasMore = true.obs;
-  var hasError = false.obs;
-  var errorMessage = ''.obs;
+  final hasMore = true.obs;
 
   // --- Filter / Sort (Rx for reactive AppBar title & filter badge) ---
   var selectedSort = ''.obs;
@@ -84,14 +82,12 @@ class ProductListingController extends GetxController {
 
   // --- Main fetch (always resets to page 1) ---
   Future<void> fetchProducts() async {
-    try {
-      isLoading.value = true;
-      hasError.value = false;
-      _currentPage = 1;
-      products.clear();
-      hasMore.value = true;
+    _currentPage = 1;
+    products.clear();
+    hasMore.value = true;
 
-      final result = await _repo.getProducts(
+    final result = await runSafeApiCall(() async {
+      return _repo.getProducts(
         page: 1,
         limit: _pageSize,
         search: _searchQuery.isEmpty ? null : _searchQuery,
@@ -99,7 +95,9 @@ class ProductListingController extends GetxController {
         category: selectedCategory.value.isEmpty ? null : selectedCategory.value,
         concern: selectedConcern.value.isEmpty ? null : selectedConcern.value,
       );
+    });
 
+    if (result != null) {
       products.assignAll(result.products);
       
       // Sync with global WishlistController
@@ -112,11 +110,6 @@ class ProductListingController extends GetxController {
 
       hasMore.value = result.hasMore;
       _currentPage = 2;
-    } catch (e) {
-      hasError.value = true;
-      errorMessage.value = e.toString().replaceAll('Exception: ', '');
-    } finally {
-      isLoading.value = false;
     }
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
-import '../../home/screens/widgets/product_card.dart';
+import '../../core/widgets/product_widgets.dart';
 import '../controllers/product_listing_controller.dart';
 
 class ProductListingScreen extends StatelessWidget {

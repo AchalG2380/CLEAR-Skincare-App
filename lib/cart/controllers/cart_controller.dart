@@ -204,4 +204,11 @@ class CartController extends GetxController {
       duration: const Duration(seconds: 1),
     );
   }
+
+  void clearCart() {
+    cartItems.clear();
+    discount.value = 0.0;
+    couponCode.value = '';
+    _originalQuantities.clear();
+  }
 }

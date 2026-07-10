@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/models/home_response_model.dart';
 import '../../data/models/product_model.dart';
-import 'product_card.dart';
+import '../../../../core/widgets/product_widgets.dart';
 
 // --- Pulseless / Animated Pulse Skeleton Shimmer Loader ---
 class HomeShimmer extends StatefulWidget {
@@ -13,7 +13,8 @@ class HomeShimmer extends StatefulWidget {
   State<HomeShimmer> createState() => _HomeShimmerState();
 }
 
-class _HomeShimmerState extends State<HomeShimmer> with SingleTickerProviderStateMixin {
+class _HomeShimmerState extends State<HomeShimmer>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -33,7 +34,11 @@ class _HomeShimmerState extends State<HomeShimmer> with SingleTickerProviderStat
     super.dispose();
   }
 
-  Widget _skeletonBox({required double width, required double height, double borderRadius = 12}) {
+  Widget _skeletonBox({
+    required double width,
+    required double height,
+    double borderRadius = 12,
+  }) {
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
@@ -58,15 +63,15 @@ class _HomeShimmerState extends State<HomeShimmer> with SingleTickerProviderStat
         // Search bar skeleton
         _skeletonBox(width: double.infinity, height: 50),
         const SizedBox(height: 20),
-        
+
         // Banner carousel skeleton
         _skeletonBox(width: double.infinity, height: 180, borderRadius: 16),
         const SizedBox(height: 24),
-        
+
         // Categories title skeleton
         _skeletonBox(width: 120, height: 20),
         const SizedBox(height: 12),
-        
+
         // Categories horizontal list skeleton
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,11 +86,11 @@ class _HomeShimmerState extends State<HomeShimmer> with SingleTickerProviderStat
           }),
         ),
         const SizedBox(height: 32),
-        
+
         // Best sellers title skeleton
         _skeletonBox(width: 120, height: 20),
         const SizedBox(height: 16),
-        
+
         // Best sellers cards skeleton
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,10 +107,7 @@ class _HomeShimmerState extends State<HomeShimmer> with SingleTickerProviderStat
 class BannerCarousel extends StatefulWidget {
   final List<BannerModel> banners;
 
-  const BannerCarousel({
-    super.key,
-    required this.banners,
-  });
+  const BannerCarousel({super.key, required this.banners});
 
   @override
   State<BannerCarousel> createState() => _BannerCarouselState();
@@ -165,7 +167,10 @@ class _BannerCarouselState extends State<BannerCarousel> {
               return GestureDetector(
                 onTap: () {
                   if (banner.productActionId != null) {
-                    Get.toNamed('/product-details', arguments: banner.productActionId);
+                    Get.toNamed(
+                      '/product-details',
+                      arguments: banner.productActionId,
+                    );
                   }
                 },
                 child: Container(
@@ -211,10 +216,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
 class CategoryScrollList extends StatelessWidget {
   final List<CategoryModel> categories;
 
-  const CategoryScrollList({
-    super.key,
-    required this.categories,
-  });
+  const CategoryScrollList({super.key, required this.categories});
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +243,10 @@ class CategoryScrollList extends StatelessWidget {
               final category = categories[index];
               return GestureDetector(
                 onTap: () {
-                  Get.toNamed('/product-listing', arguments: {'category': category.id});
+                  Get.toNamed(
+                    '/product-listing',
+                    arguments: {'category': category.id},
+                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20),
@@ -309,9 +314,9 @@ class ProductScrollList extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 12),
         SizedBox(
-          height: 240, // Expanded height fits text and stars perfectly
+          height: 270, // Expanded height fits text and stars perfectly
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
@@ -336,10 +341,7 @@ class ProductScrollList extends StatelessWidget {
 class SkinConcernGrid extends StatelessWidget {
   final List<ConcernModel> concerns;
 
-  const SkinConcernGrid({
-    super.key,
-    required this.concerns,
-  });
+  const SkinConcernGrid({super.key, required this.concerns});
 
   @override
   Widget build(BuildContext context) {
@@ -371,7 +373,10 @@ class SkinConcernGrid extends StatelessWidget {
             final concern = concerns[index];
             return GestureDetector(
               onTap: () {
-                Get.toNamed('/product-listing', arguments: {'concern': concern.name});
+                Get.toNamed(
+                  '/product-listing',
+                  arguments: {'concern': concern.name},
+                );
               },
               child: Column(
                 children: [
@@ -397,10 +402,7 @@ class SkinConcernGrid extends StatelessWidget {
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 11,
-                    ),
+                    style: const TextStyle(color: Colors.white70, fontSize: 11),
                   ),
                 ],
               ),

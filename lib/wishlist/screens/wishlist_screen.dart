@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/widgets/app_widgets.dart';
 import '../../home/data/models/product_model.dart';
 import '../controllers/wishlist_controller.dart';
 
@@ -197,53 +198,12 @@ class WishlistScreen extends StatelessWidget {
 
   // ─── Empty State ──────────────────────────────────────────────────────────
   Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.favorite_border, color: Colors.white30, size: 80),
-            const SizedBox(height: 20),
-            const Text(
-              'Your Wishlist is Empty',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Explore skincare items and add them to your wishlist to build your daily routine.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white38, fontSize: 13),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to product listing
-                Get.toNamed('/product-listing');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF8C6EFF),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 14,
-                ),
-              ),
-              child: const Text(
-                'Explore Products',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return SkincareEmptyState(
+      icon: Icons.favorite_border,
+      title: 'Your Wishlist is Empty',
+      description: 'Explore skincare items and add them to your wishlist to build your daily routine.',
+      buttonText: 'Explore Products',
+      onButtonPressed: () => Get.toNamed('/product-listing'),
     );
   }
 

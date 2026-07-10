@@ -29,6 +29,12 @@ class AuthController extends GetxController {
       return;
     }
 
+    if (password.length < 6) {
+      Get.snackbar('Error', 'Password must be at least 6 characters',
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
     try {
       isLoading.value = true;
 
@@ -68,6 +74,12 @@ class AuthController extends GetxController {
 
     if (!isValidEmail(email)) {
       Get.snackbar('Error', 'Please enter a valid email address',
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    if (password.length < 6) {
+      Get.snackbar('Error', 'Password must be at least 6 characters',
           snackPosition: SnackPosition.BOTTOM);
       return;
     }
@@ -164,6 +176,12 @@ class AuthController extends GetxController {
   }) async {
     if (password.isEmpty || confirmPassword.isEmpty) {
       Get.snackbar('Error', 'Please fill in all fields',
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    if (password.length < 6) {
+      Get.snackbar('Error', 'Password must be at least 6 characters',
           snackPosition: SnackPosition.BOTTOM);
       return;
     }

@@ -116,4 +116,9 @@ class WishlistController extends GetxController {
       duration: const Duration(seconds: 1),
     );
   }
+
+  void clearWishlist() {
+    wishlistItems.clear();
+    wishlistedIds.clear();
+  }
 }
