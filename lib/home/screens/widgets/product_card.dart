@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/models/product_model.dart';
 import '../../../../wishlist/controllers/wishlist_controller.dart';
+import '../../../../cart/controllers/cart_controller.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-  });
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    final WishlistController wishlistController = Get.find<WishlistController>();
+    final WishlistController wishlistController =
+        Get.find<WishlistController>();
+    final CartController cartController =
+        Get.find<CartController>();
     return GestureDetector(
       onTap: () {
         // Navigate to details screen, passing the ID
@@ -35,7 +36,9 @@ class ProductCard extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(15),
+                  ),
                   child: AspectRatio(
                     aspectRatio: 1.1,
                     child: Image.network(
@@ -43,7 +46,10 @@ class ProductCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => Container(
                         color: const Color.fromARGB(50, 140, 110, 255),
-                        child: const Icon(Icons.broken_image_outlined, color: Colors.white30),
+                        child: const Icon(
+                          Icons.broken_image_outlined,
+                          color: Colors.white30,
+                        ),
                       ),
                     ),
                   ),
@@ -72,7 +78,7 @@ class ProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             // Product Info
             Padding(
               padding: const EdgeInsets.all(10),
@@ -91,7 +97,7 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  
+
                   // Rating
                   Row(
                     children: [
@@ -107,16 +113,83 @@ class ProductCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  
+
                   // Price
                   Text(
                     '\$${product.price.toStringAsFixed(2)}',
                     style: const TextStyle(
                       color: Color(0xFFC7B6FF),
-                      fontSize: 15,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                   // Add to Cart / Quantity Stepper
+                  Obx(() {
+                    final int cartQty = cartController.getProductQuantity(product.id);
+                    if (cartQty > 0) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            icon: const Icon(
+                              Icons.remove,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            onPressed: () => cartController.updateQuantity(product.id, -1),
+                          ),
+                          Text(
+                            '$cartQty',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            icon: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            onPressed: () => cartController.updateQuantity(product.id, 1),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return SizedBox(
+                        width: double.infinity,
+                        height: 32,
+                        child: ElevatedButton(
+                          onPressed: () => cartController.addToCart(product),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF8C6EFF),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 0,
+                            ),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: const Text(
+                            'Add to Cart',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  }),
                 ],
               ),
             ),
