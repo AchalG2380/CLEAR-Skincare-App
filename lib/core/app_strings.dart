@@ -58,6 +58,9 @@ class AppStrings {
   // Form Field Hints
   static const String hintEmail = "Enter your email";
   static const String hintPassword = "Enter your password";
+  static const String hintCurrentPassword = "Enter your Current Password";
+  static const String hintNewPassword = "Enter your New Password";
+  static const String hintConfirmPassword = "Re-enter your New Password";
   static const String hintName = "Enter your full name";
   static const String hintPhone = "Enter 10-digit mobile number";
   static const String hintStreet = "Flat, House no., Building, Company, Apartment, Street";
@@ -131,6 +134,8 @@ class AppStrings {
   // Empty States
   static const String emptyWishlistTitle = "Your Wishlist is Empty";
   static const String emptyWishlistDesc = "Explore our premium skincare products and tap the heart icon to save your favorites!";
+  static const String wishlistTitle = "My Wishlist";
+  static const String exploreProducts = "Explore Products";
   static const String emptyCartTitle = "Your Cart is Empty";
   static const String emptyCartDesc = "Looks like you haven't added any skincare items yet. Start shopping to begin your routine!";
   static const String emptyOrdersTitle = "No Orders Yet";

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/app_colors.dart';
 import '../../core/app_strings.dart';
+import '../../core/widgets/app_widgets.dart';
 import '../controllers/onboarding_controller.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -20,20 +20,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {
       "title": AppStrings.onboardingSlide1Title,
       "subtitle": AppStrings.onboardingSlide1Subtitle,
-      "imageUrl":
-          "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&auto=format&fit=crop",
+      "imageUrl": "assets/images/moisturrizer2.webp",
     },
     {
       "title": AppStrings.onboardingSlide2Title,
       "subtitle": AppStrings.onboardingSlide2Subtitle,
-      "imageUrl":
-          "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=400&auto=format&fit=crop",
+      "imageUrl": "assets/images/cream.webp",
     },
     {
       "title": AppStrings.onboardingSlide3Title,
       "subtitle": AppStrings.onboardingSlide3Subtitle,
-      "imageUrl":
-          "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop",
+      "imageUrl": "assets/images/Serum.jpg",
     },
   ];
 
@@ -106,7 +103,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
-                              image: CachedNetworkImageProvider(
+                              image: getSkincareImageProvider(
                                 slide["imageUrl"]!,
                               ),
                               fit: BoxFit.cover,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/app_colors.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
@@ -99,7 +98,7 @@ class OrderListScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: Colors.white10),
                             image: DecorationImage(
-                              image: CachedNetworkImageProvider(
+                              image: getSkincareImageProvider(
                                 item.product.imageUrl,
                               ),
                               fit: BoxFit.cover,

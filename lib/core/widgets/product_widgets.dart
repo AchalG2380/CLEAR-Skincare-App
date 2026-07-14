@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../home/data/models/product_model.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import 'package:get/get.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../app_colors.dart';
 import '../app_strings.dart';
+import 'app_widgets.dart';
 
 // ─── Reusable Product Card Widget ───────────────────────────────────────────
 class ProductCard extends StatelessWidget {
@@ -43,19 +43,9 @@ class ProductCard extends StatelessWidget {
                   ),
                   child: AspectRatio(
                     aspectRatio: 1.1,
-                    child: CachedNetworkImage(
-                      imageUrl: product.imageUrl,
+                    child: getSkincareImage(
+                      product.imageUrl,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: AppColor.primary.withValues(alpha: 0.12),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: AppColor.primary.withValues(alpha: 0.20),
-                        child: const Icon(
-                          Icons.broken_image_outlined,
-                          color: Colors.white30,
-                        ),
-                      ),
                     ),
                   ),
                 ),
@@ -245,19 +235,9 @@ class SkincareCartItemRow extends StatelessWidget {
             child: SizedBox(
               width: 65,
               height: 65,
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
+              child: getSkincareImage(
+                imageUrl,
                 fit: BoxFit.cover,
-                placeholder: (_, __) =>
-                    Container(color: AppColor.primary.withValues(alpha: 0.12)),
-                errorWidget: (_, __, ___) => Container(
-                  color: AppColor.primary.withValues(alpha: 0.15),
-                  child: const Icon(
-                    Icons.broken_image_outlined,
-                    color: Colors.white30,
-                    size: 20,
-                  ),
-                ),
               ),
             ),
           ),

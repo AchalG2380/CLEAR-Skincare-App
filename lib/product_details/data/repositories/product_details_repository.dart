@@ -31,9 +31,9 @@ class ProductDetailsRepository {
         price: 29.99,
         rating: 4.8,
         imageUrls: [
-          'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=400&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=400&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop',
+          'assets/images/Serum.jpg',
+          'assets/images/moisturrizer4.webp',
+          'assets/images/moisturrizer2.webp',
         ],
         ingredients: 'Aqua (Water), L-Ascorbic Acid (Vitamin C) 10%, Propylene Glycol, Glycerin, Sodium Hyaluronate (Hyaluronic Acid), Tocopherol (Vitamin E), Phenoxyethanol, Ethylhexylglycerin.',
         benefits: [
@@ -57,8 +57,8 @@ class ProductDetailsRepository {
         price: 22.00,
         rating: 4.9,
         imageUrls: [
-          'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=400&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=400&auto=format&fit=crop',
+          'assets/images/moisturrizer2.webp',
+          'assets/images/moisturrizer3.jpeg',
         ],
         ingredients: 'Zinc Oxide, Titanium Dioxide, Purified Water, Silica, Dimethicone, Camellia Sinensis (Green Tea) Leaf Extract, Xanthan Gum, Potassium Sorbate.',
         benefits: [
@@ -81,8 +81,8 @@ class ProductDetailsRepository {
         price: 24.00,
         rating: 4.6,
         imageUrls: [
-          'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=400&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=400&auto=format&fit=crop',
+          'assets/images/cream.webp',
+          'assets/images/cream2.jpg',
         ],
         ingredients: 'Ceramide NP, Ceramide AP, Ceramide EOP, Phytosphingosine, Cholesterol, Hyaluronic Acid, Glycerin, Purified Water.',
         benefits: [
@@ -106,8 +106,8 @@ class ProductDetailsRepository {
         price: 18.50,
         rating: 4.5,
         imageUrls: [
-          'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=400&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop',
+          'assets/images/moisturrizer2.webp',
+          'assets/images/moisturrizer3.jpeg',
         ],
         ingredients: 'Green Tea Extract, Glycerin, Water, Sodium Cocoyl Isethionate, Citric Acid, Glyceryl Stearate.',
         benefits: [

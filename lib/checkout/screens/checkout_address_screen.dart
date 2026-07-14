@@ -174,7 +174,7 @@ class CheckoutAddressScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Phone: ${address.phone}',
+                      '${AppStrings.labelPhone}: ${address.phone}',
                       style: const TextStyle(
                         color: Colors.white54,
                         fontSize: 12,
@@ -453,11 +453,11 @@ class CheckoutStepIndicator extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Row(
         children: [
-          _buildStep(0, 'Address'),
+          _buildStep(0, AppStrings.stepAddress),
           _buildLine(0),
-          _buildStep(1, 'Payment'),
+          _buildStep(1, AppStrings.stepPayment),
           _buildLine(1),
-          _buildStep(2, 'Review'),
+          _buildStep(2, AppStrings.stepReview),
         ],
       ),
     );

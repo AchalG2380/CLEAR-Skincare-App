@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../app_colors.dart';
 import '../app_strings.dart';
@@ -244,4 +245,40 @@ class SkincareEmptyState extends StatelessWidget {
       ),
     );
   }
+}
+
+ImageProvider getSkincareImageProvider(String path) {
+  if (path.startsWith('assets/')) {
+    return AssetImage(path);
+  }
+  return CachedNetworkImageProvider(path);
+}
+
+Widget getSkincareImage(String path, {BoxFit fit = BoxFit.cover, double? width, double? height}) {
+  if (path.startsWith('assets/')) {
+    return Image.asset(
+      path,
+      fit: fit,
+      width: width,
+      height: height,
+      errorBuilder: (_, __, ___) => Container(
+        color: AppColor.primary.withValues(alpha: 0.15),
+        child: const Icon(Icons.broken_image_outlined, color: Colors.white30),
+      ),
+    );
+  }
+  return CachedNetworkImage(
+    imageUrl: path,
+    fit: fit,
+    width: width,
+    height: height,
+    placeholder: (_, __) => Container(color: AppColor.primary.withValues(alpha: 0.12)),
+    errorWidget: (_, __, ___) => Container(
+      color: AppColor.primary.withValues(alpha: 0.20),
+      child: const Icon(
+        Icons.broken_image_outlined,
+        color: Colors.white30,
+      ),
+    ),
+  );
 }

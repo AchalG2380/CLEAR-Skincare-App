@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/profile_controller.dart';
 import '../../auth/screens/widgets/auth_widgets.dart';
 
@@ -25,7 +26,7 @@ class ChangePasswordScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Change Password',
+          AppStrings.changePasswordTitle,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -49,7 +50,7 @@ class ChangePasswordScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Security Credentials',
+                AppStrings.securityCredentialsTitle,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -60,24 +61,24 @@ class ChangePasswordScreen extends StatelessWidget {
 
               AuthTextField(
                 controller: currentPasswordController,
-                labelText: 'Current Password',
-                hintText: 'Enter your Current Password',
+                labelText: AppStrings.currentPassword,
+                hintText: AppStrings.hintCurrentPassword,
                 obscureText: true,
                 prefixIcon: const Icon(Icons.lock_outline, color: Colors.white70),
               ),
 
               AuthTextField(
                 controller: newPasswordController,
-                labelText: 'New Password',
-                hintText: 'Enter your New Password',
+                labelText: AppStrings.newPassword,
+                hintText: AppStrings.hintNewPassword,
                 obscureText: true,
                 prefixIcon: const Icon(Icons.lock_outline, color: Colors.white70),
               ),
 
               AuthTextField(
                 controller: confirmPasswordController,
-                labelText: 'Confirm New Password',
-                hintText: 'Re-enter your New Password',
+                labelText: AppStrings.confirmPassword,
+                hintText: AppStrings.hintConfirmPassword,
                 obscureText: true,
                 prefixIcon: const Icon(Icons.lock_outline, color: Colors.white70),
               ),
@@ -86,7 +87,7 @@ class ChangePasswordScreen extends StatelessWidget {
 
               Obx(
                 () => AuthButton(
-                  text: 'Change Password',
+                  text: AppStrings.changePassword,
                   isLoading: controller.isChangingPassword.value,
                   onPressed: () async {
                     final success = await controller.changePassword(

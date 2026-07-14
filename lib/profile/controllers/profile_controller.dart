@@ -32,25 +32,28 @@ class ProfileController extends BaseSkincareController {
     required String phone,
   }) async {
     if (name.isEmpty || email.isEmpty || phone.isEmpty) {
-      Get.snackbar('Error', 'Please fill in all fields',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'Please fill in all fields',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return false;
     }
 
     if (!_isValidEmail(email)) {
-      Get.snackbar('Error', 'Please enter a valid email address',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'Please enter a valid email address',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return false;
     }
 
     try {
       isSaving.value = true;
       final current = profile.value;
-      final target = (current ?? ProfileModel(name: '', email: '', phone: '')).copyWith(
-        name: name,
-        email: email,
-        phone: phone,
-      );
+      final target = (current ?? ProfileModel(name: '', email: '', phone: ''))
+          .copyWith(name: name, email: email, phone: phone);
 
       final result = await _repo.updateProfile(target);
       profile.value = result;
@@ -80,21 +83,32 @@ class ProfileController extends BaseSkincareController {
     required String newPassword,
     required String confirmPassword,
   }) async {
-    if (currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
-      Get.snackbar('Error', 'Please fill in all fields',
-          snackPosition: SnackPosition.BOTTOM);
+    if (currentPassword.isEmpty ||
+        newPassword.isEmpty ||
+        confirmPassword.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Please fill in all fields',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return false;
     }
 
     if (newPassword.length < 6) {
-      Get.snackbar('Error', 'Password must be at least 6 characters',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'Password must be at least 6 characters',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return false;
     }
 
     if (newPassword != confirmPassword) {
-      Get.snackbar('Error', 'Passwords do not match',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'Passwords do not match',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return false;
     }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/app_colors.dart';
 import '../../core/app_strings.dart';
+import '../../core/widgets/app_widgets.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import '../controllers/product_details_controller.dart';
 import '../data/models/product_details_model.dart';
@@ -278,22 +278,10 @@ class ProductDetailsScreen extends StatelessWidget {
             itemCount: details.imageUrls.length,
             onPageChanged: controller.updateImageIndex,
             itemBuilder: (context, index) {
-              return CachedNetworkImage(
-                imageUrl: details.imageUrls[index],
+              return getSkincareImage(
+                details.imageUrls[index],
                 fit: BoxFit.cover,
                 width: double.infinity,
-                placeholder: (_, __) =>
-                    Container(color: AppColor.primary.withValues(alpha: 0.12)),
-                errorWidget: (_, __, ___) => Container(
-                  color: AppColor.primary.withValues(alpha: 0.16),
-                  child: const Center(
-                    child: Icon(
-                      Icons.broken_image_outlined,
-                      color: Colors.white30,
-                      size: 50,
-                    ),
-                  ),
-                ),
               );
             },
           ),
@@ -498,7 +486,7 @@ class ProductDetailsScreen extends StatelessWidget {
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () => Get.back(),
-            child: const Text('Back to Shop'),
+            child: const Text(AppStrings.backToShop),
           ),
         ],
       ),

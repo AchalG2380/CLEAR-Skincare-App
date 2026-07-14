@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../controllers/profile_controller.dart';
 import '../../auth/screens/widgets/auth_widgets.dart';
 
@@ -51,7 +52,7 @@ class EditProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Personal Information',
+                AppStrings.personalInfoTitle,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -62,23 +63,23 @@ class EditProfileScreen extends StatelessWidget {
 
               AuthTextField(
                 controller: nameController,
-                labelText: 'Name',
-                hintText: 'Enter your Name',
+                labelText: AppStrings.labelName,
+                hintText: AppStrings.hintName,
                 prefixIcon: const Icon(Icons.person_outline, color: Colors.white70),
               ),
 
               AuthTextField(
                 controller: emailController,
-                labelText: 'Email',
-                hintText: 'Enter your Email',
+                labelText: AppStrings.labelEmail,
+                hintText: AppStrings.hintEmail,
                 keyboardType: TextInputType.emailAddress,
                 prefixIcon: const Icon(Icons.email_outlined, color: Colors.white70),
               ),
 
               AuthTextField(
                 controller: phoneController,
-                labelText: 'Phone Number',
-                hintText: 'Enter your Phone Number',
+                labelText: AppStrings.labelPhone,
+                hintText: AppStrings.hintPhone,
                 keyboardType: TextInputType.phone,
                 prefixIcon: const Icon(Icons.phone_outlined, color: Colors.white70),
               ),
@@ -87,7 +88,7 @@ class EditProfileScreen extends StatelessWidget {
 
               Obx(
                 () => AuthButton(
-                  text: 'Save Changes',
+                  text: AppStrings.saveChanges,
                   isLoading: controller.isSaving.value,
                   onPressed: () async {
                     final success = await controller.updateProfile(

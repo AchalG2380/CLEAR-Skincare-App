@@ -22,7 +22,7 @@ class WishlistRepository {
         ProductModel(
           id: 's1',
           name: 'Vitamin C Radiance Serum',
-          imageUrl: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=300&auto=format&fit=crop',
+          imageUrl: 'assets/images/Serum.jpg',
           price: 29.99,
           rating: 4.8,
           isWishlisted: true,
@@ -32,7 +32,7 @@ class WishlistRepository {
         ProductModel(
           id: 'sun1',
           name: 'Matte Fluid SPF 50+',
-          imageUrl: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=300&auto=format&fit=crop',
+          imageUrl: 'assets/images/moisturrizer2.webp',
           price: 22.00,
           rating: 4.9,
           isWishlisted: true,

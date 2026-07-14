@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/app_colors.dart';
+import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../home/data/models/product_model.dart';
 import '../controllers/wishlist_controller.dart';
@@ -19,7 +19,7 @@ class WishlistScreen extends StatelessWidget {
         backgroundColor: AppColor.backgroundColor,
         elevation: 0,
         title: const Text(
-          'My Wishlist',
+          AppStrings.wishlistTitle,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -93,19 +93,9 @@ class WishlistScreen extends StatelessWidget {
                 child: SizedBox(
                   width: 80,
                   height: 80,
-                  child: CachedNetworkImage(
-                    imageUrl: product.imageUrl,
+                  child: getSkincareImage(
+                    product.imageUrl,
                     fit: BoxFit.cover,
-                    placeholder: (_, __) => Container(
-                      color: AppColor.primary.withValues(alpha: 0.12),
-                    ),
-                    errorWidget: (_, __, ___) => Container(
-                      color: AppColor.primary.withValues(alpha: 0.16),
-                      child: const Icon(
-                        Icons.broken_image_outlined,
-                        color: Colors.white30,
-                      ),
-                    ),
                   ),
                 ),
               ),
@@ -188,7 +178,7 @@ class WishlistScreen extends StatelessWidget {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: const Text(
-                    'Add to Cart',
+                    AppStrings.addToCart,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -204,10 +194,9 @@ class WishlistScreen extends StatelessWidget {
   Widget _buildEmptyState() {
     return SkincareEmptyState(
       icon: Icons.favorite_border,
-      title: 'Your Wishlist is Empty',
-      description:
-          'Explore skincare items and add them to your wishlist to build your daily routine.',
-      buttonText: 'Explore Products',
+      title: AppStrings.emptyWishlistTitle,
+      description: AppStrings.emptyWishlistDesc,
+      buttonText: AppStrings.exploreProducts,
       onButtonPressed: () => Get.toNamed('/product-listing'),
     );
   }

@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../data/models/home_response_model.dart';
 import '../../data/models/product_model.dart';
 import '../../../../core/app_colors.dart';
 import '../../../../core/app_strings.dart';
 import '../../../../core/widgets/product_widgets.dart';
+import '../../../../core/widgets/app_widgets.dart';
 
 // --- Pulseless / Animated Pulse Skeleton Shimmer Loader ---
 class HomeShimmer extends StatefulWidget {
@@ -181,7 +181,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(banner.imageUrl),
+                      image: getSkincareImageProvider(banner.imageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -266,7 +266,7 @@ class CategoryScrollList extends StatelessWidget {
                             width: 1.5,
                           ),
                           image: DecorationImage(
-                            image: CachedNetworkImageProvider(
+                            image: getSkincareImageProvider(
                               category.imageUrl,
                             ),
                             fit: BoxFit.cover,
@@ -395,7 +395,7 @@ class SkinConcernGrid extends StatelessWidget {
                           width: 1.5,
                         ),
                         image: DecorationImage(
-                          image: CachedNetworkImageProvider(concern.imageUrl),
+                          image: getSkincareImageProvider(concern.imageUrl),
                           fit: BoxFit.cover,
                         ),
                       ),

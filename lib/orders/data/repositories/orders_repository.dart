@@ -20,7 +20,7 @@ class OrdersRepository {
           product: ProductModel(
             id: 'c2',
             name: 'Micellar Cleansing Water',
-            imageUrl: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=300&auto=format&fit=crop',
+            imageUrl: 'assets/images/moisturrizer2.webp',
             price: 14.00,
             rating: 4.3,
             isWishlisted: false,
@@ -33,7 +33,7 @@ class OrdersRepository {
           product: ProductModel(
             id: 'm1',
             name: 'Barrier Recovery Cream',
-            imageUrl: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=300&auto=format&fit=crop',
+            imageUrl: 'assets/images/cream.webp',
             price: 24.00,
             rating: 4.6,
             isWishlisted: false,
@@ -74,7 +74,7 @@ class OrdersRepository {
           product: ProductModel(
             id: 's3',
             name: 'HA Plumping Serum',
-            imageUrl: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=300&auto=format&fit=crop',
+            imageUrl: 'assets/images/moisturrizer2.webp',
             price: 26.00,
             rating: 4.4,
             isWishlisted: false,

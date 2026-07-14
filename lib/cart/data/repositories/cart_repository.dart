@@ -24,7 +24,7 @@ class CartRepository {
           product: ProductModel(
             id: 's1',
             name: 'Vitamin C Radiance Serum',
-            imageUrl: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=300&auto=format&fit=crop',
+            imageUrl: 'assets/images/Serum.jpg',
             price: 29.99,
             rating: 4.8,
             isWishlisted: true,
@@ -37,7 +37,7 @@ class CartRepository {
           product: ProductModel(
             id: 'm1',
             name: 'Barrier Recovery Cream',
-            imageUrl: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=300&auto=format&fit=crop',
+            imageUrl: 'assets/images/cream.webp',
             price: 24.00,
             rating: 4.6,
             isWishlisted: false,

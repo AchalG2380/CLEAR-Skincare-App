@@ -29,17 +29,17 @@ class HomeRepository {
       "banners": [
         {
           "id": "b1",
-          "imageUrl": "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=600&auto=format&fit=crop",
+          "imageUrl": "assets/images/cream.webp",
           "productActionId": "p1"
         },
         {
           "id": "b2",
-          "imageUrl": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=600&auto=format&fit=crop",
+          "imageUrl": "assets/images/cream.webp",
           "productActionId": "p2"
         },
         {
           "id": "b3",
-          "imageUrl": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=600&auto=format&fit=crop",
+          "imageUrl": "assets/images/cream2.jpg",
           "productActionId": "p3"
         }
       ],
@@ -47,29 +47,29 @@ class HomeRepository {
         {
           "id": "cat_cleanser",
           "name": "Cleanser",
-          "imageUrl": "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=200&auto=format&fit=crop"
+          "imageUrl": "assets/images/moisturrizer2.webp"
         },
         {
           "id": "cat_moisturizer",
           "name": "Moisturizer",
-          "imageUrl": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop"
+          "imageUrl": "assets/images/moisturrizer2.webp"
         },
         {
           "id": "cat_serum",
           "name": "Serum",
-          "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=200&auto=format&fit=crop"
+          "imageUrl": "assets/images/Serum.jpg"
         },
         {
           "id": "cat_sunscreen",
           "name": "Sunscreen",
-          "imageUrl": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=200&auto=format&fit=crop"
+          "imageUrl": "assets/images/moisturrizer3.jpeg"
         }
       ],
       "bestSellers": [
         {
           "id": "p1",
           "name": "Vitamin C Radiance Serum",
-          "imageUrl": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop",
+          "imageUrl": "assets/images/Serum.jpg",
           "price": 29.99,
           "rating": 4.8,
           "isWishlisted": true
@@ -77,7 +77,7 @@ class HomeRepository {
         {
           "id": "p2",
           "name": "Gentle Cleansing Foam",
-          "imageUrl": "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=200&auto=format&fit=crop",
+          "imageUrl": "assets/images/moisturrizer4.webp",
           "price": 18.50,
           "rating": 4.5,
           "isWishlisted": false
@@ -85,7 +85,7 @@ class HomeRepository {
         {
           "id": "p3",
           "name": "Barrier Recovery Cream",
-          "imageUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=200&auto=format&fit=crop",
+          "imageUrl": "assets/images/cream.webp",
           "price": 24.00,
           "rating": 4.6,
           "isWishlisted": false
@@ -95,7 +95,7 @@ class HomeRepository {
         {
           "id": "p4",
           "name": "Matte Fluid SPF 50+",
-          "imageUrl": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=200&auto=format&fit=crop",
+          "imageUrl": "assets/images/cream2.jpg",
           "price": 22.00,
           "rating": 4.9,
           "isWishlisted": false
@@ -103,7 +103,7 @@ class HomeRepository {
         {
           "id": "p5",
           "name": "Night Renewal Retinol",
-          "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=200&auto=format&fit=crop",
+          "imageUrl": "assets/images/moisturrizer2.webp",
           "price": 35.00,
           "rating": 4.7,
           "isWishlisted": true
@@ -111,7 +111,7 @@ class HomeRepository {
         {
           "id": "p6",
           "name": "Hyaluronic Hydrating Gel",
-          "imageUrl": "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=200&auto=format&fit=crop",
+          "imageUrl": "assets/images/moisturrizer3.jpeg",
           "price": 26.00,
           "rating": 4.4,
           "isWishlisted": false
@@ -121,22 +121,22 @@ class HomeRepository {
         {
           "id": "con_acne",
           "name": "Acne & Blemishes",
-          "imageUrl": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop"
+          "imageUrl": "assets/images/moisturrizer4.webp"
         },
         {
           "id": "con_dry",
           "name": "Dry & Flaky Skin",
-          "imageUrl": "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=200&auto=format&fit=crop"
+          "imageUrl": "assets/images/moisturrizer2.webp"
         },
         {
           "id": "con_pigment",
           "name": "Dark Spots",
-          "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=200&auto=format&fit=crop"
+          "imageUrl": "assets/images/moisturrizer3.jpeg"
         },
         {
           "id": "con_aging",
           "name": "Anti-Aging",
-          "imageUrl": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=200&auto=format&fit=crop"
+          "imageUrl": "assets/images/moisturrizer4.webp"
         }
       ]
     };

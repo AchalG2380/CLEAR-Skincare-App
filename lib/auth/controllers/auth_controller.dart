@@ -19,20 +19,29 @@ class AuthController extends GetxController {
 
   Future<void> login({required String email, required String password}) async {
     if (email.isEmpty || password.isEmpty) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valAllFieldsRequired,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valAllFieldsRequired,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (!isValidEmail(email)) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valEmailInvalid,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valEmailInvalid,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (password.length < 6) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valPasswordLength,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valPasswordLength,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
@@ -55,8 +64,11 @@ class AuthController extends GetxController {
       Get.offAllNamed('/home');
     } catch (e) {
       isLoading.value = false;
-      Get.snackbar(AppStrings.loginFailed, e.toString().replaceAll('Exception: ', ''),
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.loginFailed,
+        e.toString().replaceAll('Exception: ', ''),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
@@ -67,27 +79,43 @@ class AuthController extends GetxController {
     required String password,
     required String confirmPassword,
   }) async {
-    if (name.isEmpty || email.isEmpty || phone.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valAllFieldsRequired,
-          snackPosition: SnackPosition.BOTTOM);
+    if (name.isEmpty ||
+        email.isEmpty ||
+        phone.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valAllFieldsRequired,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (!isValidEmail(email)) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valEmailInvalid,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valEmailInvalid,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (password.length < 6) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valPasswordLength,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valPasswordLength,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (password != confirmPassword) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valPasswordMismatch,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valPasswordMismatch,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
@@ -102,27 +130,39 @@ class AuthController extends GetxController {
       );
 
       isLoading.value = false;
-      Get.snackbar(AppStrings.successTitle, AppStrings.regSuccess,
-          snackPosition: SnackPosition.BOTTOM);
-      
+      Get.snackbar(
+        AppStrings.successTitle,
+        AppStrings.regSuccess,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
       Get.offAllNamed('/login');
     } catch (e) {
       isLoading.value = false;
-      Get.snackbar(AppStrings.regFailed, e.toString().replaceAll('Exception: ', ''),
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.regFailed,
+        e.toString().replaceAll('Exception: ', ''),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
   Future<void> forgotPassword({required String email}) async {
     if (email.isEmpty) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valEmailEmpty,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valEmailEmpty,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (!isValidEmail(email)) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valEmailInvalid,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valEmailInvalid,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
@@ -133,41 +173,53 @@ class AuthController extends GetxController {
       emailForFlow.value = email;
 
       isLoading.value = false;
-      Get.snackbar(AppStrings.otpSentTitle, AppStrings.otpSentMsg,
-          snackPosition: SnackPosition.BOTTOM);
-      
+      Get.snackbar(
+        AppStrings.otpSentTitle,
+        AppStrings.otpSentMsg,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
       Get.toNamed('/verify-otp');
     } catch (e) {
       isLoading.value = false;
-      Get.snackbar(AppStrings.errTitle, e.toString().replaceAll('Exception: ', ''),
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        e.toString().replaceAll('Exception: ', ''),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
   Future<void> verifyOtp({required String otp}) async {
     if (otp.isEmpty || otp.length < 6) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valOtpLength,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valOtpLength,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     try {
       isLoading.value = true;
 
-      await _authRepository.verifyOtp(
-        email: emailForFlow.value,
-        otp: otp,
-      );
+      await _authRepository.verifyOtp(email: emailForFlow.value, otp: otp);
 
       isLoading.value = false;
-      Get.snackbar(AppStrings.otpVerifiedTitle, AppStrings.otpVerifiedMsg,
-          snackPosition: SnackPosition.BOTTOM);
-      
+      Get.snackbar(
+        AppStrings.otpVerifiedTitle,
+        AppStrings.otpVerifiedMsg,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
       Get.toNamed('/reset-password');
     } catch (e) {
       isLoading.value = false;
-      Get.snackbar(AppStrings.verificationFailed, e.toString().replaceAll('Exception: ', ''),
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.verificationFailed,
+        e.toString().replaceAll('Exception: ', ''),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
@@ -176,20 +228,29 @@ class AuthController extends GetxController {
     required String confirmPassword,
   }) async {
     if (password.isEmpty || confirmPassword.isEmpty) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valAllFieldsRequired,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valAllFieldsRequired,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (password.length < 6) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valPasswordLength,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valPasswordLength,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (password != confirmPassword) {
-      Get.snackbar(AppStrings.errTitle, AppStrings.valPasswordMismatch,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.errTitle,
+        AppStrings.valPasswordMismatch,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
@@ -202,14 +263,20 @@ class AuthController extends GetxController {
       );
 
       isLoading.value = false;
-      Get.snackbar(AppStrings.successTitle, AppStrings.resetSuccess,
-          snackPosition: SnackPosition.BOTTOM);
-      
+      Get.snackbar(
+        AppStrings.successTitle,
+        AppStrings.resetSuccess,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
       Get.offAllNamed('/login');
     } catch (e) {
       isLoading.value = false;
-      Get.snackbar(AppStrings.resetFailed, e.toString().replaceAll('Exception: ', ''),
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppStrings.resetFailed,
+        e.toString().replaceAll('Exception: ', ''),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 }
