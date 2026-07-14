@@ -136,7 +136,11 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 28),
 
-                  // 6. Skin Concern Section
+                  // 6. Skin Type Quiz CTA
+                  const SkinQuizBanner(),
+                  const SizedBox(height: 24),
+
+                  // 7. Skin Concern Section
                   SkinConcernGrid(concerns: data.skinConcerns),
                   const SizedBox(height: 24),
                 ],

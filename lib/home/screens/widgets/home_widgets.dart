@@ -266,9 +266,7 @@ class CategoryScrollList extends StatelessWidget {
                             width: 1.5,
                           ),
                           image: DecorationImage(
-                            image: getSkincareImageProvider(
-                              category.imageUrl,
-                            ),
+                            image: getSkincareImageProvider(category.imageUrl),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -415,6 +413,77 @@ class SkinConcernGrid extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+// --- Skin Type Quiz CTA Banner ---
+class SkinQuizBanner extends StatelessWidget {
+  const SkinQuizBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Get.toNamed('/skin-quiz'),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              AppColor.primary.withValues(alpha: 0.18),
+              AppColor.surface,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColor.primary.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColor.primary.withValues(alpha: 0.15),
+              ),
+              child: const Icon(
+                Icons.spa_outlined,
+                color: AppColor.primary,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 14),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Not sure about your skin type?',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Take our 5-question quiz for personalized picks',
+                    style: TextStyle(color: AppColor.textMuted, fontSize: 12.5),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: AppColor.textDim,
+              size: 16,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

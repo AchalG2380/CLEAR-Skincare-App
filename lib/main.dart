@@ -22,6 +22,7 @@ import 'orders/screens/order_details_screen.dart';
 import 'profile/screens/edit_profile_screen.dart';
 import 'profile/screens/change_password_screen.dart';
 import 'profile/screens/my_addresses_screen.dart';
+import 'skin_quiz/screens/skin_quiz_screen.dart';
 import 'core/app_colors.dart';
 
 void main() {
@@ -93,6 +94,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/edit-profile', page: () => EditProfileScreen()),
         GetPage(name: '/change-password', page: () => ChangePasswordScreen()),
         GetPage(name: '/my-addresses', page: () => MyAddressesScreen()),
+        GetPage(name: '/skin-quiz', page: () => SkinQuizScreen()),
       ],
     );
   }
