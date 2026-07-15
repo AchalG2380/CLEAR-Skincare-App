@@ -16,7 +16,8 @@ class CheckoutController extends GetxController {
 
   // Selected step options
   final selectedAddress = Rxn<AddressModel>();
-  final selectedPaymentMethod = ''.obs; // e.g., 'Card', 'UPI', 'Cash on Delivery'
+  final selectedPaymentMethod =
+      ''.obs; // e.g., 'Card', 'UPI', 'Cash on Delivery'
 
   // Dummy Card Fields
   final cardNumber = ''.obs;
@@ -104,13 +105,19 @@ class CheckoutController extends GetxController {
     final payment = selectedPaymentMethod.value;
 
     if (address == null) {
-      Get.snackbar('Error', 'Please select a delivery address',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'Please select a delivery address',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
     if (payment.isEmpty) {
-      Get.snackbar('Error', 'Please select a payment method',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'Please select a payment method',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 

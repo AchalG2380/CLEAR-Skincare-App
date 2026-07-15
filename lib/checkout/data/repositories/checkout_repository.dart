@@ -4,9 +4,10 @@ import '../models/address_model.dart';
 import '../../../cart/data/models/cart_item_model.dart';
 import '../../../orders/data/models/order_model.dart';
 import '../../../orders/data/repositories/orders_repository.dart';
+import '../../../core/api_config.dart';
 
 class CheckoutRepository {
-  final String baseUrl = 'https://your-api-base-url.com/api';
+  final String baseUrl = ApiConfig.baseUrl;
 
   static final List<AddressModel> mockAddresses = [
     AddressModel(
@@ -37,7 +38,9 @@ class CheckoutRepository {
       );
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        return data.map((e) => AddressModel.fromJson(e as Map<String, dynamic>)).toList();
+        return data
+            .map((e) => AddressModel.fromJson(e as Map<String, dynamic>))
+            .toList();
       }
       throw Exception('Server returned status: ${response.statusCode}');
     } catch (_) {
@@ -46,7 +49,9 @@ class CheckoutRepository {
   }
 
   Future<AddressModel> addAddress(AddressModel address) async {
-    final newId = address.id.isEmpty ? 'addr_${DateTime.now().millisecondsSinceEpoch}' : address.id;
+    final newId = address.id.isEmpty
+        ? 'addr_${DateTime.now().millisecondsSinceEpoch}'
+        : address.id;
     final created = AddressModel(
       id: newId,
       name: address.name,
@@ -100,9 +105,7 @@ class CheckoutRepository {
     mockAddresses.removeWhere((e) => e.id == id);
 
     try {
-      final response = await http.delete(
-        Uri.parse('$baseUrl/address/$id'),
-      );
+      final response = await http.delete(Uri.parse('$baseUrl/address/$id'));
       if (response.statusCode == 200 || response.statusCode == 204) {
         return true;
       }
@@ -114,7 +117,20 @@ class CheckoutRepository {
 
   String _formatCurrentDate() {
     final now = DateTime.now();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     final month = months[now.month - 1];
     final ampm = now.hour >= 12 ? 'PM' : 'AM';
     final hour = now.hour % 12 == 0 ? 12 : now.hour % 12;
@@ -132,10 +148,13 @@ class CheckoutRepository {
     double deliveryFee = 0.0,
     String? couponCode,
   }) async {
-    final String orderId = 'CLR-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}';
-    
+    final String orderId =
+        'CLR-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}';
+
     // Construct and store mock order representation in shared static history
-    final orderItems = items.map((e) => CartItemModel.fromJson(e as Map<String, dynamic>)).toList();
+    final orderItems = items
+        .map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
+        .toList();
     final formattedDate = _formatCurrentDate();
 
     final newOrder = OrderModel(
@@ -150,11 +169,31 @@ class CheckoutRepository {
       discount: discount,
       deliveryFee: deliveryFee,
       trackingStages: [
-        TrackingStageModel(title: 'Order Placed', timestamp: formattedDate, isCompleted: true),
-        TrackingStageModel(title: 'Order Confirmed', timestamp: formattedDate, isCompleted: true),
-        TrackingStageModel(title: 'Shipped', timestamp: null, isCompleted: false),
-        TrackingStageModel(title: 'Out for Delivery', timestamp: null, isCompleted: false),
-        TrackingStageModel(title: 'Delivered', timestamp: null, isCompleted: false),
+        TrackingStageModel(
+          title: 'Order Placed',
+          timestamp: formattedDate,
+          isCompleted: true,
+        ),
+        TrackingStageModel(
+          title: 'Order Confirmed',
+          timestamp: formattedDate,
+          isCompleted: true,
+        ),
+        TrackingStageModel(
+          title: 'Shipped',
+          timestamp: null,
+          isCompleted: false,
+        ),
+        TrackingStageModel(
+          title: 'Out for Delivery',
+          timestamp: null,
+          isCompleted: false,
+        ),
+        TrackingStageModel(
+          title: 'Delivered',
+          timestamp: null,
+          isCompleted: false,
+        ),
       ],
     );
 

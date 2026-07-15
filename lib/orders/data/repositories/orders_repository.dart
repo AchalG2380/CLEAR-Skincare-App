@@ -4,9 +4,10 @@ import '../../data/models/order_model.dart';
 import '../../../cart/data/models/cart_item_model.dart';
 import '../../../checkout/data/models/address_model.dart';
 import '../../../home/data/models/product_model.dart';
+import '../../../core/api_config.dart';
 
 class OrdersRepository {
-  final String baseUrl = 'https://your-api-base-url.com/api';
+  final String baseUrl = ApiConfig.baseUrl;
 
   // Seed default past orders in static memory so they persist during session
   static final List<OrderModel> mockOrders = [
@@ -57,11 +58,31 @@ class OrdersRepository {
       discount: 0.0,
       deliveryFee: 0.0,
       trackingStages: [
-        TrackingStageModel(title: 'Order Placed', timestamp: 'Jul 9, 11:30 AM', isCompleted: true),
-        TrackingStageModel(title: 'Order Confirmed', timestamp: 'Jul 9, 11:45 AM', isCompleted: true),
-        TrackingStageModel(title: 'Shipped', timestamp: 'Jul 9, 3:00 PM', isCompleted: true),
-        TrackingStageModel(title: 'Out for Delivery', timestamp: 'Jul 10, 9:00 AM', isCompleted: true),
-        TrackingStageModel(title: 'Delivered', timestamp: 'Jul 10, 11:15 AM', isCompleted: true),
+        TrackingStageModel(
+          title: 'Order Placed',
+          timestamp: 'Jul 9, 11:30 AM',
+          isCompleted: true,
+        ),
+        TrackingStageModel(
+          title: 'Order Confirmed',
+          timestamp: 'Jul 9, 11:45 AM',
+          isCompleted: true,
+        ),
+        TrackingStageModel(
+          title: 'Shipped',
+          timestamp: 'Jul 9, 3:00 PM',
+          isCompleted: true,
+        ),
+        TrackingStageModel(
+          title: 'Out for Delivery',
+          timestamp: 'Jul 10, 9:00 AM',
+          isCompleted: true,
+        ),
+        TrackingStageModel(
+          title: 'Delivered',
+          timestamp: 'Jul 10, 11:15 AM',
+          isCompleted: true,
+        ),
       ],
     ),
     OrderModel(
@@ -98,11 +119,31 @@ class OrdersRepository {
       discount: 0.0,
       deliveryFee: 0.0,
       trackingStages: [
-        TrackingStageModel(title: 'Order Placed', timestamp: 'Jul 10, 8:00 AM', isCompleted: true),
-        TrackingStageModel(title: 'Order Confirmed', timestamp: 'Jul 10, 8:30 AM', isCompleted: true),
-        TrackingStageModel(title: 'Shipped', timestamp: null, isCompleted: false),
-        TrackingStageModel(title: 'Out for Delivery', timestamp: null, isCompleted: false),
-        TrackingStageModel(title: 'Delivered', timestamp: null, isCompleted: false),
+        TrackingStageModel(
+          title: 'Order Placed',
+          timestamp: 'Jul 10, 8:00 AM',
+          isCompleted: true,
+        ),
+        TrackingStageModel(
+          title: 'Order Confirmed',
+          timestamp: 'Jul 10, 8:30 AM',
+          isCompleted: true,
+        ),
+        TrackingStageModel(
+          title: 'Shipped',
+          timestamp: null,
+          isCompleted: false,
+        ),
+        TrackingStageModel(
+          title: 'Out for Delivery',
+          timestamp: null,
+          isCompleted: false,
+        ),
+        TrackingStageModel(
+          title: 'Delivered',
+          timestamp: null,
+          isCompleted: false,
+        ),
       ],
     ),
   ];
@@ -115,7 +156,9 @@ class OrdersRepository {
       );
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        return data.map((e) => OrderModel.fromJson(e as Map<String, dynamic>)).toList();
+        return data
+            .map((e) => OrderModel.fromJson(e as Map<String, dynamic>))
+            .toList();
       }
       throw Exception('Server returned status: ${response.statusCode}');
     } catch (_) {

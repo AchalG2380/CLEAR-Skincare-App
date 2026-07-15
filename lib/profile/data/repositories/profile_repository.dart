@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/profile_model.dart';
+import '../../../core/api_config.dart';
 
 class ProfileRepository {
-  final String baseUrl = 'https://your-api-base-url.com/api';
+  final String baseUrl = ApiConfig.baseUrl;
 
   // Shared static memory database instance so updates persist during the session
   static ProfileModel localProfile = ProfileModel(
@@ -70,10 +71,7 @@ class ProfileRepository {
       throw Exception('Server returned status: ${response.statusCode}');
     } catch (_) {
       // Mock fallback: success
-      return {
-        'status': 'success',
-        'message': 'Password changed successfully',
-      };
+      return {'status': 'success', 'message': 'Password changed successfully'};
     }
   }
 }

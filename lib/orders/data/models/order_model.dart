@@ -21,11 +21,7 @@ class TrackingStageModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'timestamp': timestamp,
-      'isCompleted': isCompleted,
-    };
+    return {'title': title, 'timestamp': timestamp, 'isCompleted': isCompleted};
   }
 }
 
@@ -62,17 +58,23 @@ class OrderModel {
       date: json['date'] as String? ?? '',
       total: (json['total'] as num?)?.toDouble() ?? 0.0,
       status: json['status'] as String? ?? 'Processing',
-      items: (json['items'] as List<dynamic>?)
+      items:
+          (json['items'] as List<dynamic>?)
               ?.map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      address: AddressModel.fromJson(json['address'] as Map<String, dynamic>? ?? {}),
+      address: AddressModel.fromJson(
+        json['address'] as Map<String, dynamic>? ?? {},
+      ),
       paymentMethod: json['paymentMethod'] as String? ?? '',
       subtotal: (json['subtotal'] as num?)?.toDouble() ?? 0.0,
       discount: (json['discount'] as num?)?.toDouble() ?? 0.0,
       deliveryFee: (json['deliveryFee'] as num?)?.toDouble() ?? 0.0,
-      trackingStages: (json['trackingStages'] as List<dynamic>?)
-              ?.map((e) => TrackingStageModel.fromJson(e as Map<String, dynamic>))
+      trackingStages:
+          (json['trackingStages'] as List<dynamic>?)
+              ?.map(
+                (e) => TrackingStageModel.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           [],
     );

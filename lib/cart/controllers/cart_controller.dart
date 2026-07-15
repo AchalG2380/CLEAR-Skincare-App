@@ -17,7 +17,7 @@ class CartController extends GetxController {
 
   // Track original quantities for rollbacks on API failures
   final Map<String, int> _originalQuantities = {};
-  
+
   // Track debounce timers per product ID
   final Map<String, Timer> _debounceTimers = {};
 
@@ -37,9 +37,13 @@ class CartController extends GetxController {
   }
 
   // --- Summary getters ---
-  int get totalCartItems => cartItems.fold(0, (sum, item) => sum + item.quantity);
+  int get totalCartItems =>
+      cartItems.fold(0, (sum, item) => sum + item.quantity);
 
-  double get subtotal => cartItems.fold(0.0, (sum, item) => sum + (item.product.price * item.quantity));
+  double get subtotal => cartItems.fold(
+    0.0,
+    (sum, item) => sum + (item.product.price * item.quantity),
+  );
 
   double get deliveryFee {
     if (subtotal == 0.0 || subtotal >= 50.0) {
@@ -84,7 +88,7 @@ class CartController extends GetxController {
       _originalQuantities[product.id] = item.quantity;
       item.quantity += qty;
       cartItems[index] = item; // Trigger update
-      
+
       _debounceQuantityUpdate(product.id, item.quantity);
     } else {
       // New item, add to list optimistically with specified qty
@@ -124,7 +128,7 @@ class CartController extends GetxController {
       // Update locally instantly
       item.quantity = newQty;
       cartItems[index] = item; // Trigger Obx updates
-      
+
       _debounceQuantityUpdate(productId, newQty);
     }
   }
@@ -135,27 +139,32 @@ class CartController extends GetxController {
     _debounceTimers[productId]?.cancel();
 
     // Schedule the network call after 500ms of inactivity
-    _debounceTimers[productId] = Timer(const Duration(milliseconds: 500), () async {
-      try {
-        await _repo.updateQuantity(productId, newQty);
-        // Successfully updated, clean up cache
-        _originalQuantities.remove(productId);
-      } catch (e) {
-        // Rollback to original value
-        final cachedQty = _originalQuantities[productId];
-        if (cachedQty != null) {
-          final index = cartItems.indexWhere((item) => item.product.id == productId);
-          if (index != -1) {
-            cartItems[index].quantity = cachedQty;
-            cartItems.refresh();
-          }
+    _debounceTimers[productId] = Timer(
+      const Duration(milliseconds: 500),
+      () async {
+        try {
+          await _repo.updateQuantity(productId, newQty);
+          // Successfully updated, clean up cache
           _originalQuantities.remove(productId);
-          _showSnackbar('Error', 'Failed to update quantity');
+        } catch (e) {
+          // Rollback to original value
+          final cachedQty = _originalQuantities[productId];
+          if (cachedQty != null) {
+            final index = cartItems.indexWhere(
+              (item) => item.product.id == productId,
+            );
+            if (index != -1) {
+              cartItems[index].quantity = cachedQty;
+              cartItems.refresh();
+            }
+            _originalQuantities.remove(productId);
+            _showSnackbar('Error', 'Failed to update quantity');
+          }
+        } finally {
+          _debounceTimers.remove(productId);
         }
-      } finally {
-        _debounceTimers.remove(productId);
-      }
-    });
+      },
+    );
   }
 
   // --- Remove from Cart ---
@@ -190,7 +199,10 @@ class CartController extends GetxController {
     } catch (e) {
       discount.value = 0.0;
       couponCode.value = '';
-      _showSnackbar('Invalid Coupon', e.toString().replaceAll('Exception: ', ''));
+      _showSnackbar(
+        'Invalid Coupon',
+        e.toString().replaceAll('Exception: ', ''),
+      );
       rethrow;
     }
   }

@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../home/data/models/product_model.dart';
 import '../models/cart_item_model.dart';
+import '../../../core/api_config.dart';
 
 class CartRepository {
-  final String baseUrl = 'https://your-api-base-url.com/api';
+  final String baseUrl = ApiConfig.baseUrl;
 
   Future<List<CartItemModel>> getCart() async {
     try {

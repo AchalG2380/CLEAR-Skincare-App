@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/home_response_model.dart';
+import '../../../core/api_config.dart';
 
 class HomeRepository {
-  final String baseUrl = 'https://your-api-base-url.com/api';
+  final String baseUrl = ApiConfig.baseUrl;
 
   Future<HomeResponseModel> getHomeData() async {
     try {
@@ -30,40 +31,40 @@ class HomeRepository {
         {
           "id": "b1",
           "imageUrl": "assets/images/cream.webp",
-          "productActionId": "p1"
+          "productActionId": "p1",
         },
         {
           "id": "b2",
           "imageUrl": "assets/images/cream.webp",
-          "productActionId": "p2"
+          "productActionId": "p2",
         },
         {
           "id": "b3",
           "imageUrl": "assets/images/cream2.jpg",
-          "productActionId": "p3"
-        }
+          "productActionId": "p3",
+        },
       ],
       "categories": [
         {
           "id": "cat_cleanser",
           "name": "Cleanser",
-          "imageUrl": "assets/images/moisturrizer2.webp"
+          "imageUrl": "assets/images/moisturrizer2.webp",
         },
         {
           "id": "cat_moisturizer",
           "name": "Moisturizer",
-          "imageUrl": "assets/images/moisturrizer2.webp"
+          "imageUrl": "assets/images/moisturrizer2.webp",
         },
         {
           "id": "cat_serum",
           "name": "Serum",
-          "imageUrl": "assets/images/Serum.jpg"
+          "imageUrl": "assets/images/Serum.jpg",
         },
         {
           "id": "cat_sunscreen",
           "name": "Sunscreen",
-          "imageUrl": "assets/images/moisturrizer3.jpeg"
-        }
+          "imageUrl": "assets/images/moisturrizer3.jpeg",
+        },
       ],
       "bestSellers": [
         {
@@ -72,7 +73,7 @@ class HomeRepository {
           "imageUrl": "assets/images/Serum.jpg",
           "price": 29.99,
           "rating": 4.8,
-          "isWishlisted": true
+          "isWishlisted": true,
         },
         {
           "id": "p2",
@@ -80,7 +81,7 @@ class HomeRepository {
           "imageUrl": "assets/images/moisturrizer4.webp",
           "price": 18.50,
           "rating": 4.5,
-          "isWishlisted": false
+          "isWishlisted": false,
         },
         {
           "id": "p3",
@@ -88,8 +89,8 @@ class HomeRepository {
           "imageUrl": "assets/images/cream.webp",
           "price": 24.00,
           "rating": 4.6,
-          "isWishlisted": false
-        }
+          "isWishlisted": false,
+        },
       ],
       "newArrivals": [
         {
@@ -98,7 +99,7 @@ class HomeRepository {
           "imageUrl": "assets/images/cream2.jpg",
           "price": 22.00,
           "rating": 4.9,
-          "isWishlisted": false
+          "isWishlisted": false,
         },
         {
           "id": "p5",
@@ -106,7 +107,7 @@ class HomeRepository {
           "imageUrl": "assets/images/moisturrizer2.webp",
           "price": 35.00,
           "rating": 4.7,
-          "isWishlisted": true
+          "isWishlisted": true,
         },
         {
           "id": "p6",
@@ -114,31 +115,31 @@ class HomeRepository {
           "imageUrl": "assets/images/moisturrizer3.jpeg",
           "price": 26.00,
           "rating": 4.4,
-          "isWishlisted": false
-        }
+          "isWishlisted": false,
+        },
       ],
       "skinConcerns": [
         {
           "id": "con_acne",
           "name": "Acne & Blemishes",
-          "imageUrl": "assets/images/moisturrizer4.webp"
+          "imageUrl": "assets/images/moisturrizer4.webp",
         },
         {
           "id": "con_dry",
           "name": "Dry & Flaky Skin",
-          "imageUrl": "assets/images/moisturrizer2.webp"
+          "imageUrl": "assets/images/moisturrizer2.webp",
         },
         {
           "id": "con_pigment",
           "name": "Dark Spots",
-          "imageUrl": "assets/images/moisturrizer3.jpeg"
+          "imageUrl": "assets/images/moisturrizer3.jpeg",
         },
         {
           "id": "con_aging",
           "name": "Anti-Aging",
-          "imageUrl": "assets/images/moisturrizer4.webp"
-        }
-      ]
+          "imageUrl": "assets/images/moisturrizer4.webp",
+        },
+      ],
     };
   }
 }

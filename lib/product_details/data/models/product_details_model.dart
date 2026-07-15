@@ -58,18 +58,40 @@ class ProductDetailsModel {
   });
 
   factory ProductDetailsModel.fromJson(Map<String, dynamic> json) {
-    var imgs = (json['imageUrls'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
-    var bens = (json['benefits'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
-    var revs = (json['reviews'] as List<dynamic>?)?.map((e) => ReviewModel.fromJson(e as Map<String, dynamic>)).toList() ?? [];
-    
+    var imgs =
+        (json['images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
+        (json['imageUrls'] as List<dynamic>?)
+            ?.map((e) => e.toString())
+            .toList() ??
+        [];
+    var bens =
+        (json['benefits'] as List<dynamic>?)
+            ?.map((e) => e.toString())
+            .toList() ??
+        [];
+    var revs =
+        (json['reviews'] as List<dynamic>?)
+            ?.map((e) => ReviewModel.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [];
+
+    // ingredients now comes back as List<String> from the backend — join into
+    // the single display string your UI already expects
+    String ingredientsText = '';
+    if (json['ingredients'] is List) {
+      ingredientsText = (json['ingredients'] as List).join(', ');
+    } else if (json['ingredients'] is String) {
+      ingredientsText = json['ingredients'];
+    }
+
     return ProductDetailsModel(
-      id: json['id'] ?? '',
+      id: json['_id'] ?? json['id'] ?? '',
       name: json['name'] ?? '',
       description: json['description'] ?? '',
       price: (json['price'] ?? 0.0).toDouble(),
       rating: (json['rating'] ?? 0.0).toDouble(),
       imageUrls: imgs,
-      ingredients: json['ingredients'] ?? '',
+      ingredients: ingredientsText,
       benefits: bens,
       usage: json['usage'] ?? '',
       reviews: revs,
@@ -98,7 +120,8 @@ class ProductDetailsModel {
       imageUrl: imageUrls.isNotEmpty ? imageUrls.first : '',
       price: price,
       rating: rating,
-      isWishlisted: false, // Reads dynamically from WishlistController.isWishlisted(id) anyway
+      isWishlisted:
+          false, // Reads dynamically from WishlistController.isWishlisted(id) anyway
     );
   }
 }

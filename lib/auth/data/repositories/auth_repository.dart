@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/login_response_model.dart';
+import '../../../core/api_config.dart';
 
 class AuthRepository {
-  final String baseUrl = 'https://your-api-base-url.com/api';
+  final String baseUrl = ApiConfig.baseUrl;
 
   Future<LoginResponseModel> login({
     required String email,
@@ -15,11 +16,11 @@ class AuthRepository {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
-      final data = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        return LoginResponseModel.fromJson(data);
+      final decoded = jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return LoginResponseModel.fromJson(ApiConfig.unwrap(decoded));
       }
-      throw Exception(data['message'] ?? 'Login failed. Please try again.');
+      throw Exception(ApiConfig.errorMessage(decoded));
     } catch (_) {
       // Server unreachable — return mock session for demo
       return LoginResponseModel(
@@ -50,7 +51,9 @@ class AuthRepository {
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) return data;
-      throw Exception(data['message'] ?? 'Registration failed. Please try again.');
+      throw Exception(
+        data['message'] ?? 'Registration failed. Please try again.',
+      );
     } catch (_) {
       return {'status': 'success', 'message': 'Registered successfully'};
     }

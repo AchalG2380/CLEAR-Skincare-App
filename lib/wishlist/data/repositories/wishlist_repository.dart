@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../home/data/models/product_model.dart';
+import '../../../core/api_config.dart';
 
 class WishlistRepository {
-  final String baseUrl = 'https://your-api-base-url.com/api';
+  final String baseUrl = ApiConfig.baseUrl;
 
   Future<List<ProductModel>> getWishlist() async {
     try {
