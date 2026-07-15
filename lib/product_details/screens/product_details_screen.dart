@@ -4,6 +4,7 @@ import '../../core/app_colors.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
+import '../../core/controllers/comparison_controller.dart';
 import '../controllers/product_details_controller.dart';
 import '../data/models/product_details_model.dart';
 
@@ -14,6 +15,7 @@ class ProductDetailsScreen extends StatelessWidget {
     ProductDetailsController(),
   );
   final WishlistController wishlistController = Get.find<WishlistController>();
+  final ComparisonController comparisonController = Get.find<ComparisonController>();
 
   @override
   Widget build(BuildContext context) {
@@ -102,13 +104,45 @@ class ProductDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Text(
-                            '\$${details.price.toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              color: AppColor.primary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                '\$${details.price.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  color: AppColor.primary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Spacer(),
+                              Obx(() {
+                                final isCompare = comparisonController.isCompared(details.id);
+                                return OutlinedButton.icon(
+                                  onPressed: () => comparisonController.toggleCompare(details.id),
+                                  icon: Icon(
+                                    isCompare ? Icons.balance : Icons.balance_outlined,
+                                    size: 16,
+                                    color: isCompare ? AppColor.primary : Colors.white70,
+                                  ),
+                                  label: Text(
+                                    isCompare ? 'Compared' : 'Add to Compare',
+                                    style: TextStyle(
+                                      color: isCompare ? AppColor.primary : Colors.white70,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: isCompare ? AppColor.primary : Colors.white24,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  ),
+                                );
+                              }),
+                            ],
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -219,6 +253,12 @@ class ProductDetailsScreen extends StatelessWidget {
               left: 0,
               right: 0,
               child: _buildStickyActionBar(details),
+            ),
+            const Positioned(
+              bottom: 90,
+              left: 16,
+              right: 16,
+              child: SkincareCompareFloatingBar(),
             ),
           ],
         );

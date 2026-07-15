@@ -24,6 +24,8 @@ import 'profile/screens/change_password_screen.dart';
 import 'profile/screens/my_addresses_screen.dart';
 import 'skin_quiz/screens/skin_quiz_screen.dart';
 import 'core/app_colors.dart';
+import 'core/controllers/comparison_controller.dart';
+import 'product_comparison/screens/comparison_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,9 @@ void main() {
 
   // Register CartController globally so it coordinates cart state app-wide
   Get.put(CartController(), permanent: true);
+
+  // Register ComparisonController globally so it coordinates comparison state app-wide
+  Get.put(ComparisonController(), permanent: true);
 
   runApp(const MyApp());
 }
@@ -95,6 +100,10 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/change-password', page: () => ChangePasswordScreen()),
         GetPage(name: '/my-addresses', page: () => MyAddressesScreen()),
         GetPage(name: '/skin-quiz', page: () => SkinQuizScreen()),
+        GetPage(
+          name: '/product-comparison',
+          page: () => const ComparisonScreen(),
+        ),
       ],
     );
   }

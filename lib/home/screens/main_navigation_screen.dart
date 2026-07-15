@@ -34,9 +34,19 @@ class MainNavigationScreen extends StatelessWidget {
     return Obx(
       () => Scaffold(
         backgroundColor: AppColor.backgroundColor,
-        body: IndexedStack(
-          index: controller.selectedIndex.value,
-          children: _pages,
+        body: Stack(
+          children: [
+            IndexedStack(
+              index: controller.selectedIndex.value,
+              children: _pages,
+            ),
+            const Positioned(
+              bottom: 16,
+              left: 16,
+              right: 16,
+              child: SkincareCompareFloatingBar(),
+            ),
+          ],
         ),
         bottomNavigationBar: SkincareBottomNavigationBar(
           currentIndex: controller.selectedIndex.value,

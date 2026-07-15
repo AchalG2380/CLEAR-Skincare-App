@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../controllers/comparison_controller.dart';
 import '../app_colors.dart';
 import '../app_strings.dart';
 
@@ -281,4 +282,88 @@ Widget getSkincareImage(String path, {BoxFit fit = BoxFit.cover, double? width, 
       ),
     ),
   );
+}
+
+// ─── Floating Product Compare Action Bar ─────────────────────────────────────
+class SkincareCompareFloatingBar extends StatelessWidget {
+  const SkincareCompareFloatingBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final ComparisonController comparisonController =
+        Get.find<ComparisonController>();
+
+    return Obx(() {
+      final count = comparisonController.comparedIds.length;
+      if (count == 0) return const SizedBox.shrink();
+
+      return GestureDetector(
+        onTap: () => Get.toNamed('/product-comparison'),
+        child: Container(
+          height: 52,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: AppColor.surface,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(
+              color: AppColor.primary,
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.primary.withValues(alpha: 0.20),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.balance,
+                color: AppColor.primary,
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Compare ($count / 3)',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              const Spacer(),
+              // "View" link
+              Text(
+                'View',
+                style: TextStyle(
+                  color: AppColor.buttonColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const VerticalDivider(
+                color: Colors.white24,
+                indent: 14,
+                endIndent: 14,
+                width: 1,
+              ),
+              const SizedBox(width: 8),
+              // Clear action
+              GestureDetector(
+                onTap: () => comparisonController.clearComparison(),
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.white54,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
 }

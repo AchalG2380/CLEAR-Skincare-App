@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../core/app_colors.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/product_widgets.dart';
+import '../../core/widgets/app_widgets.dart';
 import '../controllers/product_listing_controller.dart';
 
 class ProductListingScreen extends StatelessWidget {
@@ -17,20 +18,30 @@ class ProductListingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: _buildAppBar(context),
-      body: Column(
+      body: Stack(
         children: [
-          _buildSearchBar(),
-          Expanded(
-            child: Obx(() {
-              if (controller.isLoading.value) return _buildShimmer();
-              if (controller.hasError.value) return _buildError();
-              if (controller.products.isEmpty) return _buildEmpty();
-              return _buildGrid(
-                products: controller.products,
-                isLoadingMore: controller.isLoadingMore.value,
-                hasMore: controller.hasMore.value,
-              );
-            }),
+          Column(
+            children: [
+              _buildSearchBar(),
+              Expanded(
+                child: Obx(() {
+                  if (controller.isLoading.value) return _buildShimmer();
+                  if (controller.hasError.value) return _buildError();
+                  if (controller.products.isEmpty) return _buildEmpty();
+                  return _buildGrid(
+                    products: controller.products,
+                    isLoadingMore: controller.isLoadingMore.value,
+                    hasMore: controller.hasMore.value,
+                  );
+                }),
+              ),
+            ],
+          ),
+          const Positioned(
+            bottom: 16,
+            left: 16,
+            right: 16,
+            child: SkincareCompareFloatingBar(),
           ),
         ],
       ),

@@ -27,29 +27,39 @@ class WishlistScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Obx(() {
-        if (controller.isLoading.value && controller.wishlistItems.isEmpty) {
-          return _buildShimmerLoading();
-        }
+      body: Stack(
+        children: [
+          Obx(() {
+            if (controller.isLoading.value && controller.wishlistItems.isEmpty) {
+              return _buildShimmerLoading();
+            }
 
-        if (controller.wishlistItems.isEmpty) {
-          return _buildEmptyState();
-        }
+            if (controller.wishlistItems.isEmpty) {
+              return _buildEmptyState();
+            }
 
-        return RefreshIndicator(
-          onRefresh: controller.fetchWishlist,
-          color: AppColor.primary,
-          backgroundColor: AppColor.backgroundColor,
-          child: ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: controller.wishlistItems.length,
-            itemBuilder: (context, index) {
-              final product = controller.wishlistItems[index];
-              return _buildWishlistItem(product);
-            },
+            return RefreshIndicator(
+              onRefresh: controller.fetchWishlist,
+              color: AppColor.primary,
+              backgroundColor: AppColor.backgroundColor,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: controller.wishlistItems.length,
+                itemBuilder: (context, index) {
+                  final product = controller.wishlistItems[index];
+                  return _buildWishlistItem(product);
+                },
+              ),
+            );
+          }),
+          const Positioned(
+            bottom: 16,
+            left: 16,
+            right: 16,
+            child: SkincareCompareFloatingBar(),
           ),
-        );
-      }),
+        ],
+      ),
     );
   }
 

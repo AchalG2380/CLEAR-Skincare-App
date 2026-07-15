@@ -3,6 +3,7 @@ import '../../home/data/models/product_model.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import 'package:get/get.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../controllers/comparison_controller.dart';
 import '../app_colors.dart';
 import '../app_strings.dart';
 import 'app_widgets.dart';
@@ -18,6 +19,8 @@ class ProductCard extends StatelessWidget {
     final WishlistController wishlistController =
         Get.find<WishlistController>();
     final CartController cartController = Get.find<CartController>();
+    final ComparisonController comparisonController =
+        Get.find<ComparisonController>();
 
     return GestureDetector(
       onTap: () {
@@ -65,6 +68,28 @@ class ProductCard extends StatelessWidget {
                         child: Icon(
                           isWish ? Icons.favorite : Icons.favorite_border,
                           color: isWish ? AppColor.favoriteActive : Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+                Positioned(
+                  top: 8,
+                  left: 8,
+                  child: Obx(() {
+                    final isCompare = comparisonController.isCompared(product.id);
+                    return GestureDetector(
+                      onTap: () => comparisonController.toggleCompare(product.id),
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: AppColor.backgroundColor.withValues(alpha: 0.60),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isCompare ? Icons.balance : Icons.balance_outlined,
+                          color: isCompare ? AppColor.primary : Colors.white,
                           size: 18,
                         ),
                       ),
