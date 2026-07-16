@@ -239,4 +239,14 @@ class CartController extends GetxController {
     couponCode.value = '';
     _originalQuantities.clear();
   }
+
+  Future<void> clearCartOnServer() async {
+    final items = List<CartItemModel>.from(cartItems);
+    clearCart();
+    if (items.isNotEmpty) {
+      try {
+        await Future.wait(items.map((item) => _repo.removeFromCart(item.cartItemId)));
+      } catch (_) {}
+    }
+  }
 }

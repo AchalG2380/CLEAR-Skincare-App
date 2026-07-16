@@ -14,6 +14,17 @@ class CartRepository {
       );
       if (response.statusCode == 200) {
         final List<dynamic> data = ApiConfig.unwrap(jsonDecode(response.body)) as List<dynamic>;
+        
+        // Clean up any orphaned cart items in backend database
+        final orphanedIds = data
+            .where((e) => e['product'] == null || e['product'] is! Map)
+            .map((e) => e['_id'] as String?)
+            .whereType<String>()
+            .toList();
+        if (orphanedIds.isNotEmpty) {
+          await Future.wait(orphanedIds.map((id) => removeFromCart(id)));
+        }
+
         return data
             .where((e) => e['product'] != null && e['product'] is Map)
             .map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))

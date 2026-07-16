@@ -145,8 +145,8 @@ class CheckoutController extends GetxController {
 
       final orderId = order.id;
 
-      // Clear the Cart globally
-      Get.find<CartController>().clearCart();
+      // Clear the Cart globally and on the server
+      await Get.find<CartController>().clearCartOnServer();
 
       // Go to Success page
       Get.offAllNamed('/checkout-success', arguments: orderId);
