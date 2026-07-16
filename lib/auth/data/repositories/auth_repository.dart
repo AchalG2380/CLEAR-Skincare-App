@@ -12,23 +12,17 @@ class AuthRepository {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/login'),
+        Uri.parse('$baseUrl/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
       final decoded = jsonDecode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return LoginResponseModel.fromJson(ApiConfig.unwrap(decoded));
+        return LoginResponseModel.fromJson(decoded as Map<String, dynamic>);
       }
       throw Exception(ApiConfig.errorMessage(decoded));
-    } catch (_) {
-      // Server unreachable — return mock session for demo
-      return LoginResponseModel(
-        token: 'mock-jwt-token',
-        userId: 'mock-user-001',
-        name: 'Clear User',
-        email: email,
-      );
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -40,7 +34,7 @@ class AuthRepository {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/register'),
+        Uri.parse('$baseUrl/auth/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'name': name,
@@ -54,23 +48,23 @@ class AuthRepository {
       throw Exception(
         data['message'] ?? 'Registration failed. Please try again.',
       );
-    } catch (_) {
-      return {'status': 'success', 'message': 'Registered successfully'};
+    } catch (e) {
+      rethrow;
     }
   }
 
   Future<Map<String, dynamic>> forgotPassword({required String email}) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/forgot-password'),
+        Uri.parse('$baseUrl/auth/forgot-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email}),
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) return data;
       throw Exception(data['message'] ?? 'Forgot password request failed.');
-    } catch (_) {
-      return {'status': 'success', 'message': 'OTP sent to $email'};
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -80,15 +74,15 @@ class AuthRepository {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/verify-otp'),
+        Uri.parse('$baseUrl/auth/verify-otp'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'otp': otp}),
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) return data;
       throw Exception(data['message'] ?? 'OTP verification failed.');
-    } catch (_) {
-      return {'status': 'success', 'resetToken': 'mock-reset-token'};
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -98,15 +92,15 @@ class AuthRepository {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/reset-password'),
+        Uri.parse('$baseUrl/auth/reset-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) return data;
       throw Exception(data['message'] ?? 'Password reset failed.');
-    } catch (_) {
-      return {'status': 'success', 'message': 'Password reset successfully'};
+    } catch (e) {
+      rethrow;
     }
   }
 }

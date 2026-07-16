@@ -82,7 +82,7 @@ class CheckoutReviewScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                _buildPriceSummaryCard(),
+                Obx(() => _buildPriceSummaryCard()),
 
                 const SizedBox(height: 24),
               ],
@@ -282,6 +282,14 @@ class CheckoutReviewScreen extends StatelessWidget {
                 ? AppColor.freeShipping
                 : Colors.white,
           ),
+          const SizedBox(height: 8),
+          if (controller.tax.value > 0) ...[
+            _buildPriceRow(
+              'Tax',
+              '\$${controller.tax.value.toStringAsFixed(2)}',
+            ),
+            const SizedBox(height: 8),
+          ],
           const Divider(color: Colors.white10, height: 24),
           _buildPriceRow(
             AppStrings.totalAmount,

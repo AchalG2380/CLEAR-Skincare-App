@@ -53,31 +53,83 @@ class OrderModel {
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
+    final statusVal = json['status'] as String? ?? json['orderStatus'] as String? ?? 'Processing';
+    final rawDate = json['date'] as String? ?? json['createdAt'] as String? ?? '';
+    final formattedDate = _formatDate(rawDate);
+
     return OrderModel(
-      id: json['id'] as String? ?? '',
-      date: json['date'] as String? ?? '',
+      id: (json['_id'] ?? json['id']) as String? ?? '',
+      date: formattedDate.isNotEmpty ? formattedDate : rawDate,
       total: (json['total'] as num?)?.toDouble() ?? 0.0,
-      status: json['status'] as String? ?? 'Processing',
+      status: statusVal,
       items:
           (json['items'] as List<dynamic>?)
               ?.map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      address: AddressModel.fromJson(
-        json['address'] as Map<String, dynamic>? ?? {},
-      ),
-      paymentMethod: json['paymentMethod'] as String? ?? '',
+      address: json['address'] is Map
+          ? AddressModel.fromJson(json['address'] as Map<String, dynamic>)
+          : AddressModel(
+              id: json['address'] as String? ?? '',
+              name: '',
+              phone: '',
+              street: '',
+              city: '',
+              pincode: '',
+              state: '',
+            ),
+      paymentMethod: json['paymentMethod'] as String? ?? 'COD',
       subtotal: (json['subtotal'] as num?)?.toDouble() ?? 0.0,
       discount: (json['discount'] as num?)?.toDouble() ?? 0.0,
-      deliveryFee: (json['deliveryFee'] as num?)?.toDouble() ?? 0.0,
+      deliveryFee: (json['shipping'] as num?)?.toDouble() ?? (json['deliveryFee'] as num?)?.toDouble() ?? 0.0,
       trackingStages:
           (json['trackingStages'] as List<dynamic>?)
               ?.map(
                 (e) => TrackingStageModel.fromJson(e as Map<String, dynamic>),
               )
               .toList() ??
-          [],
+          _generateTrackingStages(statusVal, formattedDate.isNotEmpty ? formattedDate : rawDate),
     );
+  }
+
+  static String _formatDate(String? isoString) {
+    if (isoString == null || isoString.isEmpty) return '';
+    try {
+      final parsed = DateTime.parse(isoString);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      final month = months[parsed.month - 1];
+      final ampm = parsed.hour >= 12 ? 'PM' : 'AM';
+      final hour = parsed.hour % 12 == 0 ? 12 : parsed.hour % 12;
+      final minute = parsed.minute.toString().padLeft(2, '0');
+      return '$month ${parsed.day}, ${parsed.year}, $hour:$minute $ampm';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  static List<TrackingStageModel> _generateTrackingStages(String status, String dateStr) {
+    final stages = <String>['Order Placed', 'Order Confirmed', 'Shipped', 'Out for Delivery', 'Delivered'];
+    if (status == 'Cancelled') {
+      return [
+        TrackingStageModel(title: 'Order Placed', timestamp: dateStr, isCompleted: true),
+        TrackingStageModel(title: 'Cancelled', timestamp: dateStr, isCompleted: true),
+      ];
+    }
+    
+    int completedUpTo = 0;
+    if (status == 'Placed') completedUpTo = 0;
+    else if (status == 'Processing') completedUpTo = 1;
+    else if (status == 'Shipped') completedUpTo = 2;
+    else if (status == 'Delivered') completedUpTo = 4;
+    
+    return List.generate(stages.length, (index) {
+      final isCompleted = index <= completedUpTo;
+      return TrackingStageModel(
+        title: stages[index],
+        timestamp: isCompleted ? (index == 0 ? dateStr : '') : null,
+        isCompleted: isCompleted,
+      );
+    });
   }
 
   Map<String, dynamic> toJson() {

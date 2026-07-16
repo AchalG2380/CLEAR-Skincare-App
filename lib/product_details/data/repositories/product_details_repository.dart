@@ -13,8 +13,8 @@ class ProductDetailsRepository {
         headers: {'Content-Type': 'application/json'},
       );
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        return ProductDetailsModel.fromJson(data);
+        final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+        return ProductDetailsModel.fromJson(ApiConfig.unwrap(decoded));
       }
       throw Exception('Server returned status ${response.statusCode}');
     } catch (_) {

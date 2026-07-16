@@ -89,15 +89,20 @@ class CartController extends GetxController {
       item.quantity += qty;
       cartItems[index] = item; // Trigger update
 
-      _debounceQuantityUpdate(product.id, item.quantity);
+      _debounceQuantityUpdate(item.cartItemId, item.quantity);
     } else {
       // New item, add to list optimistically with specified qty
-      final newItem = CartItemModel(product: product, quantity: qty);
+      final newItem = CartItemModel(
+        cartItemId: 'temp_${product.id}',
+        product: product,
+        quantity: qty,
+      );
       cartItems.add(newItem);
 
       try {
         await _repo.addToCart(product.id, qty);
         _showSnackbar('Added to Cart', '${product.name} added to your Cart');
+        await fetchCart();
       } catch (e) {
         // Rollback
         cartItems.removeWhere((item) => item.product.id == product.id);
@@ -107,12 +112,17 @@ class CartController extends GetxController {
   }
 
   // --- Update Quantity (Optimistic & Debounced) ---
-  void updateQuantity(String productId, int delta) {
-    final index = cartItems.indexWhere((item) => item.product.id == productId);
+  void updateQuantity(String idOrCartItemId, int delta) {
+    var index = cartItems.indexWhere((item) => item.cartItemId == idOrCartItemId);
+    if (index == -1) {
+      index = cartItems.indexWhere((item) => item.product.id == idOrCartItemId);
+    }
     if (index == -1) return;
 
     final item = cartItems[index];
     final originalQty = item.quantity;
+    final productId = item.product.id;
+    final cartItemId = item.cartItemId;
 
     // Cache original quantity if not already cached during this tap sequence
     if (!_originalQuantities.containsKey(productId)) {
@@ -123,59 +133,64 @@ class CartController extends GetxController {
 
     if (newQty <= 0) {
       // Remove from cart optimistically
-      removeFromCart(productId);
+      removeFromCart(cartItemId);
     } else {
       // Update locally instantly
       item.quantity = newQty;
       cartItems[index] = item; // Trigger Obx updates
 
-      _debounceQuantityUpdate(productId, newQty);
+      _debounceQuantityUpdate(cartItemId, newQty);
     }
   }
 
   // --- Debounce mechanism ---
-  void _debounceQuantityUpdate(String productId, int newQty) {
+  void _debounceQuantityUpdate(String cartItemId, int newQty) {
     // Cancel any pending timer for this product
-    _debounceTimers[productId]?.cancel();
+    _debounceTimers[cartItemId]?.cancel();
 
     // Schedule the network call after 500ms of inactivity
-    _debounceTimers[productId] = Timer(
+    _debounceTimers[cartItemId] = Timer(
       const Duration(milliseconds: 500),
       () async {
         try {
-          await _repo.updateQuantity(productId, newQty);
+          await _repo.updateQuantity(cartItemId, newQty);
           // Successfully updated, clean up cache
-          _originalQuantities.remove(productId);
+          final index = cartItems.indexWhere((item) => item.cartItemId == cartItemId);
+          if (index != -1) {
+            _originalQuantities.remove(cartItems[index].product.id);
+          }
         } catch (e) {
           // Rollback to original value
-          final cachedQty = _originalQuantities[productId];
-          if (cachedQty != null) {
-            final index = cartItems.indexWhere(
-              (item) => item.product.id == productId,
-            );
-            if (index != -1) {
+          final index = cartItems.indexWhere((item) => item.cartItemId == cartItemId);
+          if (index != -1) {
+            final productId = cartItems[index].product.id;
+            final cachedQty = _originalQuantities[productId];
+            if (cachedQty != null) {
               cartItems[index].quantity = cachedQty;
               cartItems.refresh();
+              _originalQuantities.remove(productId);
             }
-            _originalQuantities.remove(productId);
             _showSnackbar('Error', 'Failed to update quantity');
           }
         } finally {
-          _debounceTimers.remove(productId);
+          _debounceTimers.remove(cartItemId);
         }
       },
     );
   }
 
   // --- Remove from Cart ---
-  Future<void> removeFromCart(String productId) async {
-    final index = cartItems.indexWhere((item) => item.product.id == productId);
+  Future<void> removeFromCart(String idOrCartItemId) async {
+    var index = cartItems.indexWhere((item) => item.cartItemId == idOrCartItemId);
+    if (index == -1) {
+      index = cartItems.indexWhere((item) => item.product.id == idOrCartItemId);
+    }
     if (index == -1) return;
 
     final removedItem = cartItems.removeAt(index);
 
     try {
-      await _repo.removeFromCart(productId);
+      await _repo.removeFromCart(removedItem.cartItemId);
       _showSnackbar('Removed', '${removedItem.product.name} removed from Cart');
     } catch (e) {
       // Rollback

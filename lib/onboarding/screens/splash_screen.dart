@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_colors.dart';
+import '../../cart/controllers/cart_controller.dart';
+import '../../wishlist/controllers/wishlist_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,9 +21,25 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
-    Get.offAllNamed('/onboarding');
+
+    final prefs = await SharedPreferences.getInstance();
+    final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    final token = prefs.getString('token') ?? '';
+
+    if (isLoggedIn && token.isNotEmpty) {
+      // Reload controllers with saved token
+      if (Get.isRegistered<CartController>()) {
+        Get.find<CartController>().fetchCart();
+      }
+      if (Get.isRegistered<WishlistController>()) {
+        Get.find<WishlistController>().fetchWishlist();
+      }
+      Get.offAllNamed('/home');
+    } else {
+      Get.offAllNamed('/onboarding');
+    }
   }
 
   @override

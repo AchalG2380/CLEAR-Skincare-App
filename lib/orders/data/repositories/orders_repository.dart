@@ -18,6 +18,7 @@ class OrdersRepository {
       status: 'Delivered',
       items: [
         CartItemModel(
+          cartItemId: 'mo_c2',
           product: ProductModel(
             id: 'c2',
             name: 'Micellar Cleansing Water',
@@ -31,6 +32,7 @@ class OrdersRepository {
           quantity: 1,
         ),
         CartItemModel(
+          cartItemId: 'mo_m1',
           product: ProductModel(
             id: 'm1',
             name: 'Barrier Recovery Cream',
@@ -45,7 +47,7 @@ class OrdersRepository {
         ),
       ],
       address: AddressModel(
-        id: 'addr_001',
+        id: '6a58a0ed750bff6280d85d01',
         name: 'Jane Doe',
         phone: '+1 555-0199',
         street: '123 Glow Avenue, Suite 101',
@@ -92,6 +94,7 @@ class OrdersRepository {
       status: 'Processing',
       items: [
         CartItemModel(
+          cartItemId: 'mo_s3',
           product: ProductModel(
             id: 's3',
             name: 'HA Plumping Serum',
@@ -106,7 +109,7 @@ class OrdersRepository {
         ),
       ],
       address: AddressModel(
-        id: 'addr_002',
+        id: '6a58a0ed750bff6280d85d02',
         name: 'Jane Doe Office',
         phone: '+1 555-0188',
         street: '456 Radiance Blvd, Floor 4',
@@ -152,10 +155,10 @@ class OrdersRepository {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/orders'),
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.authHeaders(),
       );
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+        final List<dynamic> data = ApiConfig.unwrap(jsonDecode(response.body)) as List<dynamic>;
         return data
             .map((e) => OrderModel.fromJson(e as Map<String, dynamic>))
             .toList();
@@ -171,10 +174,10 @@ class OrdersRepository {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/orders/$id'),
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.authHeaders(),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
+        final Map<String, dynamic> data = ApiConfig.unwrap(jsonDecode(response.body)) as Map<String, dynamic>;
         return OrderModel.fromJson(data);
       }
       throw Exception('Server returned status: ${response.statusCode}');

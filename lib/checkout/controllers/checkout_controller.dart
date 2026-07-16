@@ -4,6 +4,7 @@ import '../../core/app_colors.dart';
 import '../data/models/address_model.dart';
 import '../data/repositories/checkout_repository.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../../orders/data/models/order_model.dart';
 
 class CheckoutController extends GetxController {
   final CheckoutRepository _repo = CheckoutRepository();
@@ -28,6 +29,7 @@ class CheckoutController extends GetxController {
   var subtotal = 0.0.obs;
   var discount = 0.0.obs;
   var deliveryFee = 0.0.obs;
+  var tax = 0.0.obs;
   var total = 0.0.obs;
   final items = <dynamic>[].obs;
 
@@ -43,6 +45,19 @@ class CheckoutController extends GetxController {
       items.value = args['items'] as List<dynamic>? ?? [];
     }
     fetchAddresses();
+    fetchCheckoutSummary();
+    ever(selectedAddress, (_) => fetchCheckoutSummary());
+  }
+
+  Future<void> fetchCheckoutSummary() async {
+    try {
+      final summary = await _repo.getCheckoutSummary();
+      subtotal.value = (summary['subtotal'] as num?)?.toDouble() ?? 0.0;
+      discount.value = (summary['discount'] as num?)?.toDouble() ?? 0.0;
+      deliveryFee.value = (summary['shipping'] as num?)?.toDouble() ?? (summary['deliveryFee'] as num?)?.toDouble() ?? 0.0;
+      tax.value = (summary['tax'] as num?)?.toDouble() ?? 0.0;
+      total.value = (summary['total'] as num?)?.toDouble() ?? 0.0;
+    } catch (_) {}
   }
 
   Future<void> fetchAddresses() async {
@@ -124,17 +139,11 @@ class CheckoutController extends GetxController {
     try {
       isPlacingOrder.value = true;
 
-      final result = await _repo.placeOrder(
-        address: address,
-        paymentMethod: payment,
-        items: items,
-        total: total.value,
-        subtotal: subtotal.value,
-        discount: discount.value,
-        deliveryFee: deliveryFee.value,
+      final OrderModel order = await _repo.placeOrder(
+        addressId: address.id,
       );
 
-      final orderId = result['orderId'] ?? 'CLR-UNKNOWN';
+      final orderId = order.id;
 
       // Clear the Cart globally
       Get.find<CartController>().clearCart();

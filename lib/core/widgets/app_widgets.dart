@@ -248,17 +248,71 @@ class SkincareEmptyState extends StatelessWidget {
   }
 }
 
-ImageProvider getSkincareImageProvider(String path) {
-  if (path.startsWith('assets/')) {
-    return AssetImage(path);
+String mapDatabaseImagePath(String path) {
+  if (path.isEmpty) return 'assets/images/cream.webp';
+  if (path.startsWith('assets/')) return path;
+
+  // Extract filename
+  final filename = path.split('/').last.toLowerCase();
+
+  switch (filename) {
+    // Banners
+    case 'banner1.jpg':
+      return 'assets/images/cream.webp';
+    case 'banner2.jpg':
+      return 'assets/images/cream.webp';
+    case 'banner3.jpg':
+      return 'assets/images/cream2.jpg';
+
+    // Categories / Products
+    case 'serum.jpg':
+    case 'vitamin-c-serum.jpg':
+    case 'vitamin-c-face-serum.jpg':
+    case 'niacinamide.jpg':
+      return 'assets/images/Serum.jpg';
+
+    case 'moisturizer.jpg':
+    case 'nightcream.jpg':
+    case 'night-repair-cream.jpg':
+      return 'assets/images/moisturrizer2.webp';
+
+    case 'sunscreen.jpg':
+    case 'matte-spf.jpg':
+    case 'matte-sunscreen-gel.jpg':
+      return 'assets/images/moisturrizer3.jpeg';
+
+    case 'cleanser.jpg':
+    case 'facewash.jpg':
+    case 'foaming-face-wash.jpg':
+    case 'gentle-face-cleanser.jpg':
+      return 'assets/images/moisturrizer4.webp';
+
+    default:
+      if (!path.startsWith('http') &&
+          (path.endsWith('.jpg') ||
+              path.endsWith('.png') ||
+              path.endsWith('.webp') ||
+              path.endsWith('.jpeg') ||
+              path.endsWith('.avif'))) {
+        return 'assets/images/cream.webp';
+      }
+      return path;
   }
-  return CachedNetworkImageProvider(path);
+}
+
+ImageProvider getSkincareImageProvider(String path) {
+  final mappedPath = mapDatabaseImagePath(path);
+  if (mappedPath.startsWith('assets/')) {
+    return AssetImage(mappedPath);
+  }
+  return CachedNetworkImageProvider(mappedPath);
 }
 
 Widget getSkincareImage(String path, {BoxFit fit = BoxFit.cover, double? width, double? height}) {
-  if (path.startsWith('assets/')) {
+  final mappedPath = mapDatabaseImagePath(path);
+  if (mappedPath.startsWith('assets/')) {
     return Image.asset(
-      path,
+      mappedPath,
       fit: fit,
       width: width,
       height: height,
@@ -269,7 +323,7 @@ Widget getSkincareImage(String path, {BoxFit fit = BoxFit.cover, double? width, 
     );
   }
   return CachedNetworkImage(
-    imageUrl: path,
+    imageUrl: mappedPath,
     fit: fit,
     width: width,
     height: height,

@@ -80,7 +80,7 @@ class CartScreen extends StatelessWidget {
         child: const Icon(Icons.delete_sweep, color: Colors.white, size: 28),
       ),
       onDismissed: (_) {
-        controller.removeFromCart(item.product.id);
+        controller.removeFromCart(item.cartItemId);
       },
       child: SkincareCartItemRow(
         name: item.product.name,
@@ -88,9 +88,9 @@ class CartScreen extends StatelessWidget {
         price: item.product.price,
         quantity: item.quantity,
         isEditable: true,
-        onIncrement: () => controller.updateQuantity(item.product.id, 1),
-        onDecrement: () => controller.updateQuantity(item.product.id, -1),
-        onRemove: () => controller.removeFromCart(item.product.id),
+        onIncrement: () => controller.updateQuantity(item.cartItemId, 1),
+        onDecrement: () => controller.updateQuantity(item.cartItemId, -1),
+        onRemove: () => controller.removeFromCart(item.cartItemId),
       ),
     );
   }

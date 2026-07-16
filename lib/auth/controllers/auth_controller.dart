@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_strings.dart';
 import '../data/repositories/auth_repository.dart';
+import '../../cart/controllers/cart_controller.dart';
+import '../../wishlist/controllers/wishlist_controller.dart';
+import '../../profile/controllers/profile_controller.dart';
 
 class AuthController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();
@@ -58,6 +61,17 @@ class AuthController extends GetxController {
       await prefs.setString('token', result.token);
       await prefs.setString('userId', result.userId);
       await prefs.setBool('isLoggedIn', true);
+
+      // Re-fetch cart and wishlist with the new session token
+      if (Get.isRegistered<CartController>()) {
+        Get.find<CartController>().fetchCart();
+      }
+      if (Get.isRegistered<WishlistController>()) {
+        Get.find<WishlistController>().fetchWishlist();
+      }
+      if (Get.isRegistered<ProfileController>()) {
+        Get.find<ProfileController>().fetchProfile();
+      }
 
       isLoading.value = false;
 

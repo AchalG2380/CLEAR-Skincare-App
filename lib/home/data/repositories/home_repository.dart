@@ -14,8 +14,8 @@ class HomeRepository {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return HomeResponseModel.fromJson(data);
+        final decoded = jsonDecode(response.body);
+        return HomeResponseModel.fromJson(ApiConfig.unwrap(decoded));
       } else {
         throw Exception('Server returned status: ${response.statusCode}');
       }

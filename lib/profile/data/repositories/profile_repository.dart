@@ -18,11 +18,11 @@ class ProfileRepository {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/profile'),
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.authHeaders(),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        return ProfileModel.fromJson(data);
+        final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+        return ProfileModel.fromJson(ApiConfig.unwrap(decoded) as Map<String, dynamic>);
       }
       throw Exception('Server returned status: ${response.statusCode}');
     } catch (_) {
@@ -35,12 +35,12 @@ class ProfileRepository {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/profile'),
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.authHeaders(),
         body: jsonEncode(profile.toJson()),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        final updated = ProfileModel.fromJson(data);
+        final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+        final updated = ProfileModel.fromJson(ApiConfig.unwrap(decoded) as Map<String, dynamic>);
         localProfile = updated;
         return updated;
       }
@@ -59,7 +59,7 @@ class ProfileRepository {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/change-password'),
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.authHeaders(),
         body: jsonEncode({
           'currentPassword': currentPassword,
           'newPassword': newPassword,

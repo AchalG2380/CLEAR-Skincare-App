@@ -37,7 +37,8 @@ class ProductListingRepository {
         headers: {'Content-Type': 'application/json'},
       );
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+        final data = ApiConfig.unwrap(decoded) as Map<String, dynamic>;
         final items = (data['products'] as List<dynamic>?) ?? [];
         final products = items
             .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
