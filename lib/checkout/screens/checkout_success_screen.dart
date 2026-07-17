@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 
 class CheckoutSuccessScreen extends StatelessWidget {
@@ -12,7 +12,7 @@ class CheckoutSuccessScreen extends StatelessWidget {
     final String orderId = Get.arguments as String? ?? 'CLR-UNKNOWN';
 
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -29,23 +29,22 @@ class CheckoutSuccessScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
-                      colors: [AppColor.primary, AppColor.primary.withValues(alpha: 0.7)],
+                      colors: [
+                        AppTheme.primary,
+                        AppTheme.primary.withValues(alpha: 0.7),
+                      ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColor.primary.withValues(alpha: 0.4),
+                        color: AppTheme.primary.withValues(alpha: 0.4),
                         blurRadius: 20,
                         spreadRadius: 2,
                       ),
                     ],
                   ),
-                  child: const Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 48,
-                  ),
+                  child: const Icon(Icons.check, color: Colors.white, size: 48),
                 ),
               ),
               const SizedBox(height: 36),
@@ -76,12 +75,15 @@ class CheckoutSuccessScreen extends StatelessWidget {
 
               // Order ID Display Box
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 14,
+                ),
                 decoration: BoxDecoration(
-                  color: AppColor.cardBackground,
+                  color: AppTheme.cardBackground,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: AppColor.primary.withValues(alpha: 0.12),
+                    color: AppTheme.primary.withValues(alpha: 0.12),
                     width: 1,
                   ),
                 ),
@@ -99,8 +101,8 @@ class CheckoutSuccessScreen extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       orderId,
-                      style: const TextStyle(
-                        color: AppColor.primary,
+                      style: TextStyle(
+                        color: AppTheme.primary,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
@@ -119,7 +121,7 @@ class CheckoutSuccessScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => Get.offAllNamed('/home'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.buttonColor,
+                    backgroundColor: AppTheme.buttonColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),

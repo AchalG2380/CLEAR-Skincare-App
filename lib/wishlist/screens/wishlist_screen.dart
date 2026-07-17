@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../home/data/models/product_model.dart';
@@ -13,15 +13,15 @@ class WishlistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+    return Obx(() => Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColor.backgroundColor,
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
-        title: const Text(
+        title: Text(
           AppStrings.wishlistTitle,
           style: TextStyle(
-            color: Colors.white,
+            color: AppTheme.primaryText,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -30,7 +30,8 @@ class WishlistScreen extends StatelessWidget {
       body: Stack(
         children: [
           Obx(() {
-            if (controller.isLoading.value && controller.wishlistItems.isEmpty) {
+            if (controller.isLoading.value &&
+                controller.wishlistItems.isEmpty) {
               return _buildShimmerLoading();
             }
 
@@ -40,8 +41,8 @@ class WishlistScreen extends StatelessWidget {
 
             return RefreshIndicator(
               onRefresh: controller.fetchWishlist,
-              color: AppColor.primary,
-              backgroundColor: AppColor.backgroundColor,
+              color: AppTheme.primary,
+              backgroundColor: AppTheme.backgroundColor,
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: controller.wishlistItems.length,
@@ -60,7 +61,7 @@ class WishlistScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 
   // ─── Individual Wishlist Item Row ──────────────────────────────────────────
@@ -73,7 +74,7 @@ class WishlistScreen extends StatelessWidget {
         padding: const EdgeInsets.only(right: 20),
         alignment: Alignment.centerRight,
         decoration: BoxDecoration(
-          color: AppColor.error.withValues(alpha: 0.8),
+          color: AppTheme.error.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(16),
         ),
         child: const Icon(Icons.delete_sweep, color: Colors.white, size: 28),
@@ -85,10 +86,10 @@ class WishlistScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColor.cardBackground,
+          color: AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColor.primary.withValues(alpha: 0.12),
+            color: AppTheme.primary.withValues(alpha: 0.12),
             width: 1,
           ),
         ),
@@ -103,10 +104,7 @@ class WishlistScreen extends StatelessWidget {
                 child: SizedBox(
                   width: 80,
                   height: 80,
-                  child: getSkincareImage(
-                    product.imageUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  child: getSkincareImage(product.imageUrl, fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -124,8 +122,8 @@ class WishlistScreen extends StatelessWidget {
                       product.name,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: AppTheme.primaryText,
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -134,12 +132,12 @@ class WishlistScreen extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(Icons.star, color: AppColor.ratingStar, size: 14),
+                      Icon(Icons.star, color: AppTheme.ratingStar, size: 14),
                       const SizedBox(width: 2),
                       Text(
                         product.rating.toString(),
-                        style: const TextStyle(
-                          color: Colors.white60,
+                        style: TextStyle(
+                          color: AppTheme.textMuted,
                           fontSize: 12,
                         ),
                       ),
@@ -148,8 +146,8 @@ class WishlistScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     '\$${product.price.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      color: AppColor.primary,
+                    style: TextStyle(
+                      color: AppTheme.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -164,9 +162,9 @@ class WishlistScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.delete_outline,
-                    color: AppColor.error,
+                    color: AppTheme.error,
                     size: 22,
                   ),
                   onPressed: () => controller.toggleWishlist(product),
@@ -175,7 +173,7 @@ class WishlistScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () => controller.moveToCart(product),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.buttonColor,
+                    backgroundColor: AppTheme.buttonColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -259,7 +257,7 @@ class _WishlistItemSkeletonState extends State<_WishlistItemSkeleton>
         margin: const EdgeInsets.only(bottom: 16),
         height: 104,
         decoration: BoxDecoration(
-          color: AppColor.primary.withValues(alpha: _anim.value),
+          color: AppTheme.primary.withValues(alpha: _anim.value),
           borderRadius: BorderRadius.circular(16),
         ),
       ),

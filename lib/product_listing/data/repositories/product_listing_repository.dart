@@ -38,13 +38,22 @@ class ProductListingRepository {
       );
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body) as Map<String, dynamic>;
-        final data = ApiConfig.unwrap(decoded) as Map<String, dynamic>;
-        final items = (data['products'] as List<dynamic>?) ?? [];
+        final unwrapped = ApiConfig.unwrap(decoded);
+        
+        List<dynamic> items = [];
+        bool hasMore = false;
+        
+        if (unwrapped is Map<String, dynamic>) {
+          items = (unwrapped['products'] as List<dynamic>?) ?? [];
+          hasMore = (unwrapped['hasMore'] as bool?) ?? (items.length >= limit);
+        } else if (unwrapped is List<dynamic>) {
+          items = unwrapped;
+          hasMore = false;
+        }
+        
         final products = items
             .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
             .toList();
-        final hasMore =
-            (data['hasMore'] as bool?) ?? (products.length >= limit);
         return ProductListingResult(products: products, hasMore: hasMore);
       }
       throw Exception('Server returned ${response.statusCode}');

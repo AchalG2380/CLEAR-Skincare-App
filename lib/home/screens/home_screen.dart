@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../controllers/home_controller.dart';
 import 'widgets/home_widgets.dart';
@@ -13,16 +13,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+    return Obx(() => Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Obx(() {
           if (homeController.isLoading.value) {
-            return const SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: HomeShimmer(),
-            );
-          }
+              return const SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                child: HomeShimmer(),
+              );
+            }
 
           if (homeController.hasError.value) {
             return _buildErrorState();
@@ -35,8 +35,8 @@ class HomeScreen extends StatelessWidget {
 
           return RefreshIndicator(
             onRefresh: homeController.fetchHomeData,
-            color: AppColor.primary,
-            backgroundColor: AppColor.backgroundColor,
+            color: AppTheme.primary,
+            backgroundColor: AppTheme.backgroundColor,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -46,23 +46,23 @@ class HomeScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             AppStrings.homeTitle,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: AppTheme.primaryText,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.0,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             AppStrings.homeSubtitle,
                             style: TextStyle(
-                              color: Colors.white70,
+                              color: AppTheme.secondaryText,
                               fontSize: 12,
                             ),
                           ),
@@ -70,13 +70,13 @@ class HomeScreen extends StatelessWidget {
                       ),
                       Container(
                         padding: const EdgeInsets.all(8),
-                        decoration: const BoxDecoration(
-                          color: AppColor.cardBackground,
+                        decoration: BoxDecoration(
+                          color: AppTheme.cardBackground,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.notifications_none,
-                          color: Colors.white,
+                          color: AppTheme.primaryText,
                         ),
                       ),
                     ],
@@ -90,21 +90,21 @@ class HomeScreen extends StatelessWidget {
                       height: 50,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: AppColor.cardBackground,
+                        color: AppTheme.cardBackground,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColor.primary.withValues(alpha: 0.15),
+                          color: AppTheme.primary.withValues(alpha: 0.15),
                           width: 1,
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Icon(Icons.search, color: Colors.white54),
-                          SizedBox(width: 12),
+                          Icon(Icons.search, color: AppTheme.textMuted),
+                          const SizedBox(width: 12),
                           Text(
                             AppStrings.searchHint,
                             style: TextStyle(
-                              color: Colors.white38,
+                              color: AppTheme.textDark,
                               fontSize: 14,
                             ),
                           ),
@@ -137,7 +137,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 28),
 
                   // 6. Skin Type Quiz CTA
-                  const SkinQuizBanner(),
+                  SkinQuizBanner(),
                   const SizedBox(height: 24),
 
                   // 7. Skin Concern Section
@@ -149,7 +149,7 @@ class HomeScreen extends StatelessWidget {
           );
         }),
       ),
-    );
+    ));
   }
 
   Widget _buildErrorState({String? message}) {
@@ -159,12 +159,12 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: AppColor.error, size: 64),
+            Icon(Icons.error_outline, color: AppTheme.error, size: 64),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               AppStrings.homeLoadError,
               style: TextStyle(
-                color: Colors.white,
+                color: AppTheme.primaryText,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -173,7 +173,7 @@ class HomeScreen extends StatelessWidget {
             Text(
               message ?? homeController.errorMessage.value,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white54, fontSize: 13),
+              style: TextStyle(color: AppTheme.textMuted, fontSize: 13),
             ),
             const SizedBox(height: 24),
             SizedBox(
@@ -190,7 +190,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.buttonColor,
+                  backgroundColor: AppTheme.buttonColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

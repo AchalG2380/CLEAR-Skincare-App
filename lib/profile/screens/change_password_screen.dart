@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../controllers/profile_controller.dart';
 import '../../auth/screens/widgets/auth_widgets.dart';
@@ -17,9 +17,9 @@ class ChangePasswordScreen extends StatelessWidget {
     final confirmPasswordController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColor.backgroundColor,
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -39,10 +39,10 @@ class ChangePasswordScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: AppColor.cardBackground,
+            color: AppTheme.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColor.primary.withValues(alpha: 0.2),
+              color: AppTheme.primary.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -64,7 +64,10 @@ class ChangePasswordScreen extends StatelessWidget {
                 labelText: AppStrings.currentPassword,
                 hintText: AppStrings.hintCurrentPassword,
                 obscureText: true,
-                prefixIcon: const Icon(Icons.lock_outline, color: Colors.white70),
+                prefixIcon: const Icon(
+                  Icons.lock_outline,
+                  color: Colors.white70,
+                ),
               ),
 
               AuthTextField(
@@ -72,7 +75,10 @@ class ChangePasswordScreen extends StatelessWidget {
                 labelText: AppStrings.newPassword,
                 hintText: AppStrings.hintNewPassword,
                 obscureText: true,
-                prefixIcon: const Icon(Icons.lock_outline, color: Colors.white70),
+                prefixIcon: const Icon(
+                  Icons.lock_outline,
+                  color: Colors.white70,
+                ),
               ),
 
               AuthTextField(
@@ -80,7 +86,10 @@ class ChangePasswordScreen extends StatelessWidget {
                 labelText: AppStrings.confirmPassword,
                 hintText: AppStrings.hintConfirmPassword,
                 obscureText: true,
-                prefixIcon: const Icon(Icons.lock_outline, color: Colors.white70),
+                prefixIcon: const Icon(
+                  Icons.lock_outline,
+                  color: Colors.white70,
+                ),
               ),
 
               const SizedBox(height: 30),

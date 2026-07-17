@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../home/data/models/product_model.dart';
 import '../data/models/cart_item_model.dart';
 import '../data/repositories/cart_repository.dart';
+import '../../core/controllers/rewards_controller.dart';
 
 class CartController extends GetxController {
   final CartRepository _repo = CartRepository();
@@ -14,6 +15,7 @@ class CartController extends GetxController {
   var isLoading = false.obs;
   var discount = 0.0.obs;
   var couponCode = ''.obs;
+  final isPointsRedeemed = false.obs;
 
   // Track original quantities for rollbacks on API failures
   final Map<String, int> _originalQuantities = {};
@@ -52,8 +54,21 @@ class CartController extends GetxController {
     return 5.0; // Flat fee
   }
 
+  double get pointsDiscount {
+    if (!isPointsRedeemed.value) return 0.0;
+    final rewardsController = Get.find<RewardsController>();
+    final balance = rewardsController.pointsBalance.value;
+    final potentialDiscount = balance / 100.0;
+    final maxDiscount = subtotal * 0.5;
+    return potentialDiscount > maxDiscount ? maxDiscount : potentialDiscount;
+  }
+
+  int get pointsConsumed {
+    return (pointsDiscount * 100).round();
+  }
+
   double get total {
-    final finalPrice = subtotal - discount.value + deliveryFee;
+    final finalPrice = subtotal - discount.value - pointsDiscount + deliveryFee;
     return finalPrice < 0.0 ? 0.0 : finalPrice;
   }
 

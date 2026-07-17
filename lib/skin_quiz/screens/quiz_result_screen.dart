@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../controllers/quiz_controller.dart';
 import 'skin_quiz_screen.dart';
 import '../data/models/quiz_question_model.dart';
@@ -17,19 +17,19 @@ class QuizResultScreen extends StatelessWidget {
     // reached after _computeResult() sets a value, but avoids a crash
     // if the controller was somehow disposed/reset in between.
     if (skinType == null) {
-      return const Scaffold(
-        backgroundColor: AppColor.backgroundColor,
+      return Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
         body: Center(
           child: Text(
             'Something went wrong. Please retake the quiz.',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: AppTheme.primaryText),
           ),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
@@ -44,28 +44,28 @@ class QuizResultScreen extends StatelessWidget {
                         height: 96,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColor.primary.withValues(alpha: 0.15),
-                          border: Border.all(color: AppColor.primary, width: 2),
+                          color: AppTheme.primary.withValues(alpha: 0.15),
+                          border: Border.all(color: AppTheme.primary, width: 2),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.spa_outlined,
-                          color: AppColor.primary,
+                          color: AppTheme.primary,
                           size: 44,
                         ),
                       ),
                       const SizedBox(height: 24),
-                      const Text(
+                      Text(
                         'Your Skin Type Is',
                         style: TextStyle(
-                          color: AppColor.textMuted,
+                          color: AppTheme.textMuted,
                           fontSize: 15,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         skinType.label,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: AppTheme.primaryText,
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                         ),
@@ -74,8 +74,8 @@ class QuizResultScreen extends StatelessWidget {
                       Text(
                         skinType.description,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: AppColor.secondaryText,
+                        style: TextStyle(
+                          color: AppTheme.secondaryText,
                           fontSize: 15,
                           height: 1.5,
                         ),
@@ -85,24 +85,24 @@ class QuizResultScreen extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppColor.surface,
+                          color: AppTheme.surface,
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: AppColor.dividerColor),
+                          border: Border.all(color: AppTheme.dividerColor),
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.lightbulb_outline,
-                              color: AppColor.primary,
+                              color: AppTheme.primary,
                               size: 20,
                             ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                 skinType.routineTip,
-                                style: const TextStyle(
-                                  color: AppColor.secondaryText,
+                                style: TextStyle(
+                                  color: AppTheme.secondaryText,
                                   fontSize: 14,
                                   height: 1.4,
                                 ),
@@ -129,7 +129,7 @@ class QuizResultScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.primary,
+                    backgroundColor: AppTheme.primary,
                     foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -144,9 +144,9 @@ class QuizResultScreen extends StatelessWidget {
               const SizedBox(height: 12),
               TextButton(
                 onPressed: () => Get.off(() => SkinQuizScreen()),
-                child: const Text(
+                child: Text(
                   'Retake Quiz',
-                  style: TextStyle(color: AppColor.textMuted),
+                  style: TextStyle(color: AppTheme.textMuted),
                 ),
               ),
             ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../core/widgets/product_widgets.dart';
@@ -25,12 +25,12 @@ class OrderDetailsScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: const SkincareAppBar(title: AppStrings.orderDetailsTitle),
       body: Obx(() {
         if (controller.isDetailLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColor.primary),
+          return Center(
+            child: CircularProgressIndicator(color: AppTheme.primary),
           );
         }
 
@@ -41,8 +41,8 @@ class OrderDetailsScreen extends StatelessWidget {
 
         return RefreshIndicator(
           onRefresh: () => controller.fetchOrderDetails(order.id),
-          color: AppColor.primary,
-          backgroundColor: AppColor.backgroundColor,
+          color: AppTheme.primary,
+          backgroundColor: AppTheme.backgroundColor,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16),
@@ -169,10 +169,10 @@ class OrderDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -205,8 +205,8 @@ class OrderDetailsScreen extends StatelessWidget {
                           width: 2,
                           height: 10,
                           color: stage.isCompleted
-                              ? AppColor.primary
-                              : AppColor.dividerColor.withValues(alpha: 0.15),
+                              ? AppTheme.primary
+                              : AppTheme.dividerColor.withValues(alpha: 0.15),
                         )
                       else
                         const SizedBox(height: 10),
@@ -221,12 +221,14 @@ class OrderDetailsScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: stage.isCompleted
-                                ? AppColor.primary
+                                ? AppTheme.primary
                                 : Colors.transparent,
                             border: Border.all(
                               color: stage.isCompleted
-                                  ? AppColor.primary
-                                  : AppColor.dividerColor.withValues(alpha: 0.27),
+                                  ? AppTheme.primary
+                                  : AppTheme.dividerColor.withValues(
+                                      alpha: 0.27,
+                                    ),
                               width: 2,
                             ),
                           ),
@@ -238,8 +240,8 @@ class OrderDetailsScreen extends StatelessWidget {
                           child: Container(
                             width: 2,
                             color: isLineColored
-                                ? AppColor.primary
-                                : AppColor.dividerColor.withValues(alpha: 0.15),
+                                ? AppTheme.primary
+                                : AppTheme.dividerColor.withValues(alpha: 0.15),
                           ),
                         )
                       else
@@ -296,10 +298,10 @@ class OrderDetailsScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -317,20 +319,20 @@ class OrderDetailsScreen extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             address.street,
-            style: const TextStyle(
-              color: Colors.white70,
+            style: TextStyle(
+              color: AppTheme.secondaryText,
               fontSize: 13,
               height: 1.4,
             ),
           ),
           Text(
             '${address.city}, ${address.state} - ${address.pincode}',
-            style: const TextStyle(color: Colors.white70, fontSize: 13),
+            style: TextStyle(color: AppTheme.secondaryText, fontSize: 13),
           ),
           const SizedBox(height: 8),
           Text(
             '${AppStrings.labelPhone}: ${address.phone}',
-            style: const TextStyle(color: Colors.white54, fontSize: 12),
+            style: TextStyle(color: AppTheme.textMuted, fontSize: 12),
           ),
         ],
       ),
@@ -353,10 +355,10 @@ class OrderDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -382,10 +384,10 @@ class OrderDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -409,22 +411,25 @@ class OrderDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          _buildPriceRow(AppStrings.subtotal, '\$${order.subtotal.toStringAsFixed(2)}'),
+          _buildPriceRow(
+            AppStrings.subtotal,
+            '\$${order.subtotal.toStringAsFixed(2)}',
+          ),
           if (order.discount > 0) ...[
             const SizedBox(height: 8),
             _buildPriceRow(
               AppStrings.discount,
               '-\$${order.discount.toStringAsFixed(2)}',
-              valueColor: AppColor.discountColor,
+              valueColor: AppTheme.discountColor,
             ),
           ],
           const SizedBox(height: 8),
@@ -433,7 +438,9 @@ class OrderDetailsScreen extends StatelessWidget {
             order.deliveryFee == 0.0
                 ? AppStrings.freeShipping
                 : '\$${order.deliveryFee.toStringAsFixed(2)}',
-            valueColor: order.deliveryFee == 0.0 ? AppColor.freeShipping : Colors.white,
+            valueColor: order.deliveryFee == 0.0
+                ? AppTheme.freeShipping
+                : Colors.white,
           ),
           const Divider(color: Colors.white10, height: 24),
           _buildPriceRow(
@@ -466,7 +473,7 @@ class OrderDetailsScreen extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            color: isTotal ? AppColor.primary : valueColor,
+            color: isTotal ? AppTheme.primary : valueColor,
             fontSize: isTotal ? 16 : 12,
             fontWeight: FontWeight.bold,
           ),
@@ -477,19 +484,19 @@ class OrderDetailsScreen extends StatelessWidget {
 
   // ─── Status Text Style Color badge ───
   Widget _buildStatusLabel(String status) {
-    Color textColor = AppColor.primaryText;
+    Color textColor = AppTheme.primaryText;
     switch (status.toLowerCase()) {
       case 'delivered':
-        textColor = AppColor.success;
+        textColor = AppTheme.success;
         break;
       case 'shipped':
-        textColor = AppColor.warning;
+        textColor = AppTheme.warning;
         break;
       case 'processing':
-        textColor = AppColor.info;
+        textColor = AppTheme.info;
         break;
       case 'cancelled':
-        textColor = AppColor.error;
+        textColor = AppTheme.error;
         break;
     }
     return Container(
@@ -511,13 +518,13 @@ class OrderDetailsScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, color: AppColor.error, size: 48),
+          Icon(Icons.error_outline, color: AppTheme.error, size: 48),
           const SizedBox(height: 12),
           Text(
             controller.errorMessage.value.isNotEmpty
                 ? controller.errorMessage.value
                 : AppStrings.failedLoadOrderDetails,
-            style: const TextStyle(color: Colors.white70, fontSize: 14),
+            style: TextStyle(color: AppTheme.secondaryText, fontSize: 14),
           ),
         ],
       ),
@@ -574,18 +581,18 @@ class _PulsingTimelineDotState extends State<_PulsingTimelineDot>
                 height: _pulse.value,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColor.primary.withValues(alpha: 0.3),
+                  color: AppTheme.primary.withValues(alpha: 0.3),
                 ),
               ),
               // Inner solid dot
               Container(
                 width: 12,
                 height: 12,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColor.primary,
+                  color: AppTheme.primary,
                   boxShadow: [
-                    BoxShadow(color: AppColor.primary, blurRadius: 4),
+                    BoxShadow(color: AppTheme.primary, blurRadius: 4),
                   ],
                 ),
               ),

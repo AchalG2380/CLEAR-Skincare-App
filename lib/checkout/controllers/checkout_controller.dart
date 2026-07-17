@@ -4,6 +4,7 @@ import '../../core/app_colors.dart';
 import '../data/models/address_model.dart';
 import '../data/repositories/checkout_repository.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../../core/controllers/rewards_controller.dart';
 import '../../orders/data/models/order_model.dart';
 
 class CheckoutController extends GetxController {
@@ -28,6 +29,8 @@ class CheckoutController extends GetxController {
   // Cart/Summary info passed from Cart
   var subtotal = 0.0.obs;
   var discount = 0.0.obs;
+  var pointsDiscount = 0.0.obs;
+  var pointsConsumed = 0.obs;
   var deliveryFee = 0.0.obs;
   var tax = 0.0.obs;
   var total = 0.0.obs;
@@ -40,6 +43,8 @@ class CheckoutController extends GetxController {
     if (args != null) {
       subtotal.value = (args['subtotal'] as num?)?.toDouble() ?? 0.0;
       discount.value = (args['discount'] as num?)?.toDouble() ?? 0.0;
+      pointsDiscount.value = (args['pointsDiscount'] as num?)?.toDouble() ?? 0.0;
+      pointsConsumed.value = (args['pointsConsumed'] as num?)?.toInt() ?? 0;
       deliveryFee.value = (args['deliveryFee'] as num?)?.toDouble() ?? 0.0;
       total.value = (args['total'] as num?)?.toDouble() ?? 0.0;
       items.value = args['items'] as List<dynamic>? ?? [];
@@ -144,6 +149,17 @@ class CheckoutController extends GetxController {
       );
 
       final orderId = order.id;
+
+      // Update reward points balance: deduct consumed, add earned
+      final rewardsController = Get.find<RewardsController>();
+      final earned = total.value.floor();
+      await rewardsController.applyOrderResult(
+        redeemed: pointsConsumed.value,
+        earned: earned,
+      );
+
+      // Reset points toggle state in CartController
+      Get.find<CartController>().isPointsRedeemed.value = false;
 
       // Clear the Cart globally and on the server
       await Get.find<CartController>().clearCartOnServer();

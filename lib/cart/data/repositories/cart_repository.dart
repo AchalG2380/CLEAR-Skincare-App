@@ -37,46 +37,34 @@ class CartRepository {
   }
 
   Future<void> addToCart(String productId, int quantity) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/cart'),
-        headers: await ApiConfig.authHeaders(),
-        body: jsonEncode({'productId': productId, 'quantity': quantity}),
-      );
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        throw Exception('Server returned ${response.statusCode}');
-      }
-    } catch (_) {
-      // Offline fallback success
+    final response = await http.post(
+      Uri.parse('$baseUrl/cart'),
+      headers: await ApiConfig.authHeaders(),
+      body: jsonEncode({'productId': productId, 'quantity': quantity}),
+    );
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception('Server returned ${response.statusCode}');
     }
   }
 
   Future<void> updateQuantity(String cartItemId, int quantity) async {
-    try {
-      final response = await http.put(
-        Uri.parse('$baseUrl/cart/$cartItemId'),
-        headers: await ApiConfig.authHeaders(),
-        body: jsonEncode({'quantity': quantity}),
-      );
-      if (response.statusCode != 200) {
-        throw Exception('Server returned status: ${response.statusCode}');
-      }
-    } catch (_) {
-      // Offline fallback success
+    final response = await http.put(
+      Uri.parse('$baseUrl/cart/$cartItemId'),
+      headers: await ApiConfig.authHeaders(),
+      body: jsonEncode({'quantity': quantity}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Server returned status: ${response.statusCode}');
     }
   }
 
   Future<void> removeFromCart(String cartItemId) async {
-    try {
-      final response = await http.delete(
-        Uri.parse('$baseUrl/cart/$cartItemId'),
-        headers: await ApiConfig.authHeaders(),
-      );
-      if (response.statusCode != 200) {
-        throw Exception('Server returned status: ${response.statusCode}');
-      }
-    } catch (_) {
-      // Offline fallback success
+    final response = await http.delete(
+      Uri.parse('$baseUrl/cart/$cartItemId'),
+      headers: await ApiConfig.authHeaders(),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Server returned status: ${response.statusCode}');
     }
   }
 

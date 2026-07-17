@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/product_widgets.dart';
 import '../../core/widgets/app_widgets.dart';
@@ -15,8 +15,8 @@ class ProductListingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+    return Obx(() => Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       appBar: _buildAppBar(context),
       body: Stack(
         children: [
@@ -45,23 +45,23 @@ class ProductListingScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 
   // ─── AppBar ─────────────────────────────────────────────────────────────
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       elevation: 0,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        icon: Icon(Icons.arrow_back, color: AppTheme.primaryText),
         onPressed: () => Get.back(),
       ),
       title: Obx(
         () => Text(
           controller.activeTitle,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: AppTheme.primaryText,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -74,7 +74,7 @@ class ProductListingScreen extends StatelessWidget {
             icon: Icon(
               Icons.sort,
               color: controller.selectedSort.value.isNotEmpty
-                  ? AppColor.primary
+                  ? AppTheme.primary
                   : Colors.white70,
             ),
             tooltip: AppStrings.tooltipSort,
@@ -89,8 +89,8 @@ class ProductListingScreen extends StatelessWidget {
                 icon: Icon(
                   Icons.tune,
                   color: controller.hasActiveFilter
-                      ? AppColor.primary
-                      : Colors.white70,
+                      ? AppTheme.primary
+                      : AppTheme.secondaryText,
                 ),
                 tooltip: AppStrings.tooltipFilter,
                 onPressed: () => _showFilterSheet(context),
@@ -102,8 +102,8 @@ class ProductListingScreen extends StatelessWidget {
                   child: Container(
                     width: 8,
                     height: 8,
-                    decoration: const BoxDecoration(
-                      color: AppColor.primary,
+                    decoration: BoxDecoration(
+                      color: AppTheme.primary,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -119,24 +119,24 @@ class ProductListingScreen extends StatelessWidget {
   // ─── Search Bar ─────────────────────────────────────────────────────────
   Widget _buildSearchBar() {
     return Container(
-      color: AppColor.backgroundColor,
+      color: AppTheme.backgroundColor,
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       child: TextField(
         controller: controller.searchController,
         onChanged: controller.onSearchChanged,
-        style: const TextStyle(color: Colors.white),
-        cursorColor: AppColor.primary,
+        style: TextStyle(color: AppTheme.primaryText),
+        cursorColor: AppTheme.primary,
         decoration: InputDecoration(
           hintText: AppStrings.searchIngredientsHint,
-          hintStyle: const TextStyle(color: Colors.white38),
-          prefixIcon: const Icon(Icons.search, color: Colors.white38),
+          hintStyle: TextStyle(color: AppTheme.textDark),
+          prefixIcon: Icon(Icons.search, color: AppTheme.textDark),
           suffixIcon: ValueListenableBuilder<TextEditingValue>(
             valueListenable: controller.searchController,
             builder: (_, value, __) => value.text.isNotEmpty
                 ? IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.close,
-                      color: Colors.white38,
+                      color: AppTheme.textDark,
                       size: 18,
                     ),
                     onPressed: () {
@@ -147,7 +147,7 @@ class ProductListingScreen extends StatelessWidget {
                 : const SizedBox.shrink(),
           ),
           filled: true,
-          fillColor: AppColor.inputFill,
+          fillColor: AppTheme.inputFill,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 12,
@@ -155,12 +155,12 @@ class ProductListingScreen extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: AppColor.primary.withValues(alpha: 0.15),
+              color: AppTheme.primary.withValues(alpha: 0.15),
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppColor.primary),
+            borderSide: BorderSide(color: AppTheme.primary),
           ),
         ),
       ),
@@ -174,8 +174,8 @@ class ProductListingScreen extends StatelessWidget {
   }) {
     return RefreshIndicator(
       onRefresh: controller.refresh,
-      color: AppColor.primary,
-      backgroundColor: AppColor.backgroundColor,
+      color: AppTheme.primary,
+      backgroundColor: AppTheme.backgroundColor,
       child: CustomScrollView(
         controller: controller.scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
@@ -199,23 +199,23 @@ class ProductListingScreen extends StatelessWidget {
             child: Builder(
               builder: (_) {
                 if (isLoadingMore) {
-                  return const Padding(
+                  return Padding(
                     padding: EdgeInsets.symmetric(vertical: 24),
                     child: Center(
                       child: CircularProgressIndicator(
-                        color: AppColor.primary,
+                        color: AppTheme.primary,
                         strokeWidth: 2,
                       ),
                     ),
                   );
                 }
                 if (!hasMore && controller.products.isNotEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Center(
                       child: Text(
                         'You\'ve seen everything ✨',
-                        style: TextStyle(color: Colors.white30, fontSize: 13),
+                        style: TextStyle(color: AppTheme.textHint, fontSize: 13),
                       ),
                     ),
                   );
@@ -252,12 +252,12 @@ class ProductListingScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: AppColor.error, size: 60),
+            Icon(Icons.error_outline, color: AppTheme.error, size: 60),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               AppStrings.productsLoadError,
               style: TextStyle(
-                color: Colors.white,
+                color: AppTheme.primaryText,
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
@@ -266,7 +266,7 @@ class ProductListingScreen extends StatelessWidget {
             Text(
               controller.errorMessage.value,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white38, fontSize: 13),
+              style: TextStyle(color: AppTheme.textDark, fontSize: 13),
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
@@ -280,7 +280,7 @@ class ProductListingScreen extends StatelessWidget {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.buttonColor,
+                backgroundColor: AppTheme.buttonColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -301,20 +301,20 @@ class ProductListingScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.search_off, color: Colors.white24, size: 70),
+          Icon(Icons.search_off, color: AppTheme.textHint, size: 70),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             AppStrings.noProductsFound,
             style: TextStyle(
-              color: Colors.white,
+              color: AppTheme.primaryText,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             AppStrings.adjustSearchFilters,
-            style: TextStyle(color: Colors.white38, fontSize: 13),
+            style: TextStyle(color: AppTheme.textDark, fontSize: 13),
           ),
           const SizedBox(height: 24),
           TextButton(
@@ -323,10 +323,10 @@ class ProductListingScreen extends StatelessWidget {
               controller.onFilterApplied(category: '', concern: '');
               controller.onSortSelected('');
             },
-            child: const Text(
+            child: Text(
               AppStrings.clearAllFilters,
               style: TextStyle(
-                color: AppColor.primary,
+                color: AppTheme.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -347,7 +347,7 @@ class ProductListingScreen extends StatelessWidget {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColor.surface,
+      backgroundColor: AppTheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -356,12 +356,12 @@ class ProductListingScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 8),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
               child: Text(
                 AppStrings.sortBy,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppTheme.primaryText,
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
@@ -374,13 +374,13 @@ class ProductListingScreen extends StatelessWidget {
                   isActive
                       ? Icons.radio_button_checked
                       : Icons.radio_button_unchecked,
-                  color: isActive ? AppColor.primary : Colors.white38,
+                  color: isActive ? AppTheme.primary : AppTheme.textDark,
                   size: 20,
                 ),
                 title: Text(
                   opt.$2,
                   style: TextStyle(
-                    color: isActive ? AppColor.primary : Colors.white,
+                    color: isActive ? AppTheme.primary : AppTheme.primaryText,
                     fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
@@ -421,7 +421,7 @@ class ProductListingScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColor.surface,
+      backgroundColor: AppTheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -440,19 +440,19 @@ class ProductListingScreen extends StatelessWidget {
                   width: 36,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.white24,
+                    color: AppTheme.textHint,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
                 child: Row(
                   children: [
                     Text(
                       AppStrings.filterProductsTitle,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.primaryText,
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
@@ -513,8 +513,8 @@ class ProductListingScreen extends StatelessWidget {
                           });
                         },
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white54,
-                          side: const BorderSide(color: Colors.white24),
+                          foregroundColor: AppTheme.textMuted,
+                          side: BorderSide(color: AppTheme.dividerColor),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -535,7 +535,7 @@ class ProductListingScreen extends StatelessWidget {
                           Get.back();
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.buttonColor,
+                          backgroundColor: AppTheme.buttonColor,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -562,8 +562,8 @@ class ProductListingScreen extends StatelessWidget {
     padding: const EdgeInsets.only(top: 12, bottom: 6),
     child: Text(
       title,
-      style: const TextStyle(
-        color: Colors.white54,
+      style: TextStyle(
+        color: AppTheme.textMuted,
         fontSize: 12,
         fontWeight: FontWeight.bold,
         letterSpacing: 1.0,
@@ -582,26 +582,26 @@ class ProductListingScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         color: isSelected
-            ? AppColor.primary.withValues(alpha: 0.20)
-            : AppColor.cardBackground,
+            ? AppTheme.primary.withValues(alpha: 0.20)
+            : AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: isSelected
-              ? AppColor.primary
-              : AppColor.dividerColor.withValues(alpha: 0.15),
+              ? AppTheme.primary
+              : AppTheme.dividerColor.withValues(alpha: 0.15),
         ),
       ),
       child: Row(
         children: [
           Icon(
             isSelected ? Icons.check_circle : Icons.circle_outlined,
-            color: isSelected ? AppColor.primary : Colors.white30,
+            color: isSelected ? AppTheme.primary : AppTheme.textDark,
             size: 18,
           ),
           const SizedBox(width: 10),
           Text(
             label,
-            style: TextStyle(color: isSelected ? Colors.white : Colors.white70),
+            style: TextStyle(color: isSelected ? AppTheme.primaryText : AppTheme.secondaryText),
           ),
         ],
       ),
@@ -642,7 +642,7 @@ class _ProductCardSkeletonState extends State<_ProductCardSkeleton>
       animation: _anim,
       builder: (_, __) => Container(
         decoration: BoxDecoration(
-          color: AppColor.primary.withValues(alpha: _anim.value),
+          color: AppTheme.primary.withValues(alpha: _anim.value),
           borderRadius: BorderRadius.circular(16),
         ),
       ),

@@ -11,19 +11,24 @@ class CheckoutRepository {
 
   Future<List<AddressModel>> getAddresses() async {
     try {
+      print("GET ADDRESSES CALL TO: $baseUrl/address");
       final response = await http.get(
-        Uri.parse('$baseUrl/addresses'),
+        Uri.parse('$baseUrl/address'),
         headers: await ApiConfig.authHeaders(),
       );
+      print("GET ADDRESSES STATUS CODE: ${response.statusCode}");
+      print("GET ADDRESSES RESPONSE BODY: ${response.body}");
       if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body) as Map<String, dynamic>;
         final List<dynamic> data =
-            ApiConfig.unwrap(jsonDecode(response.body)) as List<dynamic>;
+            ApiConfig.unwrap(decoded) as List<dynamic>? ?? [];
         return data
             .map((e) => AddressModel.fromJson(e as Map<String, dynamic>))
             .toList();
       }
       throw Exception('Server returned status: ${response.statusCode}');
-    } catch (_) {
+    } catch (e) {
+      print("GET ADDRESSES ERROR: $e");
       return [];
     }
   }
@@ -44,19 +49,24 @@ class CheckoutRepository {
     mockAddresses.add(created);
 
     try {
+      final payload = address.toJson();
+      print("ADD ADDRESS PAYLOAD: $payload");
       final response = await http.post(
         Uri.parse('$baseUrl/address'),
         headers: await ApiConfig.authHeaders(),
-        body: jsonEncode(address.toJson()),
+        body: jsonEncode(payload),
       );
+      print("ADD ADDRESS STATUS CODE: ${response.statusCode}");
+      print("ADD ADDRESS RESPONSE BODY: ${response.body}");
+      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final decoded = jsonDecode(response.body) as Map<String, dynamic>;
         return AddressModel.fromJson(
           ApiConfig.unwrap(decoded) as Map<String, dynamic>,
         );
       }
-      throw Exception('Server returned status: ${response.statusCode}');
-    } catch (_) {
+      throw Exception(ApiConfig.errorMessage(decoded));
+    } catch (e) {
+      print("ADD ADDRESS ERROR: $e");
       return created;
     }
   }

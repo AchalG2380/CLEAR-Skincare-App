@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../controllers/checkout_controller.dart';
 import 'checkout_address_screen.dart';
@@ -14,9 +14,9 @@ class CheckoutPaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColor.backgroundColor,
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -96,21 +96,23 @@ class CheckoutPaymentScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColor.primary.withValues(alpha: 0.15)
-                    : AppColor.cardBackground,
+                    ? AppTheme.primary.withValues(alpha: 0.15)
+                    : AppTheme.cardBackground,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: isSelected
-                      ? AppColor.primary
-                      : AppColor.primary.withValues(alpha: 0.12),
+                      ? AppTheme.primary
+                      : AppTheme.primary.withValues(alpha: 0.12),
                   width: 1.5,
                 ),
               ),
               child: Row(
                 children: [
                   Icon(
-                    isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-                    color: isSelected ? AppColor.primary : Colors.white54,
+                    isSelected
+                        ? Icons.radio_button_checked
+                        : Icons.radio_button_off,
+                    color: isSelected ? AppTheme.primary : Colors.white54,
                     size: 20,
                   ),
                   const SizedBox(width: 12),
@@ -132,8 +134,7 @@ class CheckoutPaymentScreen extends StatelessWidget {
           ),
 
           // Render Card entry form if Card is selected
-          if (isSelected && method == 'Card')
-            _buildCardInputForm(),
+          if (isSelected && method == 'Card') _buildCardInputForm(),
 
           const SizedBox(height: 12),
         ],
@@ -147,10 +148,10 @@ class CheckoutPaymentScreen extends StatelessWidget {
       margin: const EdgeInsets.only(top: 8, left: 4, right: 4),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.surface.withValues(alpha: 0.35),
+        color: AppTheme.surface.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -160,9 +161,9 @@ class CheckoutPaymentScreen extends StatelessWidget {
           TextFormField(
             onChanged: (val) => controller.cardNumber.value = val,
             initialValue: controller.cardNumber.value,
-            style: const TextStyle(color: Colors.white, fontSize: 13),
+            style: TextStyle(color: AppTheme.primaryText, fontSize: 13),
             keyboardType: TextInputType.number,
-            cursorColor: AppColor.primary,
+            cursorColor: AppTheme.primary,
             decoration: _buildInputDecoration(
               labelText: AppStrings.cardNumber,
               hintText: AppStrings.hintCardNumber,
@@ -177,9 +178,9 @@ class CheckoutPaymentScreen extends StatelessWidget {
                 child: TextFormField(
                   onChanged: (val) => controller.cardExpiry.value = val,
                   initialValue: controller.cardExpiry.value,
-                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                  style: TextStyle(color: AppTheme.primaryText, fontSize: 13),
                   keyboardType: TextInputType.datetime,
-                  cursorColor: AppColor.primary,
+                  cursorColor: AppTheme.primary,
                   decoration: _buildInputDecoration(
                     labelText: AppStrings.labelExpiryDate,
                     hintText: AppStrings.cardExpiry,
@@ -191,10 +192,10 @@ class CheckoutPaymentScreen extends StatelessWidget {
                 child: TextFormField(
                   onChanged: (val) => controller.cardCvv.value = val,
                   initialValue: controller.cardCvv.value,
-                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                  style: TextStyle(color: AppTheme.primaryText, fontSize: 13),
                   keyboardType: TextInputType.number,
                   obscureText: true,
-                  cursorColor: AppColor.primary,
+                  cursorColor: AppTheme.primary,
                   decoration: _buildInputDecoration(
                     labelText: AppStrings.cardCvv,
                     hintText: AppStrings.hintCvv,
@@ -214,19 +215,19 @@ class CheckoutPaymentScreen extends StatelessWidget {
   }) {
     return InputDecoration(
       labelText: labelText,
-      labelStyle: const TextStyle(color: Colors.white54, fontSize: 12),
+      labelStyle: TextStyle(color: AppTheme.textMuted, fontSize: 12),
       hintText: hintText,
-      hintStyle: const TextStyle(color: Colors.white24, fontSize: 12),
+      hintStyle: TextStyle(color: AppTheme.textHint, fontSize: 12),
       filled: true,
-      fillColor: AppColor.inputFill,
+      fillColor: AppTheme.inputFill,
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: AppColor.primary.withValues(alpha: 0.08)),
+        borderSide: BorderSide(color: AppTheme.primary.withValues(alpha: 0.08)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: AppColor.primary),
+        borderSide: BorderSide(color: AppTheme.primary),
       ),
     );
   }
@@ -234,7 +235,7 @@ class CheckoutPaymentScreen extends StatelessWidget {
   // ─── Sticky Bottom Action Bar ───────────────────────────────────────────────
   Widget _buildBottomActionPanel() {
     return Container(
-      color: AppColor.backgroundColor,
+      color: AppTheme.backgroundColor,
       padding: const EdgeInsets.all(20),
       child: SafeArea(
         top: false,
@@ -248,9 +249,11 @@ class CheckoutPaymentScreen extends StatelessWidget {
                   ? () => Get.toNamed('/checkout-review')
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.buttonColor,
+                backgroundColor: AppTheme.buttonColor,
                 foregroundColor: Colors.white,
-                disabledBackgroundColor: AppColor.buttonColor.withValues(alpha: 0.4),
+                disabledBackgroundColor: AppTheme.buttonColor.withValues(
+                  alpha: 0.4,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),

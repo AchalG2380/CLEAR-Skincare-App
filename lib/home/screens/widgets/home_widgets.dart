@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/models/home_response_model.dart';
 import '../../data/models/product_model.dart';
-import '../../../../core/app_colors.dart';
+import '../../../../core/app_theme.dart';
 import '../../../../core/app_strings.dart';
 import '../../../../core/widgets/product_widgets.dart';
 import '../../../../core/widgets/app_widgets.dart';
@@ -49,7 +49,7 @@ class _HomeShimmerState extends State<HomeShimmer>
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: AppColor.primary.withValues(alpha: _animation.value),
+            color: AppTheme.primary.withValues(alpha: _animation.value),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
         );
@@ -203,8 +203,8 @@ class _BannerCarouselState extends State<BannerCarousel> {
               width: isSelected ? 20 : 6,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColor.primary
-                    : AppColor.dividerColor.withValues(alpha: 0.3),
+                    ? AppTheme.primary
+                    : AppTheme.dividerColor.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(3),
               ),
             );
@@ -228,10 +228,10 @@ class CategoryScrollList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           AppStrings.categories,
           style: TextStyle(
-            color: Colors.white,
+            color: AppTheme.primaryText,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -260,9 +260,9 @@ class CategoryScrollList extends StatelessWidget {
                         height: 64,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColor.cardBackground,
+                          color: Colors.white,
                           border: Border.all(
-                            color: AppColor.primary.withValues(alpha: 0.2),
+                            color: AppTheme.primary.withValues(alpha: 0.2),
                             width: 1.5,
                           ),
                           image: DecorationImage(
@@ -274,8 +274,8 @@ class CategoryScrollList extends StatelessWidget {
                       const SizedBox(height: 6),
                       Text(
                         category.name,
-                        style: const TextStyle(
-                          color: Colors.white70,
+                        style: TextStyle(
+                          color: AppTheme.secondaryText,
                           fontSize: 12,
                         ),
                       ),
@@ -311,8 +311,8 @@ class ProductScrollList extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: AppTheme.primaryText,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -353,10 +353,10 @@ class SkinConcernGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           AppStrings.shopConcerns,
           style: TextStyle(
-            color: Colors.white,
+            color: AppTheme.primaryText,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -387,9 +387,9 @@ class SkinConcernGrid extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColor.cardBackground,
+                        color: Colors.white,
                         border: Border.all(
-                          color: AppColor.primary.withValues(alpha: 0.2),
+                          color: AppTheme.primary.withValues(alpha: 0.2),
                           width: 1.5,
                         ),
                         image: DecorationImage(
@@ -405,7 +405,7 @@ class SkinConcernGrid extends StatelessWidget {
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white70, fontSize: 11),
+                    style: TextStyle(color: AppTheme.secondaryText, fontSize: 11),
                   ),
                 ],
               ),
@@ -423,7 +423,7 @@ class SkinQuizBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return Obx(() => InkWell(
       onTap: () => Get.toNamed('/skin-quiz'),
       borderRadius: BorderRadius.circular(16),
       child: Container(
@@ -431,14 +431,14 @@ class SkinQuizBanner extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              AppColor.primary.withValues(alpha: 0.18),
-              AppColor.surface,
+              AppTheme.primary.withValues(alpha: 0.18),
+              AppTheme.surface,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColor.primary.withValues(alpha: 0.3)),
+          border: Border.all(color: AppTheme.primary.withValues(alpha: 0.3)),
         ),
         child: Row(
           children: [
@@ -447,43 +447,39 @@ class SkinQuizBanner extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColor.primary.withValues(alpha: 0.15),
+                color: AppTheme.primary.withValues(alpha: 0.15),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.spa_outlined,
-                color: AppColor.primary,
+                color: AppTheme.primary,
                 size: 24,
               ),
             ),
             const SizedBox(width: 14),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Not sure about your skin type?',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.primaryText,
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     'Take our 5-question quiz for personalized picks',
-                    style: TextStyle(color: AppColor.textMuted, fontSize: 12.5),
+                    style: TextStyle(color: AppTheme.textMuted, fontSize: 12.5),
                   ),
                 ],
               ),
             ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: AppColor.textDim,
-              size: 16,
-            ),
+            Icon(Icons.arrow_forward_ios, color: AppTheme.textDim, size: 16),
           ],
         ),
       ),
-    );
+    ));
   }
 }

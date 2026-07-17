@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../controllers/checkout_controller.dart';
 import '../data/models/address_model.dart';
@@ -14,9 +14,9 @@ class CheckoutAddressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColor.backgroundColor,
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -40,8 +40,8 @@ class CheckoutAddressScreen extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (controller.isLoadingAddresses.value) {
-                return const Center(
-                  child: CircularProgressIndicator(color: AppColor.primary),
+                return Center(
+                  child: CircularProgressIndicator(color: AppTheme.primary),
                 );
               }
 
@@ -62,7 +62,9 @@ class CheckoutAddressScreen extends StatelessWidget {
                   if (controller.addresses.isEmpty)
                     _buildEmptyAddresses()
                   else
-                    ...controller.addresses.map((addr) => _buildAddressCard(addr)),
+                    ...controller.addresses.map(
+                      (addr) => _buildAddressCard(addr),
+                    ),
 
                   const SizedBox(height: 16),
 
@@ -72,23 +74,23 @@ class CheckoutAddressScreen extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       decoration: BoxDecoration(
-                        color: AppColor.cardBackground,
+                        color: AppTheme.cardBackground,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: AppColor.primary.withValues(alpha: 0.23),
+                          color: AppTheme.primary.withValues(alpha: 0.23),
                           width: 1,
                           style: BorderStyle.solid,
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.add, color: AppColor.primary, size: 20),
+                          Icon(Icons.add, color: AppTheme.primary, size: 20),
                           SizedBox(width: 8),
                           Text(
                             AppStrings.addAddress,
                             style: TextStyle(
-                              color: AppColor.primary,
+                              color: AppTheme.primary,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
@@ -122,13 +124,13 @@ class CheckoutAddressScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: isSelected
-                ? AppColor.primary.withValues(alpha: 0.15)
-                : AppColor.cardBackground,
+                ? AppTheme.primary.withValues(alpha: 0.15)
+                : AppTheme.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isSelected
-                  ? AppColor.primary
-                  : AppColor.primary.withValues(alpha: 0.12),
+                  ? AppTheme.primary
+                  : AppTheme.primary.withValues(alpha: 0.12),
               width: 1.5,
             ),
           ),
@@ -137,8 +139,10 @@ class CheckoutAddressScreen extends StatelessWidget {
             children: [
               // Radio Icon selector
               Icon(
-                isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-                color: isSelected ? AppColor.primary : Colors.white54,
+                isSelected
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_off,
+                color: isSelected ? AppTheme.primary : Colors.white54,
                 size: 20,
               ),
               const SizedBox(width: 12),
@@ -195,14 +199,14 @@ class CheckoutAddressScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       alignment: Alignment.center,
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.location_off_outlined, color: Colors.white30, size: 48),
-          SizedBox(height: 12),
+          Icon(Icons.location_off_outlined, color: AppTheme.textHint, size: 48),
+          const SizedBox(height: 12),
           Text(
             AppStrings.noSavedAddressesFound,
-            style: TextStyle(color: Colors.white70, fontSize: 14),
+            style: TextStyle(color: AppTheme.secondaryText, fontSize: 14),
           ),
         ],
       ),
@@ -212,7 +216,7 @@ class CheckoutAddressScreen extends StatelessWidget {
   // ─── Bottom continue bar ────────────────────────────────────────────────────
   Widget _buildBottomActionPanel() {
     return Container(
-      color: AppColor.backgroundColor,
+      color: AppTheme.backgroundColor,
       padding: const EdgeInsets.all(20),
       child: SafeArea(
         top: false,
@@ -226,9 +230,11 @@ class CheckoutAddressScreen extends StatelessWidget {
                   ? () => Get.toNamed('/checkout-payment')
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.buttonColor,
+                backgroundColor: AppTheme.buttonColor,
                 foregroundColor: Colors.white,
-                disabledBackgroundColor: AppColor.buttonColor.withValues(alpha: 0.4),
+                disabledBackgroundColor: AppTheme.buttonColor.withValues(
+                  alpha: 0.4,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
@@ -261,8 +267,8 @@ class CheckoutAddressScreen extends StatelessWidget {
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          color: AppColor.backgroundColor,
+        decoration: BoxDecoration(
+          color: AppTheme.backgroundColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Form(
@@ -290,13 +296,15 @@ class CheckoutAddressScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                
+
                 // Name
                 _buildFormTextField(
                   controller: nameController,
                   label: AppStrings.labelFullName,
                   hint: AppStrings.hintFullName,
-                  validator: (val) => val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
+                  validator: (val) => val == null || val.isEmpty
+                      ? AppStrings.valFieldRequired
+                      : null,
                 ),
 
                 // Phone
@@ -305,7 +313,9 @@ class CheckoutAddressScreen extends StatelessWidget {
                   label: AppStrings.labelPhone,
                   hint: AppStrings.hintPhone,
                   keyboardType: TextInputType.phone,
-                  validator: (val) => val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
+                  validator: (val) => val == null || val.isEmpty
+                      ? AppStrings.valFieldRequired
+                      : null,
                 ),
 
                 // Street Address
@@ -313,7 +323,9 @@ class CheckoutAddressScreen extends StatelessWidget {
                   controller: streetController,
                   label: AppStrings.labelStreetAddress,
                   hint: AppStrings.hintStreet,
-                  validator: (val) => val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
+                  validator: (val) => val == null || val.isEmpty
+                      ? AppStrings.valFieldRequired
+                      : null,
                 ),
 
                 // City & State Row
@@ -324,7 +336,9 @@ class CheckoutAddressScreen extends StatelessWidget {
                         controller: cityController,
                         label: AppStrings.labelCity,
                         hint: AppStrings.hintCity,
-                        validator: (val) => val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
+                        validator: (val) => val == null || val.isEmpty
+                            ? AppStrings.valFieldRequired
+                            : null,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -333,7 +347,9 @@ class CheckoutAddressScreen extends StatelessWidget {
                         controller: stateController,
                         label: AppStrings.labelState,
                         hint: AppStrings.hintState,
-                        validator: (val) => val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
+                        validator: (val) => val == null || val.isEmpty
+                            ? AppStrings.valFieldRequired
+                            : null,
                       ),
                     ),
                   ],
@@ -345,46 +361,52 @@ class CheckoutAddressScreen extends StatelessWidget {
                   label: AppStrings.labelPincode,
                   hint: AppStrings.hintPincode,
                   keyboardType: TextInputType.number,
-                  validator: (val) => val == null || val.isEmpty ? AppStrings.valFieldRequired : null,
+                  validator: (val) => val == null || val.isEmpty
+                      ? AppStrings.valFieldRequired
+                      : null,
                 ),
 
                 const SizedBox(height: 24),
 
                 // Submit Button
-                Obx(() => SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: controller.isSavingAddress.value
-                        ? null
-                        : () async {
-                            if (formKey.currentState!.validate()) {
-                              Navigator.of(context).pop(); // Close bottom sheet immediately
-                              await controller.addAddress(
-                                name: nameController.text.trim(),
-                                phone: phoneController.text.trim(),
-                                street: streetController.text.trim(),
-                                city: cityController.text.trim(),
-                                pincode: pincodeController.text.trim(),
-                                state: stateController.text.trim(),
-                              );
-                            }
-                          },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.buttonColor,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                Obx(
+                  () => SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: controller.isSavingAddress.value
+                          ? null
+                          : () async {
+                              if (formKey.currentState!.validate()) {
+                                Navigator.of(
+                                  context,
+                                ).pop(); // Close bottom sheet immediately
+                                await controller.addAddress(
+                                  name: nameController.text.trim(),
+                                  phone: phoneController.text.trim(),
+                                  street: streetController.text.trim(),
+                                  city: cityController.text.trim(),
+                                  pincode: pincodeController.text.trim(),
+                                  state: stateController.text.trim(),
+                                );
+                              }
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.buttonColor,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
+                      child: controller.isSavingAddress.value
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                              AppStrings.saveSelectAddress,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                     ),
-                    child: controller.isSavingAddress.value
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
-                            AppStrings.saveSelectAddress,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
                   ),
-                )),
+                ),
                 const SizedBox(height: 10),
               ],
             ),
@@ -408,31 +430,36 @@ class CheckoutAddressScreen extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         validator: validator,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
-        cursorColor: AppColor.primary,
+        style: TextStyle(color: AppTheme.primaryText, fontSize: 14),
+        cursorColor: AppTheme.primary,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.white54, fontSize: 12),
+          labelStyle: TextStyle(color: AppTheme.textMuted, fontSize: 12),
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white30, fontSize: 12),
+          hintStyle: TextStyle(color: AppTheme.textHint, fontSize: 12),
           filled: true,
-          fillColor: AppColor.inputFill,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          fillColor: AppTheme.inputFill,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 12,
+          ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColor.primary.withValues(alpha: 0.12)),
+            borderSide: BorderSide(
+              color: AppTheme.primary.withValues(alpha: 0.12),
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColor.primary),
+            borderSide: BorderSide(color: AppTheme.primary),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColor.error),
+            borderSide: BorderSide(color: AppTheme.error),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColor.error, width: 1.5),
+            borderSide: BorderSide(color: AppTheme.error, width: 1.5),
           ),
         ),
       ),
@@ -449,7 +476,7 @@ class CheckoutStepIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColor.backgroundColor,
+      color: AppTheme.backgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Row(
         children: [
@@ -475,8 +502,8 @@ class CheckoutStepIndicator extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isCompleted || isActive
-                ? AppColor.primary
-                : AppColor.dividerColor.withValues(alpha: 0.15),
+                ? AppTheme.primary
+                : AppTheme.dividerColor.withValues(alpha: 0.15),
             border: Border.all(
               color: isActive ? Colors.white : Colors.transparent,
               width: 1.5,
@@ -487,7 +514,9 @@ class CheckoutStepIndicator extends StatelessWidget {
               : Text(
                   '${stepIndex + 1}',
                   style: TextStyle(
-                    color: isCompleted || isActive ? Colors.white : Colors.white54,
+                    color: isCompleted || isActive
+                        ? Colors.white
+                        : Colors.white54,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -499,7 +528,7 @@ class CheckoutStepIndicator extends StatelessWidget {
           style: TextStyle(
             color: isActive
                 ? Colors.white
-                : (isCompleted ? AppColor.primary : Colors.white38),
+                : (isCompleted ? AppTheme.primary : Colors.white38),
             fontSize: 12,
             fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
           ),
@@ -515,8 +544,8 @@ class CheckoutStepIndicator extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 10),
         height: 1.5,
         color: isCompleted
-            ? AppColor.primary
-            : AppColor.dividerColor.withValues(alpha: 0.15),
+            ? AppTheme.primary
+            : AppTheme.dividerColor.withValues(alpha: 0.15),
       ),
     );
   }

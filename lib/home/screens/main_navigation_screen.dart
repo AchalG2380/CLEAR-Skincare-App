@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/widgets/app_widgets.dart';
 import 'home_screen.dart';
 import '../../wishlist/screens/wishlist_screen.dart';
@@ -33,7 +33,7 @@ class MainNavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        backgroundColor: AppColor.backgroundColor,
+        backgroundColor: AppTheme.backgroundColor,
         body: Stack(
           children: [
             IndexedStack(

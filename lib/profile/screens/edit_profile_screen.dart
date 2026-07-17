@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../controllers/profile_controller.dart';
 import '../../auth/screens/widgets/auth_widgets.dart';
@@ -19,9 +19,9 @@ class EditProfileScreen extends StatelessWidget {
     final phoneController = TextEditingController(text: user?.phone ?? '');
 
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColor.backgroundColor,
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -41,10 +41,10 @@ class EditProfileScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: AppColor.cardBackground,
+            color: AppTheme.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColor.primary.withValues(alpha: 0.2),
+              color: AppTheme.primary.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -65,7 +65,10 @@ class EditProfileScreen extends StatelessWidget {
                 controller: nameController,
                 labelText: AppStrings.labelName,
                 hintText: AppStrings.hintName,
-                prefixIcon: const Icon(Icons.person_outline, color: Colors.white70),
+                prefixIcon: const Icon(
+                  Icons.person_outline,
+                  color: Colors.white70,
+                ),
               ),
 
               AuthTextField(
@@ -73,7 +76,10 @@ class EditProfileScreen extends StatelessWidget {
                 labelText: AppStrings.labelEmail,
                 hintText: AppStrings.hintEmail,
                 keyboardType: TextInputType.emailAddress,
-                prefixIcon: const Icon(Icons.email_outlined, color: Colors.white70),
+                prefixIcon: const Icon(
+                  Icons.email_outlined,
+                  color: Colors.white70,
+                ),
               ),
 
               AuthTextField(
@@ -81,7 +87,10 @@ class EditProfileScreen extends StatelessWidget {
                 labelText: AppStrings.labelPhone,
                 hintText: AppStrings.hintPhone,
                 keyboardType: TextInputType.phone,
-                prefixIcon: const Icon(Icons.phone_outlined, color: Colors.white70),
+                prefixIcon: const Icon(
+                  Icons.phone_outlined,
+                  color: Colors.white70,
+                ),
               ),
 
               const SizedBox(height: 30),

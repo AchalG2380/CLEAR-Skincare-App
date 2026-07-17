@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../controllers/onboarding_controller.dart';
@@ -43,7 +43,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -67,10 +67,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         controller.currentPage.value < controller.totalPages - 1
                         ? TextButton(
                             onPressed: controller.completeOnboarding,
-                            child: const Text(
+                            child: Text(
                               AppStrings.skip,
                               style: TextStyle(
-                                color: AppColor.secondaryText,
+                                color: AppTheme.secondaryText,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -109,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               fit: BoxFit.cover,
                             ),
                             border: Border.all(
-                              color: AppColor.primary.withValues(alpha: 0.15),
+                              color: AppTheme.primary.withValues(alpha: 0.15),
                               width: 1.5,
                             ),
                           ),
@@ -132,8 +132,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           slide["subtitle"]!,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: AppColor.secondaryText,
+                          style: TextStyle(
+                            color: AppTheme.secondaryText,
                             fontSize: 14,
                             height: 1.5,
                           ),
@@ -164,8 +164,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: isSelected ? 24 : 8,
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? AppColor.primary
-                                : AppColor.dividerColor.withValues(alpha: 0.3),
+                                ? AppTheme.primary
+                                : AppTheme.dividerColor.withValues(alpha: 0.3),
                             borderRadius: BorderRadius.circular(4),
                           ),
                         );
@@ -190,7 +190,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.buttonColor,
+                        backgroundColor: AppTheme.buttonColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,

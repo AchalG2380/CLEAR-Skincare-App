@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../controllers/comparison_controller.dart';
-import '../app_colors.dart';
+import '../app_theme.dart';
 import '../app_strings.dart';
 
 // ─── Reusable Skincare App Header ──────────────────────────────────────────
@@ -24,7 +24,7 @@ class SkincareAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       elevation: 0,
       automaticallyImplyLeading: false,
       leading: showBackButton
@@ -66,8 +66,8 @@ class SkincareBottomActionPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: AppColor.backgroundColor,
+      decoration: BoxDecoration(
+        color: AppTheme.backgroundColor,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SafeArea(
@@ -77,12 +77,14 @@ class SkincareBottomActionPanel extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isLoading ? null : onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.buttonColor,
+              backgroundColor: AppTheme.buttonColor,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
-              disabledBackgroundColor: AppColor.buttonColor.withValues(alpha: 0.5),
+              disabledBackgroundColor: AppTheme.buttonColor.withValues(
+                alpha: 0.5,
+              ),
             ),
             child: isLoading
                 ? const CircularProgressIndicator(color: Colors.white)
@@ -117,9 +119,9 @@ class SkincareBottomNavigationBar extends StatelessWidget {
       currentIndex: currentIndex,
       onTap: onTap,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: AppColor.backgroundColor,
-      selectedItemColor: AppColor.primary,
-      unselectedItemColor: AppColor.secondaryText,
+      backgroundColor: AppTheme.backgroundColor,
+      selectedItemColor: AppTheme.primary,
+      unselectedItemColor: AppTheme.secondaryText,
       showSelectedLabels: true,
       showUnselectedLabels: true,
       selectedFontSize: 11,
@@ -141,7 +143,7 @@ class SkincareBottomNavigationBar extends StatelessWidget {
             return count > 0
                 ? Badge(
                     label: Text('$count'),
-                    backgroundColor: AppColor.primary,
+                    backgroundColor: AppTheme.primary,
                     child: const Icon(Icons.shopping_cart_outlined),
                   )
                 : const Icon(Icons.shopping_cart_outlined);
@@ -151,7 +153,7 @@ class SkincareBottomNavigationBar extends StatelessWidget {
             return count > 0
                 ? Badge(
                     label: Text('$count'),
-                    backgroundColor: AppColor.primary,
+                    backgroundColor: AppTheme.primary,
                     child: const Icon(Icons.shopping_cart),
                   )
                 : const Icon(Icons.shopping_cart);
@@ -195,11 +197,11 @@ class SkincareEmptyState extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(24),
-              decoration: const BoxDecoration(
-                color: AppColor.cardBackground,
+              decoration: BoxDecoration(
+                color: AppTheme.cardBackground,
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, size: 64, color: AppColor.primary),
+              child: Icon(icon, size: 64, color: AppTheme.primary),
             ),
             const SizedBox(height: 24),
             Text(
@@ -225,7 +227,7 @@ class SkincareEmptyState extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onButtonPressed,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.buttonColor,
+                    backgroundColor: AppTheme.buttonColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -308,33 +310,43 @@ ImageProvider getSkincareImageProvider(String path) {
   return CachedNetworkImageProvider(mappedPath);
 }
 
-Widget getSkincareImage(String path, {BoxFit fit = BoxFit.cover, double? width, double? height}) {
+Widget getSkincareImage(
+  String path, {
+  BoxFit fit = BoxFit.cover,
+  double? width,
+  double? height,
+  Color backgroundColor = Colors.white,
+}) {
   final mappedPath = mapDatabaseImagePath(path);
+  Widget imageWidget;
   if (mappedPath.startsWith('assets/')) {
-    return Image.asset(
+    imageWidget = Image.asset(
       mappedPath,
       fit: fit,
       width: width,
       height: height,
       errorBuilder: (_, __, ___) => Container(
-        color: AppColor.primary.withValues(alpha: 0.15),
+        color: AppTheme.primary.withValues(alpha: 0.15),
+        child: const Icon(Icons.broken_image_outlined, color: Colors.white30),
+      ),
+    );
+  } else {
+    imageWidget = CachedNetworkImage(
+      imageUrl: mappedPath,
+      fit: fit,
+      width: width,
+      height: height,
+      placeholder: (_, __) =>
+          Container(color: AppTheme.primary.withValues(alpha: 0.12)),
+      errorWidget: (_, __, ___) => Container(
+        color: AppTheme.primary.withValues(alpha: 0.20),
         child: const Icon(Icons.broken_image_outlined, color: Colors.white30),
       ),
     );
   }
-  return CachedNetworkImage(
-    imageUrl: mappedPath,
-    fit: fit,
-    width: width,
-    height: height,
-    placeholder: (_, __) => Container(color: AppColor.primary.withValues(alpha: 0.12)),
-    errorWidget: (_, __, ___) => Container(
-      color: AppColor.primary.withValues(alpha: 0.20),
-      child: const Icon(
-        Icons.broken_image_outlined,
-        color: Colors.white30,
-      ),
-    ),
+  return Container(
+    color: backgroundColor,
+    child: imageWidget,
   );
 }
 
@@ -357,15 +369,12 @@ class SkincareCompareFloatingBar extends StatelessWidget {
           height: 52,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-            color: AppColor.surface,
+            color: AppTheme.surface,
             borderRadius: BorderRadius.circular(26),
-            border: Border.all(
-              color: AppColor.primary,
-              width: 1.5,
-            ),
+            border: Border.all(color: AppTheme.primary, width: 1.5),
             boxShadow: [
               BoxShadow(
-                color: AppColor.primary.withValues(alpha: 0.20),
+                color: AppTheme.primary.withValues(alpha: 0.20),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
@@ -373,16 +382,12 @@ class SkincareCompareFloatingBar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(
-                Icons.balance,
-                color: AppColor.primary,
-                size: 20,
-              ),
+              Icon(Icons.balance, color: AppTheme.primary, size: 20),
               const SizedBox(width: 12),
               Text(
                 'Compare ($count / 3)',
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: AppTheme.primaryText,
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
@@ -392,14 +397,14 @@ class SkincareCompareFloatingBar extends StatelessWidget {
               Text(
                 'View',
                 style: TextStyle(
-                  color: AppColor.buttonColor,
+                  color: AppTheme.buttonColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
               ),
               const SizedBox(width: 12),
-              const VerticalDivider(
-                color: Colors.white24,
+              VerticalDivider(
+                color: AppTheme.dividerColor,
                 indent: 14,
                 endIndent: 14,
                 width: 1,
@@ -408,11 +413,7 @@ class SkincareCompareFloatingBar extends StatelessWidget {
               // Clear action
               GestureDetector(
                 onTap: () => comparisonController.clearComparison(),
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.white54,
-                  size: 20,
-                ),
+                child: Icon(Icons.close, color: AppTheme.textMuted, size: 20),
               ),
             ],
           ),

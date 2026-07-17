@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
@@ -19,8 +19,8 @@ class ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+    return Obx(() => Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       body: Obx(() {
         if (controller.isLoading.value) {
           return _buildShimmerLoading();
@@ -58,10 +58,10 @@ class ProductDetailsScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 AppStrings.clearSkincare,
                                 style: TextStyle(
-                                  color: AppColor.primary,
+                                  color: AppTheme.primary,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 1.5,
@@ -69,24 +69,24 @@ class ProductDetailsScreen extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.star,
-                                    color: AppColor.ratingStar,
+                                    color: AppTheme.ratingStar,
                                     size: 16,
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
                                     '${details.rating}',
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    style: TextStyle(
+                                      color: AppTheme.primaryText,
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Text(
                                     ' (${details.reviews.length} ${AppStrings.ratingReviewsSuffix})',
-                                    style: const TextStyle(
-                                      color: Colors.white38,
+                                    style: TextStyle(
+                                      color: AppTheme.textMuted,
                                       fontSize: 12,
                                     ),
                                   ),
@@ -97,8 +97,8 @@ class ProductDetailsScreen extends StatelessWidget {
                           const SizedBox(height: 8),
                           Text(
                             details.name,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: AppTheme.primaryText,
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
                             ),
@@ -108,8 +108,8 @@ class ProductDetailsScreen extends StatelessWidget {
                             children: [
                               Text(
                                 '\$${details.price.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  color: AppColor.primary,
+                                style: TextStyle(
+                                  color: AppTheme.primary,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -122,18 +122,18 @@ class ProductDetailsScreen extends StatelessWidget {
                                   icon: Icon(
                                     isCompare ? Icons.balance : Icons.balance_outlined,
                                     size: 16,
-                                    color: isCompare ? AppColor.primary : Colors.white70,
+                                    color: isCompare ? AppTheme.primary : AppTheme.secondaryText,
                                   ),
                                   label: Text(
                                     isCompare ? 'Compared' : 'Add to Compare',
                                     style: TextStyle(
-                                      color: isCompare ? AppColor.primary : Colors.white70,
+                                      color: isCompare ? AppTheme.primary : AppTheme.secondaryText,
                                       fontSize: 12,
                                     ),
                                   ),
                                   style: OutlinedButton.styleFrom(
                                     side: BorderSide(
-                                      color: isCompare ? AppColor.primary : Colors.white24,
+                                      color: isCompare ? AppTheme.primary : AppTheme.dividerColor,
                                     ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -147,8 +147,8 @@ class ProductDetailsScreen extends StatelessWidget {
                           const SizedBox(height: 16),
                           Text(
                             details.description,
-                            style: const TextStyle(
-                              color: Colors.white70,
+                            style: TextStyle(
+                              color: AppTheme.secondaryText,
                               fontSize: 14,
                               height: 1.5,
                             ),
@@ -157,9 +157,9 @@ class ProductDetailsScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Divider(color: Colors.white10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Divider(color: AppTheme.dividerColor),
                     ),
 
                     // 3. Expandable Text Accordions
@@ -171,8 +171,8 @@ class ProductDetailsScreen extends StatelessWidget {
                             title: AppStrings.ingredients,
                             content: Text(
                               details.ingredients,
-                              style: const TextStyle(
-                                color: Colors.white70,
+                              style: TextStyle(
+                                color: AppTheme.secondaryText,
                                 fontSize: 13,
                                 height: 1.5,
                               ),
@@ -190,17 +190,17 @@ class ProductDetailsScreen extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Icon(
+                                          Icon(
                                             Icons.check_circle_outline,
-                                            color: AppColor.primary,
+                                            color: AppTheme.primary,
                                             size: 18,
                                           ),
                                           const SizedBox(width: 8),
                                           Expanded(
                                             child: Text(
                                               b,
-                                              style: const TextStyle(
-                                                color: Colors.white70,
+                                              style: TextStyle(
+                                                color: AppTheme.secondaryText,
                                                 fontSize: 13,
                                               ),
                                             ),
@@ -216,8 +216,8 @@ class ProductDetailsScreen extends StatelessWidget {
                             title: AppStrings.howToUse,
                             content: Text(
                               details.usage,
-                              style: const TextStyle(
-                                color: Colors.white70,
+                              style: TextStyle(
+                                color: AppTheme.secondaryText,
                                 fontSize: 13,
                                 height: 1.5,
                               ),
@@ -227,9 +227,9 @@ class ProductDetailsScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Divider(color: Colors.white10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Divider(color: AppTheme.dividerColor),
                     ),
 
                     // 4. Customer Reviews
@@ -263,7 +263,7 @@ class ProductDetailsScreen extends StatelessWidget {
           ],
         );
       }),
-    );
+    ));
   }
 
   // ─── Pinned AppBar ────────────────────────────────────────────────────────
@@ -273,7 +273,7 @@ class ProductDetailsScreen extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [AppColor.backgroundColor.withValues(alpha: 0.78), Colors.transparent],
+          colors: [AppTheme.backgroundColor.withValues(alpha: 0.78), Colors.transparent],
         ),
       ),
       child: SafeArea(
@@ -284,7 +284,7 @@ class ProductDetailsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                icon: Icon(Icons.arrow_back, color: AppTheme.primaryText),
                 onPressed: () => Get.back(),
               ),
               Obx(() {
@@ -292,7 +292,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 return IconButton(
                   icon: Icon(
                     isWish ? Icons.favorite : Icons.favorite_border,
-                    color: isWish ? AppColor.favoriteActive : Colors.white,
+                    color: isWish ? AppTheme.favoriteActive : AppTheme.primaryText,
                   ),
                   onPressed: () => controller.toggleWishlist(),
                 );
@@ -320,7 +320,7 @@ class ProductDetailsScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return getSkincareImage(
                 details.imageUrls[index],
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
                 width: double.infinity,
               );
             },
@@ -343,8 +343,8 @@ class ProductDetailsScreen extends StatelessWidget {
                     height: 8,
                     decoration: BoxDecoration(
                       color: controller.selectedImageIndex.value == index
-                          ? AppColor.primary
-                          : Colors.white30,
+                          ? AppTheme.primary
+                          : AppTheme.textDark,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -364,10 +364,10 @@ class ProductDetailsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             AppStrings.customerReviews,
             style: TextStyle(
-              color: Colors.white,
+              color: AppTheme.primaryText,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -378,7 +378,7 @@ class ProductDetailsScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: AppColor.cardBackground,
+                color: AppTheme.cardBackground,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Column(
@@ -389,16 +389,16 @@ class ProductDetailsScreen extends StatelessWidget {
                     children: [
                       Text(
                         rev.reviewerName,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: AppTheme.primaryText,
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         rev.date,
-                        style: const TextStyle(
-                          color: Colors.white30,
+                        style: TextStyle(
+                          color: AppTheme.textDark,
                           fontSize: 11,
                         ),
                       ),
@@ -412,16 +412,16 @@ class ProductDetailsScreen extends StatelessWidget {
                         Icons.star,
                         size: 14,
                         color: starIdx < rev.rating
-                            ? AppColor.ratingStar
-                            : AppColor.dividerColor,
+                            ? AppTheme.ratingStar
+                            : AppTheme.dividerColor,
                       ),
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     rev.comment,
-                    style: const TextStyle(
-                      color: Colors.white70,
+                    style: TextStyle(
+                      color: AppTheme.secondaryText,
                       fontSize: 13,
                       height: 1.4,
                     ),
@@ -438,9 +438,9 @@ class ProductDetailsScreen extends StatelessWidget {
   // ─── Sticky Action Bar (Cart Stepper & Add to Cart) ────────────────────────
   Widget _buildStickyActionBar(ProductDetailsModel details) {
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: AppTheme.backgroundColor,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
@@ -448,30 +448,30 @@ class ProductDetailsScreen extends StatelessWidget {
           // Stepper Quantity Selector
           Container(
             decoration: BoxDecoration(
-              color: AppColor.inputFill,
+              color: AppTheme.inputFill,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColor.dividerColor.withValues(alpha: 0.15),
+                color: AppTheme.dividerColor.withValues(alpha: 0.15),
               ),
             ),
             child: Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.remove, color: Colors.white, size: 18),
+                  icon: Icon(Icons.remove, color: AppTheme.primaryText, size: 18),
                   onPressed: controller.decrementQuantity,
                 ),
                 Obx(
                   () => Text(
                     '${controller.quantity.value}',
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: AppTheme.primaryText,
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.add, color: Colors.white, size: 18),
+                  icon: Icon(Icons.add, color: AppTheme.primaryText, size: 18),
                   onPressed: controller.incrementQuantity,
                 ),
               ],
@@ -486,7 +486,7 @@ class ProductDetailsScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: controller.addToCart,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.buttonColor,
+                  backgroundColor: AppTheme.buttonColor,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -506,8 +506,8 @@ class ProductDetailsScreen extends StatelessWidget {
 
   // ─── Loading Skeleton / Shimmer ────────────────────────────────────────────
   Widget _buildShimmerLoading() {
-    return const Center(
-      child: CircularProgressIndicator(color: AppColor.primary),
+    return Center(
+      child: CircularProgressIndicator(color: AppTheme.primary),
     );
   }
 
@@ -517,11 +517,11 @@ class ProductDetailsScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, color: AppColor.error, size: 50),
+          Icon(Icons.error_outline, color: AppTheme.error, size: 50),
           const SizedBox(height: 16),
           Text(
             message ?? controller.errorMessage.value,
-            style: const TextStyle(color: Colors.white70, fontSize: 14),
+            style: TextStyle(color: AppTheme.secondaryText, fontSize: 14),
           ),
           const SizedBox(height: 24),
           ElevatedButton(
@@ -553,24 +553,24 @@ class _ExpandableSectionState extends State<_ExpandableSection> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColor.primary.withValues(alpha: 0.15)),
+        border: Border.all(color: AppTheme.primary.withValues(alpha: 0.15)),
       ),
       child: Column(
         children: [
           ListTile(
             title: Text(
               widget.title,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: AppTheme.primaryText,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
               ),
             ),
             trailing: Icon(
               _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              color: AppColor.primary,
+              color: AppTheme.primary,
             ),
             onTap: () {
               setState(() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../controllers/orders_controller.dart';
@@ -14,7 +14,7 @@ class OrderListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: const SkincareAppBar(title: AppStrings.myOrdersTitle),
       body: Obx(() {
         if (controller.isLoading.value && controller.orders.isEmpty) {
@@ -27,8 +27,8 @@ class OrderListScreen extends StatelessWidget {
 
         return RefreshIndicator(
           onRefresh: controller.fetchOrders,
-          color: AppColor.primary,
-          backgroundColor: AppColor.backgroundColor,
+          color: AppTheme.primary,
+          backgroundColor: AppTheme.backgroundColor,
           child: ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: controller.orders.length,
@@ -50,10 +50,10 @@ class OrderListScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColor.cardBackground,
+          color: AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: AppColor.primary.withValues(alpha: 0.12),
+            color: AppTheme.primary.withValues(alpha: 0.12),
             width: 1,
           ),
         ),
@@ -66,19 +66,19 @@ class OrderListScreen extends StatelessWidget {
               children: [
                 Text(
                   order.id,
-                  style: const TextStyle(
-                    color: AppColor.primary,
+                  style: TextStyle(
+                    color: AppTheme.primary,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   order.date.split(',')[0], // Just date part
-                  style: const TextStyle(color: Colors.white38, fontSize: 12),
+                  style: TextStyle(color: AppTheme.textDark, fontSize: 12),
                 ),
               ],
             ),
-            const Divider(color: Colors.white10, height: 24),
+            Divider(color: AppTheme.dividerColor, height: 24),
 
             // Item Previews (Thumbnails & Quantities)
             Row(
@@ -95,13 +95,14 @@ class OrderListScreen extends StatelessWidget {
                           margin: const EdgeInsets.only(right: 10),
                           width: 50,
                           decoration: BoxDecoration(
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.white10),
+                            border: Border.all(color: AppTheme.dividerColor),
                             image: DecorationImage(
                               image: getSkincareImageProvider(
                                 item.product.imageUrl,
                               ),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         );
@@ -118,7 +119,7 @@ class OrderListScreen extends StatelessWidget {
                           1
                       ? AppStrings.oneItemText
                       : '${order.items.fold<int>(0, (sum, item) => sum + item.quantity)} ${AppStrings.itemsText}',
-                  style: const TextStyle(color: Colors.white70, fontSize: 12),
+                  style: TextStyle(color: AppTheme.secondaryText, fontSize: 12),
                 ),
               ],
             ),
@@ -152,24 +153,24 @@ class OrderListScreen extends StatelessWidget {
 
     switch (status.toLowerCase()) {
       case 'delivered':
-        bgColor = AppColor.successBg.withValues(alpha: 0.2);
-        textColor = AppColor.success;
+        bgColor = AppTheme.successBg.withValues(alpha: 0.2);
+        textColor = AppTheme.success;
         break;
       case 'shipped':
-        bgColor = AppColor.warningBg.withValues(alpha: 0.2);
-        textColor = AppColor.warning;
+        bgColor = AppTheme.warningBg.withValues(alpha: 0.2);
+        textColor = AppTheme.warning;
         break;
       case 'processing':
-        bgColor = AppColor.infoBg.withValues(alpha: 0.2);
-        textColor = AppColor.info;
+        bgColor = AppTheme.infoBg.withValues(alpha: 0.2);
+        textColor = AppTheme.info;
         break;
       case 'cancelled':
-        bgColor = AppColor.errorBg.withValues(alpha: 0.2);
-        textColor = AppColor.error;
+        bgColor = AppTheme.errorBg.withValues(alpha: 0.2);
+        textColor = AppTheme.error;
         break;
       default:
-        bgColor = AppColor.infoBg.withValues(alpha: 0.2);
-        textColor = AppColor.info;
+        bgColor = AppTheme.infoBg.withValues(alpha: 0.2);
+        textColor = AppTheme.info;
     }
 
     return Container(
@@ -249,7 +250,7 @@ class _OrderSkeletonItemState extends State<_OrderSkeletonItem>
         margin: const EdgeInsets.only(bottom: 16),
         height: 154,
         decoration: BoxDecoration(
-          color: AppColor.primary.withValues(alpha: _anim.value),
+          color: AppTheme.primary.withValues(alpha: _anim.value),
           borderRadius: BorderRadius.circular(18),
         ),
       ),

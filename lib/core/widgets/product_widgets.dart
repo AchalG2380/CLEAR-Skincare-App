@@ -4,7 +4,7 @@ import '../../wishlist/controllers/wishlist_controller.dart';
 import 'package:get/get.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../controllers/comparison_controller.dart';
-import '../app_colors.dart';
+import '../app_theme.dart';
 import '../app_strings.dart';
 import 'app_widgets.dart';
 
@@ -28,10 +28,10 @@ class ProductCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppColor.cardBackground,
+          color: AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColor.primary.withValues(alpha: 0.15),
+            color: AppTheme.primary.withValues(alpha: 0.15),
             width: 1,
           ),
         ),
@@ -62,12 +62,16 @@ class ProductCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: AppColor.backgroundColor.withValues(alpha: 0.60),
+                          color: AppTheme.backgroundColor.withValues(
+                            alpha: 0.60,
+                          ),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           isWish ? Icons.favorite : Icons.favorite_border,
-                          color: isWish ? AppColor.favoriteActive : Colors.white,
+                          color: isWish
+                              ? AppTheme.favoriteActive
+                              : AppTheme.secondaryText,
                           size: 18,
                         ),
                       ),
@@ -78,18 +82,23 @@ class ProductCard extends StatelessWidget {
                   top: 8,
                   left: 8,
                   child: Obx(() {
-                    final isCompare = comparisonController.isCompared(product.id);
+                    final isCompare = comparisonController.isCompared(
+                      product.id,
+                    );
                     return GestureDetector(
-                      onTap: () => comparisonController.toggleCompare(product.id),
+                      onTap: () =>
+                          comparisonController.toggleCompare(product.id),
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: AppColor.backgroundColor.withValues(alpha: 0.60),
+                          color: AppTheme.backgroundColor.withValues(
+                            alpha: 0.60,
+                          ),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           isCompare ? Icons.balance : Icons.balance_outlined,
-                          color: isCompare ? AppColor.primary : Colors.white,
+                          color: isCompare ? AppTheme.primary : AppTheme.secondaryText,
                           size: 18,
                         ),
                       ),
@@ -107,8 +116,8 @@ class ProductCard extends StatelessWidget {
                     product.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: AppTheme.primaryText,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
@@ -116,12 +125,12 @@ class ProductCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.star, color: AppColor.ratingStar, size: 14),
+                      Icon(Icons.star, color: AppTheme.ratingStar, size: 14),
                       const SizedBox(width: 2),
                       Text(
                         product.rating.toString(),
-                        style: const TextStyle(
-                          color: Colors.white70,
+                        style: TextStyle(
+                          color: AppTheme.secondaryText,
                           fontSize: 11,
                         ),
                       ),
@@ -130,8 +139,8 @@ class ProductCard extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     '\$${product.price.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      color: AppColor.primary,
+                    style: TextStyle(
+                      color: AppTheme.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -145,12 +154,12 @@ class ProductCard extends StatelessWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          IconButton(
+                           IconButton(
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.remove,
-                              color: Colors.white,
+                              color: AppTheme.primaryText,
                               size: 20,
                             ),
                             onPressed: () =>
@@ -158,8 +167,8 @@ class ProductCard extends StatelessWidget {
                           ),
                           Text(
                             '$cartQty',
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: AppTheme.primaryText,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
@@ -167,9 +176,9 @@ class ProductCard extends StatelessWidget {
                           IconButton(
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.add,
-                              color: Colors.white,
+                              color: AppTheme.primaryText,
                               size: 20,
                             ),
                             onPressed: () =>
@@ -184,7 +193,7 @@ class ProductCard extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () => cartController.addToCart(product),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColor.buttonColor,
+                            backgroundColor: AppTheme.buttonColor,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -242,14 +251,14 @@ class SkincareCartItemRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Obx(() => Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -260,10 +269,7 @@ class SkincareCartItemRow extends StatelessWidget {
             child: SizedBox(
               width: 65,
               height: 65,
-              child: getSkincareImage(
-                imageUrl,
-                fit: BoxFit.cover,
-              ),
+              child: getSkincareImage(imageUrl, fit: BoxFit.cover),
             ),
           ),
           const SizedBox(width: 14),
@@ -275,8 +281,8 @@ class SkincareCartItemRow extends StatelessWidget {
                   name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: AppTheme.primaryText,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
@@ -284,8 +290,8 @@ class SkincareCartItemRow extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   '\$${price.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    color: AppColor.primary,
+                  style: TextStyle(
+                    color: AppTheme.primary,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
@@ -294,7 +300,7 @@ class SkincareCartItemRow extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     '${AppStrings.quantityLabel}: $quantity',
-                    style: const TextStyle(color: Colors.white38, fontSize: 11),
+                    style: TextStyle(color: AppTheme.textDark, fontSize: 11),
                   ),
                 ],
               ],
@@ -309,50 +315,50 @@ class SkincareCartItemRow extends StatelessWidget {
                   IconButton(
                     constraints: const BoxConstraints(),
                     padding: EdgeInsets.zero,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.delete_outline,
-                      color: AppColor.error,
+                      color: AppTheme.error,
                       size: 20,
                     ),
                     onPressed: onRemove,
                   ),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColor.dividerColor.withValues(alpha: 0.15),
+                    color: AppTheme.dividerColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     children: [
                       GestureDetector(
                         onTap: onDecrement,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 4,
                           ),
                           child: Icon(
                             Icons.remove,
-                            color: Colors.white,
+                            color: AppTheme.primaryText,
                             size: 16,
                           ),
                         ),
                       ),
                       Text(
                         '$quantity',
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: AppTheme.primaryText,
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       GestureDetector(
                         onTap: onIncrement,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 4,
                           ),
-                          child: Icon(Icons.add, color: Colors.white, size: 16),
+                          child: Icon(Icons.add, color: AppTheme.primaryText, size: 16),
                         ),
                       ),
                     ],
@@ -363,14 +369,14 @@ class SkincareCartItemRow extends StatelessWidget {
           else
             Text(
               '\$${(price * quantity).toStringAsFixed(2)}',
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: AppTheme.primaryText,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
         ],
       ),
-    );
+    ));
   }
 }

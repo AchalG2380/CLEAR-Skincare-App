@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../../core/widgets/product_widgets.dart';
 import '../controllers/checkout_controller.dart';
@@ -15,9 +15,9 @@ class CheckoutReviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColor.backgroundColor,
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -53,7 +53,10 @@ class CheckoutReviewScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // 2. Payment Method Section
-                _buildSectionHeader(AppStrings.paymentMethod, onEdit: () => Get.back()),
+                _buildSectionHeader(
+                  AppStrings.paymentMethod,
+                  onEdit: () => Get.back(),
+                ),
                 _buildPaymentSummaryCard(),
 
                 const SizedBox(height: 20),
@@ -111,10 +114,10 @@ class CheckoutReviewScreen extends StatelessWidget {
         ),
         TextButton(
           onPressed: onEdit,
-          child: const Text(
+          child: Text(
             AppStrings.change,
             style: TextStyle(
-              color: AppColor.primary,
+              color: AppTheme.primary,
               fontSize: 13,
               fontWeight: FontWeight.bold,
             ),
@@ -132,10 +135,10 @@ class CheckoutReviewScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -144,8 +147,8 @@ class CheckoutReviewScreen extends StatelessWidget {
         children: [
           Text(
             address.name,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppTheme.primaryText,
               fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
@@ -153,20 +156,20 @@ class CheckoutReviewScreen extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             address.street,
-            style: const TextStyle(
-              color: Colors.white70,
+            style: TextStyle(
+              color: AppTheme.secondaryText,
               fontSize: 13,
               height: 1.4,
             ),
           ),
           Text(
             '${address.city}, ${address.state} - ${address.pincode}',
-            style: const TextStyle(color: Colors.white70, fontSize: 13),
+            style: TextStyle(color: AppTheme.secondaryText, fontSize: 13),
           ),
           const SizedBox(height: 8),
           Text(
             '${AppStrings.labelPhone}: ${address.phone}',
-            style: const TextStyle(color: Colors.white54, fontSize: 12),
+            style: TextStyle(color: AppTheme.textMuted, fontSize: 12),
           ),
         ],
       ),
@@ -200,10 +203,10 @@ class CheckoutReviewScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
@@ -251,14 +254,14 @@ class CheckoutReviewScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.cardBackground,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColor.primary.withValues(alpha: 0.12),
+          color: AppTheme.primary.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
-      child: Column(
+      child: Obx(() => Column(
         children: [
           _buildPriceRow(
             AppStrings.subtotal,
@@ -269,7 +272,22 @@ class CheckoutReviewScreen extends StatelessWidget {
             _buildPriceRow(
               AppStrings.discount,
               '-\$${controller.discount.value.toStringAsFixed(2)}',
-              valueColor: AppColor.discountColor,
+              valueColor: AppTheme.discountColor,
+            ),
+            const SizedBox(height: 8),
+          ],
+          if (controller.pointsDiscount.value > 0) ...[
+            _buildPriceRow(
+              'Points Discount',
+              '-\$${controller.pointsDiscount.value.toStringAsFixed(2)}',
+              valueColor: AppTheme.discountColor,
+            ),
+            const SizedBox(height: 8),
+          ],
+          if (controller.tax.value > 0) ...[
+            _buildPriceRow(
+              'Tax (18%)',
+              '\$${controller.tax.value.toStringAsFixed(2)}',
             ),
             const SizedBox(height: 8),
           ],
@@ -279,17 +297,9 @@ class CheckoutReviewScreen extends StatelessWidget {
                 ? AppStrings.freeShipping
                 : '\$${controller.deliveryFee.value.toStringAsFixed(2)}',
             valueColor: controller.deliveryFee.value == 0.0
-                ? AppColor.freeShipping
+                ? AppTheme.freeShipping
                 : Colors.white,
           ),
-          const SizedBox(height: 8),
-          if (controller.tax.value > 0) ...[
-            _buildPriceRow(
-              'Tax',
-              '\$${controller.tax.value.toStringAsFixed(2)}',
-            ),
-            const SizedBox(height: 8),
-          ],
           const Divider(color: Colors.white10, height: 24),
           _buildPriceRow(
             AppStrings.totalAmount,
@@ -297,7 +307,7 @@ class CheckoutReviewScreen extends StatelessWidget {
             isTotal: true,
           ),
         ],
-      ),
+      )),
     );
   }
 
@@ -321,7 +331,7 @@ class CheckoutReviewScreen extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            color: isTotal ? AppColor.primary : valueColor,
+            color: isTotal ? AppTheme.primary : valueColor,
             fontSize: isTotal ? 18 : 13,
             fontWeight: FontWeight.bold,
           ),
@@ -333,7 +343,7 @@ class CheckoutReviewScreen extends StatelessWidget {
   // ─── Sticky Place Order Bottom Panel ────────────────────────────────────────
   Widget _buildBottomActionPanel() {
     return Container(
-      color: AppColor.backgroundColor,
+      color: AppTheme.backgroundColor,
       padding: const EdgeInsets.all(20),
       child: SafeArea(
         top: false,
@@ -345,7 +355,7 @@ class CheckoutReviewScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: isPlacing ? null : () => controller.placeOrder(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.buttonColor,
+                backgroundColor: AppTheme.buttonColor,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),

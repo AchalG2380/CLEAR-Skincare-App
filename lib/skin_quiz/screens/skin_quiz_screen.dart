@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/app_colors.dart';
+import '../../core/app_theme.dart';
 import '../controllers/quiz_controller.dart';
 import '../data/models/quiz_question_model.dart';
 import 'quiz_result_screen.dart';
@@ -20,7 +20,7 @@ class SkinQuizScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -60,16 +60,16 @@ class SkinQuizScreen extends StatelessWidget {
                 controller.currentIndex.value == 0
                     ? Icons.close
                     : Icons.arrow_back,
-                color: Colors.white,
+                color: AppTheme.primaryText,
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Text(
               'Skin Type Quiz',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: AppTheme.primaryText,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -90,7 +90,7 @@ class SkinQuizScreen extends StatelessWidget {
           Obx(
             () => Text(
               'Question ${controller.currentIndex.value + 1} of ${controller.totalQuestions}',
-              style: const TextStyle(color: AppColor.textMuted, fontSize: 13),
+              style: TextStyle(color: AppTheme.textMuted, fontSize: 13),
             ),
           ),
           const SizedBox(height: 8),
@@ -100,10 +100,8 @@ class SkinQuizScreen extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: controller.progress,
                 minHeight: 6,
-                backgroundColor: AppColor.surface,
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  AppColor.primary,
-                ),
+                backgroundColor: AppTheme.surface,
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
               ),
             ),
           ),
@@ -130,8 +128,8 @@ class _QuestionPage extends StatelessWidget {
         children: [
           Text(
             question.question,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppTheme.primaryText,
               fontSize: 22,
               fontWeight: FontWeight.bold,
               height: 1.3,
@@ -179,11 +177,11 @@ class _OptionTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColor.primary.withValues(alpha: 0.15)
-              : AppColor.surface,
+              ? AppTheme.primary.withValues(alpha: 0.15)
+              : AppTheme.surface,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isSelected ? AppColor.primary : AppColor.dividerColor,
+            color: isSelected ? AppTheme.primary : AppTheme.dividerColor,
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -191,7 +189,7 @@ class _OptionTile extends StatelessWidget {
           children: [
             Icon(
               isSelected ? Icons.check_circle : Icons.circle_outlined,
-              color: isSelected ? AppColor.primary : AppColor.textDim,
+              color: isSelected ? AppTheme.primary : AppTheme.textDim,
               size: 22,
             ),
             const SizedBox(width: 12),
@@ -199,7 +197,7 @@ class _OptionTile extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                  color: isSelected ? Colors.white : AppColor.secondaryText,
+                  color: isSelected ? AppTheme.primaryText : AppTheme.secondaryText,
                   fontSize: 15,
                   height: 1.3,
                 ),
