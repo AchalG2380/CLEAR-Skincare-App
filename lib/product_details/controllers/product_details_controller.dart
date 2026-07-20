@@ -3,6 +3,7 @@ import '../../cart/controllers/cart_controller.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import '../data/models/product_details_model.dart';
 import '../data/repositories/product_details_repository.dart';
+import '../../core/controllers/recently_viewed_controller.dart';
 
 class ProductDetailsController extends GetxController {
   final ProductDetailsRepository _repo = ProductDetailsRepository();
@@ -38,6 +39,10 @@ class ProductDetailsController extends GetxController {
 
       final details = await _repo.getProductDetails(productId);
       productDetails.value = details;
+
+      if (Get.isRegistered<RecentlyViewedController>()) {
+        Get.find<RecentlyViewedController>().recordView(productId);
+      }
     } catch (e) {
       hasError.value = true;
       errorMessage.value = e.toString().replaceAll('Exception: ', '');

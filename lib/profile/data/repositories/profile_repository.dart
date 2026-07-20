@@ -15,6 +15,10 @@ class ProfileRepository {
   );
 
   Future<ProfileModel> getProfile() async {
+    if (ApiConfig.isTest) {
+      return localProfile;
+    }
+
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/profile'),
@@ -32,6 +36,11 @@ class ProfileRepository {
   }
 
   Future<ProfileModel> updateProfile(ProfileModel profile) async {
+    if (ApiConfig.isTest) {
+      localProfile = profile;
+      return localProfile;
+    }
+
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/profile'),
@@ -56,6 +65,10 @@ class ProfileRepository {
     required String currentPassword,
     required String newPassword,
   }) async {
+    if (ApiConfig.isTest) {
+      return {'status': 'success', 'message': 'Password changed successfully'};
+    }
+
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/change-password'),

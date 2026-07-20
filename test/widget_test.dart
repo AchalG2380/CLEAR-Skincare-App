@@ -2,9 +2,16 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:clear/main.dart';
+import 'package:get/get.dart';
+import 'package:clear/core/theme_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   testWidgets('Splash screen smoke test', (WidgetTester tester) async {
+    SharedPreferences.setMockInitialValues({});
+    Get.reset();
+    Get.put(ThemeController());
+
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 

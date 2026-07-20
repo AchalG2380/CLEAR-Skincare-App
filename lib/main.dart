@@ -29,6 +29,11 @@ import 'core/controllers/comparison_controller.dart';
 import 'product_comparison/screens/comparison_screen.dart';
 import 'routine_planner/screens/routine_planner_screen.dart';
 import 'core/controllers/rewards_controller.dart';
+import 'profile/controllers/referral_controller.dart';
+import 'core/controllers/recently_viewed_controller.dart';
+import 'core/controllers/skin_analysis_controller.dart';
+import 'skin_quiz/screens/skin_analysis_screen.dart';
+import 'skin_quiz/screens/skin_analysis_results_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +56,15 @@ void main() {
 
   // Register RewardsController globally so it coordinates reward points state app-wide
   Get.put(RewardsController(), permanent: true);
+
+  // Register ReferralController globally so it coordinates user referrals app-wide
+  Get.put(ReferralController(), permanent: true);
+
+  // Register RecentlyViewedController globally so it tracks recently viewed products app-wide
+  Get.put(RecentlyViewedController(), permanent: true);
+
+  // Register SkinAnalysisController globally so it coordinates skin analyses app-wide
+  Get.put(SkinAnalysisController(), permanent: true);
 
   runApp(const MyApp());
 }
@@ -127,6 +141,8 @@ class MyApp extends StatelessWidget {
             name: '/routine-planner',
             page: () => RoutinePlannerScreen(),
           ),
+          GetPage(name: '/skin-analysis', page: () => SkinAnalysisScreen()),
+          GetPage(name: '/skin-analysis-results', page: () => SkinAnalysisResultsScreen()),
         ],
       );
     });

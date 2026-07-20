@@ -10,6 +10,16 @@ class CheckoutRepository {
   static final List<AddressModel> mockAddresses = [];
 
   Future<List<AddressModel>> getAddresses() async {
+    if (ApiConfig.isTest) {
+      if (mockAddresses.isEmpty) {
+        mockAddresses.addAll([
+          AddressModel(id: 'addr1', name: 'Jane Doe', phone: '1234567890', street: '123 Glow Avenue', city: 'New York', pincode: '10001', state: 'NY'),
+          AddressModel(id: 'addr2', name: 'John Doe', phone: '0987654321', street: '456 Radiance Blvd', city: 'San Francisco', pincode: '94105', state: 'CA'),
+        ]);
+      }
+      return mockAddresses;
+    }
+
     try {
       print("GET ADDRESSES CALL TO: $baseUrl/address");
       final response = await http.get(
@@ -48,6 +58,10 @@ class CheckoutRepository {
     );
     mockAddresses.add(created);
 
+    if (ApiConfig.isTest) {
+      return created;
+    }
+
     try {
       final payload = address.toJson();
       print("ADD ADDRESS PAYLOAD: $payload");
@@ -77,6 +91,10 @@ class CheckoutRepository {
       mockAddresses[idx] = address;
     }
 
+    if (ApiConfig.isTest) {
+      return address;
+    }
+
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/address/${address.id}'),
@@ -98,6 +116,10 @@ class CheckoutRepository {
   Future<bool> deleteAddress(String id) async {
     mockAddresses.removeWhere((e) => e.id == id);
 
+    if (ApiConfig.isTest) {
+      return true;
+    }
+
     try {
       final response = await http.delete(
         Uri.parse('$baseUrl/address/$id'),
@@ -113,6 +135,22 @@ class CheckoutRepository {
   }
 
   Future<OrderModel> placeOrder({required String addressId}) async {
+    if (ApiConfig.isTest) {
+      return OrderModel(
+        id: 'CLR-MOCK-111',
+        date: 'Jul 20, 2026',
+        total: 40.0,
+        status: 'Processing',
+        items: [],
+        address: mockAddresses.first,
+        paymentMethod: 'Card',
+        subtotal: 50.0,
+        discount: 10.0,
+        deliveryFee: 0.0,
+        trackingStages: [],
+      );
+    }
+
     final response = await http.post(
       Uri.parse('$baseUrl/orders'), // note: /orders, NOT /checkout
       headers: await ApiConfig.authHeaders(),
@@ -126,6 +164,16 @@ class CheckoutRepository {
   }
 
   Future<Map<String, dynamic>> getCheckoutSummary() async {
+    if (ApiConfig.isTest) {
+      return {
+        'subtotal': 50.0,
+        'discount': 10.0,
+        'shipping': 0.0,
+        'tax': 0.0,
+        'total': 40.0,
+      };
+    }
+
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/checkout'),

@@ -17,6 +17,7 @@ class RegisterScreen extends StatelessWidget {
     final phoneController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
+    final referralCodeController = TextEditingController();
 
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
@@ -124,6 +125,16 @@ class RegisterScreen extends StatelessWidget {
                       ),
                     ),
 
+                    AuthTextField(
+                      controller: referralCodeController,
+                      labelText: 'Referral Code (optional)',
+                      hintText: 'Enter friend\'s referral code',
+                      prefixIcon: const Icon(
+                        Icons.card_giftcard,
+                        color: Colors.white70,
+                      ),
+                    ),
+
                     const SizedBox(height: 30),
 
                     // Register button — reacts to isLoading
@@ -139,6 +150,7 @@ class RegisterScreen extends StatelessWidget {
                             password: passwordController.text.trim(),
                             confirmPassword: confirmPasswordController.text
                                 .trim(),
+                            referralCode: referralCodeController.text.trim(),
                           );
                         },
                       ),

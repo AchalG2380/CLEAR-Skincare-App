@@ -41,7 +41,7 @@ void main() {
       id: 'p1',
       name: 'Sample Product',
       imageUrl: '',
-      price: 10.0, // Subtotal = $10.00
+      price: 50.0, // Subtotal = $50.00 (qualifies for free shipping)
       rating: 4.5,
       isWishlisted: false,
     );
@@ -53,24 +53,24 @@ void main() {
 
     // Initially points not redeemed
     expect(cart.pointsDiscount, 0.0);
-    expect(cart.total, 10.0);
+    expect(cart.total, 50.0);
 
     // Toggle points redemption
     cart.isPointsRedeemed.value = true;
     
     // Potential discount: $3.00 (from 300 points)
-    // 50% cap of subtotal $10.00: $5.00
+    // 50% cap of subtotal $50.00: $25.00
     // Should apply full $3.00 discount
     expect(cart.pointsDiscount, 3.0);
     expect(cart.pointsConsumed, 300);
-    expect(cart.total, 7.0); // 10.0 - 3.0
+    expect(cart.total, 47.0); // 50.0 - 3.0
 
     // Raise points balance to exceed 50% cap
-    rewards.pointsBalance.value = 800; // $8.00 potential discount
+    rewards.pointsBalance.value = 3000; // $30.00 potential discount
     
-    // Should cap discount at $5.00 (50% of $10.00)
-    expect(cart.pointsDiscount, 5.0);
-    expect(cart.pointsConsumed, 500);
-    expect(cart.total, 5.0); // 10.0 - 5.0
+    // Should cap discount at $25.00 (50% of $50.00)
+    expect(cart.pointsDiscount, 25.0);
+    expect(cart.pointsConsumed, 2500);
+    expect(cart.total, 25.0); // 50.0 - 25.0
   });
 }

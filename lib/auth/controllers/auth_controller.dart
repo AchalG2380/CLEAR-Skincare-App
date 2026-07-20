@@ -5,6 +5,7 @@ import '../data/repositories/auth_repository.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import '../../profile/controllers/profile_controller.dart';
+import '../../core/controllers/rewards_controller.dart';
 
 class AuthController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();
@@ -92,6 +93,7 @@ class AuthController extends GetxController {
     required String phone,
     required String password,
     required String confirmPassword,
+    String? referralCode,
   }) async {
     if (name.isEmpty ||
         email.isEmpty ||
@@ -144,10 +146,33 @@ class AuthController extends GetxController {
       );
 
       isLoading.value = false;
+
+      // Handle referral code welcome bonus
+      String snackbarMsg = AppStrings.regSuccess;
+      if (referralCode != null && referralCode.trim().isNotEmpty) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('referred_by_code', referralCode.trim().toUpperCase());
+
+        // Pre-generate own referral code using phone suffix
+        final phoneSuffix = phone.length > 3 ? phone.substring(phone.length - 3) : '123';
+        final cleanName = name.replaceAll(RegExp(r'[^a-zA-Z]'), '').toUpperCase();
+        final prefix = cleanName.isNotEmpty ? (cleanName.length > 5 ? cleanName.substring(0, 5) : cleanName) : 'USER';
+        final ownCode = '$prefix$phoneSuffix';
+        await prefs.setString('my_referral_code', ownCode);
+
+        // Grant 200 welcome points
+        if (Get.isRegistered<RewardsController>()) {
+          await Get.find<RewardsController>().applyOrderResult(redeemed: 0, earned: 200);
+        }
+
+        snackbarMsg = 'Welcome bonus applied! Share your own code: $ownCode so your friend can claim theirs too';
+      }
+
       Get.snackbar(
         AppStrings.successTitle,
-        AppStrings.regSuccess,
+        snackbarMsg,
         snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 5),
       );
 
       Get.offAllNamed('/login');

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:clear/core/controllers/comparison_controller.dart';
+import 'package:clear/core/theme_controller.dart';
 import 'package:clear/product_comparison/screens/comparison_screen.dart';
 
 void main() {
   setUp(() {
+    SharedPreferences.setMockInitialValues({});
     Get.reset();
+    Get.put(ThemeController());
   });
 
   testWidgets('ComparisonController toggles items and enforces limit of 3', (WidgetTester tester) async {

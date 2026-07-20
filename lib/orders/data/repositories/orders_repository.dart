@@ -150,8 +150,11 @@ class OrdersRepository {
       ],
     ),
   ];
-
   Future<List<OrderModel>> getOrders() async {
+    if (ApiConfig.isTest) {
+      return mockOrders.reversed.toList();
+    }
+
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/orders'),
@@ -171,6 +174,14 @@ class OrdersRepository {
   }
 
   Future<OrderModel> getOrderDetails(String id) async {
+    if (ApiConfig.isTest) {
+      final index = mockOrders.indexWhere((e) => e.id == id);
+      if (index != -1) {
+        return mockOrders[index];
+      }
+      throw Exception('Order not found.');
+    }
+
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/orders/$id'),

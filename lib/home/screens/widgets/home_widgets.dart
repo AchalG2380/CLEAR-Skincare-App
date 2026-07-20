@@ -5,6 +5,7 @@ import '../../data/models/home_response_model.dart';
 import '../../data/models/product_model.dart';
 import '../../../../core/app_theme.dart';
 import '../../../../core/app_strings.dart';
+import '../../../core/controllers/skin_analysis_controller.dart';
 import '../../../../core/widgets/product_widgets.dart';
 import '../../../../core/widgets/app_widgets.dart';
 
@@ -295,11 +296,13 @@ class CategoryScrollList extends StatelessWidget {
 class ProductScrollList extends StatelessWidget {
   final String title;
   final List<ProductModel> products;
+  final Widget? trailing;
 
   const ProductScrollList({
     super.key,
     required this.title,
     required this.products,
+    this.trailing,
   });
 
   @override
@@ -309,13 +312,21 @@ class ProductScrollList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: AppTheme.primaryText,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                color: AppTheme.primaryText,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (trailing != null) ...[
+              trailing!,
+            ],
+          ],
         ),
         const SizedBox(height: 12),
         SizedBox(
@@ -481,5 +492,87 @@ class SkinQuizBanner extends StatelessWidget {
         ),
       ),
     ));
+  }
+}
+
+// --- AI Skin Analysis CTA Banner ---
+class SkinAnalysisBanner extends StatelessWidget {
+  const SkinAnalysisBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<SkinAnalysisController>();
+
+    return Obx(() {
+      final lastScanStr = controller.lastAnalysisTime.value;
+      final topConcern = controller.topConcern.value;
+
+      return InkWell(
+        onTap: () {
+          if (topConcern.isNotEmpty) {
+            Get.toNamed('/skin-analysis-results');
+          } else {
+            Get.toNamed('/skin-analysis');
+          }
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppTheme.secondary.withValues(alpha: 0.15),
+                AppTheme.surface,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppTheme.secondary.withValues(alpha: 0.3)),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppTheme.secondary.withValues(alpha: 0.15),
+                ),
+                child: Icon(
+                  Icons.face_retouching_natural,
+                  color: AppTheme.secondary,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'AI Skin Analysis Scanner',
+                      style: TextStyle(
+                        color: AppTheme.primaryText,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      lastScanStr.isNotEmpty
+                          ? 'Last scan: $lastScanStr ($topConcern). Tap to view.'
+                          : 'Scan your face for instant concern scores',
+                      style: TextStyle(color: AppTheme.textMuted, fontSize: 12.5),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.arrow_forward_ios, color: AppTheme.textDim, size: 16),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

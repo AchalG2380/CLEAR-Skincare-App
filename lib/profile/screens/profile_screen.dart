@@ -8,6 +8,8 @@ import '../controllers/profile_controller.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../../core/controllers/rewards_controller.dart';
+import '../controllers/referral_controller.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -276,6 +278,299 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+
+                        const SizedBox(height: 24),
+
+                        // Referral Section Title
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Referrals & Rewards",
+                            style: TextStyle(
+                              color: AppTheme.primaryText,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        // Invite Friends Card
+                        Obx(() {
+                          final referralController = Get.find<ReferralController>();
+                          final code = referralController.myCode.value;
+                          return Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppTheme.cardBackground,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: AppTheme.primary.withValues(alpha: 0.12),
+                                width: 1,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  "Invite Friends",
+                                  style: TextStyle(
+                                    color: AppTheme.primaryText,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "Share your code with friends. You both get bonus points when they join and share back!",
+                                  style: TextStyle(
+                                    color: AppTheme.textMuted,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.inputFill,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: AppTheme.primary.withValues(alpha: 0.2),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      code.isNotEmpty ? code : 'GENERATING...',
+                                      style: TextStyle(
+                                        color: AppTheme.primary,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton.icon(
+                                        onPressed: () {
+                                          Clipboard.setData(ClipboardData(
+                                            text: "Join CLEAR Skincare app using my referral code $code to get 200 welcome points!",
+                                          ));
+                                          Get.snackbar(
+                                            'Invite Copied',
+                                            'Invitation message has been copied to your clipboard!',
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            backgroundColor: AppTheme.cardBackground.withValues(alpha: 0.95),
+                                            colorText: Colors.white,
+                                          );
+                                        },
+                                        icon: const Icon(Icons.share_outlined, size: 16),
+                                        label: const Text("Share Invite"),
+                                        style: OutlinedButton.styleFrom(
+                                          foregroundColor: AppTheme.primary,
+                                          side: BorderSide(color: AppTheme.primary),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          Clipboard.setData(ClipboardData(text: code));
+                                          Get.snackbar(
+                                            'Code Copied',
+                                            'Code $code copied to clipboard!',
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            backgroundColor: AppTheme.cardBackground.withValues(alpha: 0.95),
+                                            colorText: Colors.white,
+                                          );
+                                        },
+                                        icon: const Icon(Icons.copy_all_outlined, size: 16),
+                                        label: const Text("Copy Code"),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppTheme.buttonColor,
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+
+                        const SizedBox(height: 16),
+
+                        // Redeem Friend's Code Card
+                        Builder(
+                          builder: (context) {
+                            final redeemTextController = TextEditingController();
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: AppTheme.cardBackground,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: AppTheme.primary.withValues(alpha: 0.12),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    "Redeem a Friend's Confirmation",
+                                    style: TextStyle(
+                                      color: AppTheme.primaryText,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "Enter the code your friend sent you to claim your 300 points reward.",
+                                    style: TextStyle(
+                                      color: AppTheme.textMuted,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: SizedBox(
+                                          height: 46,
+                                          child: TextField(
+                                            controller: redeemTextController,
+                                            style: TextStyle(color: AppTheme.primaryText, fontSize: 13),
+                                            cursorColor: AppTheme.primary,
+                                            decoration: InputDecoration(
+                                              hintText: "Friend's code (e.g. JANE482)",
+                                              hintStyle: TextStyle(
+                                                color: AppTheme.textHint,
+                                                fontSize: 12,
+                                              ),
+                                              filled: true,
+                                              fillColor: AppTheme.inputFill,
+                                              contentPadding: const EdgeInsets.symmetric(
+                                                horizontal: 14,
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                  color: AppTheme.primary.withValues(alpha: 0.18),
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: BorderSide(color: AppTheme.primary),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          final referralController = Get.find<ReferralController>();
+                                          final success = await referralController.redeemConfirmationCode(
+                                            redeemTextController.text,
+                                          );
+                                          if (success) {
+                                            redeemTextController.clear();
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppTheme.buttonColor,
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          minimumSize: const Size(90, 46),
+                                        ),
+                                        child: const Text(
+                                          "Redeem",
+                                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Expandable Referral Activity list
+                        Obx(() {
+                          final referralController = Get.find<ReferralController>();
+                          final activity = referralController.referralActivity;
+                          final count = activity.length;
+
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: AppTheme.cardBackground,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: AppTheme.primary.withValues(alpha: 0.12),
+                                width: 1,
+                              ),
+                            ),
+                            child: Theme(
+                              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                leading: Icon(Icons.people_outline, color: AppTheme.primary, size: 22),
+                                title: Text(
+                                  count == 1 ? "1 friend redeemed" : "$count friends redeemed",
+                                  style: TextStyle(
+                                    color: AppTheme.primaryText,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                children: [
+                                  if (activity.isEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        "No referral activity logged yet.",
+                                        style: TextStyle(color: AppTheme.textMuted, fontSize: 13),
+                                      ),
+                                    )
+                                  else
+                                    ListView.separated(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: activity.length,
+                                      separatorBuilder: (_, __) => Divider(color: AppTheme.dividerColor, height: 1),
+                                      itemBuilder: (context, index) {
+                                        final item = activity[index];
+                                        return ListTile(
+                                          dense: true,
+                                          title: Text(
+                                            item,
+                                            style: TextStyle(color: AppTheme.primaryText, fontSize: 13),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
 
                         const SizedBox(height: 24),
 

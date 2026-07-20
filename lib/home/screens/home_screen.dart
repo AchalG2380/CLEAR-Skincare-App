@@ -4,6 +4,7 @@ import '../../core/app_theme.dart';
 import '../../core/app_strings.dart';
 import '../controllers/home_controller.dart';
 import 'widgets/home_widgets.dart';
+import '../../core/controllers/recently_viewed_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -136,8 +137,40 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 28),
 
+                  // Recently Viewed
+                  Obx(() {
+                    final rvController = Get.find<RecentlyViewedController>();
+                    if (rvController.recentlyViewedProducts.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    return Column(
+                      children: [
+                        ProductScrollList(
+                          title: 'Recently Viewed',
+                          products: rvController.recentlyViewedProducts,
+                          trailing: GestureDetector(
+                            onTap: () => rvController.clearHistory(),
+                            child: Text(
+                              'Clear',
+                              style: TextStyle(
+                                color: AppTheme.primary,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 28),
+                      ],
+                    );
+                  }),
+
                   // 6. Skin Type Quiz CTA
                   SkinQuizBanner(),
+                  const SizedBox(height: 16),
+
+                  // AI Skin Analysis CTA
+                  SkinAnalysisBanner(),
                   const SizedBox(height: 24),
 
                   // 7. Skin Concern Section

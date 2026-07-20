@@ -9,15 +9,18 @@ class ProductDetailsRepository {
   Future<ProductDetailsModel> getProductDetails(String productId) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/product/$productId'),
+        Uri.parse('$baseUrl/products/$productId'),
         headers: {'Content-Type': 'application/json'},
       );
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body) as Map<String, dynamic>;
-        return ProductDetailsModel.fromJson(ApiConfig.unwrap(decoded));
+        return ProductDetailsModel.fromJson(
+          ApiConfig.unwrap(decoded) as Map<String, dynamic>,
+        );
       }
       throw Exception('Server returned status ${response.statusCode}');
-    } catch (_) {
+    } catch (e) {
+      print("GET PRODUCT DETAILS ERROR for $productId: $e");
       return _getMockDetails(productId);
     }
   }
